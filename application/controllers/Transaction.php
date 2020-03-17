@@ -26,7 +26,7 @@ class Transaction extends CI_Controller {
     // Add a new item
     public function add($type)
     {
-        if ($this->input->post('submit')) {
+        if ($this->input->post('unit_id')) {
 
             $unit_type = $this->input->post('unit_type');
             $unit_id = $this->input->post('unit_id');

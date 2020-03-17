@@ -18,7 +18,7 @@
               <div class="card-header">
                 <h5 class="m-0">Form Tambah <?php echo getLabelUnitType($type) ?></h5>
               </div>
-              <form class="form-horizontal" method="post" onsubmit="return validatePeriodOnSubmit()">
+              <form class="form-horizontal" method="post" id="form-transaction">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
@@ -249,7 +249,7 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <input type="hidden" name="unit_type" value="<?php echo $type ?>" id="unit_type">
-                  <button type="submit" class="btn btn-info" name="submit" value="add" id="btn-submit-trans">Submit</button>
+                  <button type="submit" class="btn btn-info" name="add" value="add" id="btn-submit-trans">Submit</button>
                   <a href="<?php echo base_url('mansion') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
                 <!-- /.card-footer -->

@@ -49,33 +49,41 @@
         $('#water_total_used').val(total_used);
         $('.water_total_price').val(total_price);
     }
-    function validatePeriodOnSubmit() {
-        var unit_type = $('#unit_type').val();
-        var unit_id = $(this).val();
-        var period = $('#period').val();
-        $.ajax({
-            url: base_url + 'transaction/checkPeriod',
-            type: 'POST',
-            dataType: 'html',
-            data: {unit_id: unit_id, unit_type: unit_type, period: period},
-        })
-        .done(function(data) {
-            if (data == 0) {
-                return true;
-            }
-            else {
-                alert('Data dengan periode ini sudah ada!');
-                return false;
-            }
-        })
-        .fail(function() {
-            console.log("error");
-        })
-        .always(function() {
-            console.log("complete");
-        });
+    // function validatePeriodOnSubmit() {
+    //     var data = 3;
+    //     if (data == 0) {
+    //             return true;
+    //         }
+    //         else {
+    //             alert('Data dengan periode ini sudah ada!');
+    //             return false;
+    //         }
+    //     var unit_type = $('#unit_type').val();
+    //     var unit_id = $('#unit_id').val();
+    //     var period = $('#period').val();
+    //     $.ajax({
+    //         url: base_url + 'transaction/checkPeriod',
+    //         type: 'POST',
+    //         dataType: 'html',
+    //         data: {unit_id: unit_id, unit_type: unit_type, period: period},
+    //     })
+    //     .done(function(data) {
+    //         if (data == 0) {
+    //             return true;
+    //         }
+    //         else {
+    //             alert('Data dengan periode ini sudah ada!');
+    //             return false;
+    //         }
+    //     })
+    //     .fail(function() {
+    //         console.log("error");
+    //     })
+    //     .always(function() {
+    //         console.log("complete");
+    //     });
         
-    }
+    // }
 
     $(function () {
         $('#unit_id').change(function(event) {
@@ -129,6 +137,36 @@
                 console.log("complete");
             });
             
+        });
+
+        $('#btn-submit-trans').click(function(e) {
+            e.preventDefault();
+
+            var unit_type = $('#unit_type').val();
+            var unit_id = $('#unit_id').val();
+            var period = $('#period').val();
+            $.ajax({
+                url: base_url + 'transaction/checkPeriod',
+                type: 'POST',
+                dataType: 'html',
+                data: {unit_id: unit_id, unit_type: unit_type, period: period},
+            })
+            .done(function(data) {
+                if (data == 0) {
+                    console.log('submiy hey');
+                    $('#form-transaction').submit();
+                }
+                else {
+                    alert('Data dengan periode ini sudah ada!');
+                    return false;
+                }
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
         });
 
 

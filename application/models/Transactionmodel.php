@@ -41,7 +41,7 @@ class Transactionmodel extends CI_Model {
     {
         $this->db->where('deleted_at', null);
         $this->db->where('unit_type', $type);
-        $this->db->where('id', $id);
+        $this->db->where('unit_id', $id);
         $this->db->where('MONTH(period)', $month);
         $this->db->where('YEAR(period)', $year);
         $query = $this->db->get($this->table);
@@ -57,7 +57,7 @@ class Transactionmodel extends CI_Model {
     {
         $this->db->where('deleted_at', null);
         $this->db->where('unit_type', $type);
-        $this->db->where('id', $id);
+        $this->db->where('unit_id', $id);
         $this->db->where('MONTH(period)', $month);
         $this->db->where('YEAR(period)', $year);
         $query = $this->db->get($this->table);

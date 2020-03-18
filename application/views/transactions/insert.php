@@ -250,7 +250,7 @@
                 <div class="card-footer">
                   <input type="hidden" name="unit_type" value="<?php echo $type ?>" id="unit_type">
                   <button type="submit" class="btn btn-info" name="add" value="add" id="btn-submit-trans">Submit</button>
-                  <a href="<?php echo base_url('mansion') ?>" class="btn btn-default float-right">Cancel</a>
+                  <a href="<?php echo base_url('transaction/index/'.$type) ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
                 <!-- /.card-footer -->
               </form>

@@ -49,41 +49,6 @@
         $('#water_total_used').val(total_used);
         $('.water_total_price').val(total_price);
     }
-    // function validatePeriodOnSubmit() {
-    //     var data = 3;
-    //     if (data == 0) {
-    //             return true;
-    //         }
-    //         else {
-    //             alert('Data dengan periode ini sudah ada!');
-    //             return false;
-    //         }
-    //     var unit_type = $('#unit_type').val();
-    //     var unit_id = $('#unit_id').val();
-    //     var period = $('#period').val();
-    //     $.ajax({
-    //         url: base_url + 'transaction/checkPeriod',
-    //         type: 'POST',
-    //         dataType: 'html',
-    //         data: {unit_id: unit_id, unit_type: unit_type, period: period},
-    //     })
-    //     .done(function(data) {
-    //         if (data == 0) {
-    //             return true;
-    //         }
-    //         else {
-    //             alert('Data dengan periode ini sudah ada!');
-    //             return false;
-    //         }
-    //     })
-    //     .fail(function() {
-    //         console.log("error");
-    //     })
-    //     .always(function() {
-    //         console.log("complete");
-    //     });
-        
-    // }
 
     $(function () {
         $('#unit_id').change(function(event) {
@@ -169,6 +134,23 @@
             });
         });
 
+
+        $('input[type=checkbox]').change(function() {
+            var total = 0;
+            var formatter = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'IDR',
+              maximumSignificantDigits: 3
+            });
+            console.log('checked');
+            $('input[type=checkbox]').each(function() {
+                if (this.checked == true) {
+                    var amount = $(this).data('amount');
+                    total = total + amount;
+                }
+            });
+            $('.grand_total').html('<strong>' + formatter.format(total) + '</strong>');
+        });
 
         $("#data-table").DataTable();
     });

@@ -86,7 +86,7 @@
                 <a href="#" class="nav-link<?php echo ($page == 'trans_residence' || $page == 'trans_mansion') ? ' active' : ''; ?>">
                   <i class="nav-icon fas fa-calculator"></i>
                   <p>
-                    Input Transaksi
+                    Input Tagihan
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
@@ -99,6 +99,29 @@
                   </li>
                   <li class="nav-item">
                     <a href="<?php echo base_url('transaction/index/2') ?>" class="nav-link<?php echo ($page == 'trans_mansion') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Mansion</p>
+                    </a>
+                  </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview<?php echo ($page == 'payment_residence' || $page == 'payment_mansion') ? ' menu-open' : ''; ?>">
+                <a href="#" class="nav-link<?php echo ($page == 'payment_residence' || $page == 'payment_mansion') ? ' active' : ''; ?>">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                    Input Pembayaran
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('payment/index/1') ?>" class="nav-link<?php echo ($page == 'payment_residence') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Apartemen</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('payment/index/2') ?>" class="nav-link<?php echo ($page == 'payment_mansion') ? ' active' : ''; ?>">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Mansion</p>
                     </a>

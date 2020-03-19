@@ -25,6 +25,19 @@ class Paymentmodel extends CI_Model {
         }
     }
 
+    public function getBillDataById($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->where('deleted_at', null);
+        $query = $this->db->get($this->table);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        }
+        else {
+            return array();
+        }
+    }
+
     public function payData($id)
     {
         $data['payment_status'] = 1;

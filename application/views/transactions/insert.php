@@ -39,7 +39,7 @@
                       <div class="form-group row">
                         <label for="unit_id" class="col-sm-3 col-form-label">Kode Unit</label>
                         <div class="col-sm-6">
-                          <select name="unit_id" class="form-control" id="unit_id" required>
+                          <select name="unit_id" class="form-control select2" id="unit_id" required>
                             <option value="">--Pilih Apartemen--</option>
                             <?php foreach ($units as $key => $value): ?>
                             <option value="<?php echo $value['id'] ?>"><?php echo $value['code'].' / '.$value['owner'].' / '.$value['tower'].'-'.$value['floor'].$value['blok'] ?></option>
@@ -75,7 +75,7 @@
                       <div class="form-group row">
                         <label for="unit_id" class="col-sm-3 col-form-label">Kode Unit</label>
                         <div class="col-sm-6">
-                          <select name="unit_id" class="form-control" id="unit_id" required>
+                          <select name="unit_id" class="form-control select2" id="unit_id" required>
                             <option value="">--Pilih Rumah--</option>
                             <?php foreach ($units as $key => $value): ?>
                             <option value="<?php echo $value['id'] ?>"><?php echo $value['code'].' / '.$value['owner'].' / '.$value['type'].'-'.$value['blok'] ?></option>
@@ -166,9 +166,9 @@
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="abonemen" class="col-sm-3 col-form-label">Abonemen</label>
+                        <label for="pasum" class="col-sm-3 col-form-label">Pasum</label>
                         <div class="col-sm-6">
-                          <input type="text" name="abonemen" class="form-control" id="abonemen" value="0" onblur="validateElPrice()" required>
+                          <input type="text" name="pasum" class="form-control" id="pasum" value="0" onblur="validateElPrice()" required>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -214,6 +214,12 @@
                         <label for="water_rate" class="col-sm-3 col-form-label">Tarif Per Kubik</label>
                         <div class="col-sm-6">
                           <input type="text" name="water_rate" class="form-control" id="water_rate" value="0" readonly>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="abonemen" class="col-sm-3 col-form-label">Abonemen</label>
+                        <div class="col-sm-6">
+                          <input type="text" name="abonemen" class="form-control" id="abonemen" value="0" onblur="validateWaterPrice()" required>
                         </div>
                       </div>
                       <div class="form-group row">

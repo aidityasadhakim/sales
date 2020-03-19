@@ -26,8 +26,14 @@
                     <div class="col-sm-4">
                       <select name="unit_id" class="form-control select2" id="unit_id" required>
                         <option value="">--Pilih Apartemen--</option>
-                        <?php foreach ($units as $key => $value): ?>
-                        <option value="<?php echo $value['id'] ?>"><?php echo $value['code'].' / '.$value['owner'].' / '.$value['tower'].'-'.$value['floor'].$value['blok'] ?></option>
+                        <?php 
+                        $selected = '';
+                        foreach ($units as $key => $value): 
+                          if (isset($unit_id)) {
+                            $selected = ($unit_id == $value['id']) ? ' selected' : '';
+                          }
+                        ?>
+                        <option value="<?php echo $value['id'] ?>"<?php echo $selected ?>><?php echo $value['code'].' / '.$value['owner'].' / '.$value['tower'].'-'.$value['floor'].$value['blok'] ?></option>
                         <?php endforeach ?>
                       </select>
                     </div>
@@ -82,8 +88,8 @@
                       <tr>
                         <td><input type="checkbox" name="units[]" value="<?php echo $value['id'] ?>" checked data-amount="<?php echo $value['grand_total'] ?>"></td>
                         <td><?php echo date('F Y', strtotime($value['period'])) ?></td>
-                        <td>Rp. <?php echo number_format($value['el_total_price']) ?></td>
-                        <td>Rp. <?php echo number_format($value['water_total_price']) ?></td>
+                        <td><a href="#" class="detail-payment" data-id="<?php echo $value['id'] ?>" data-type="el">Rp. <?php echo number_format($value['el_total_price']) ?></a></td>
+                        <td><a href="#" class="detail-payment" data-id="<?php echo $value['id'] ?>" data-type="water">Rp. <?php echo number_format($value['water_total_price']) ?></a></td>
                         <td>Rp. <?php echo number_format($value['cs_total_price']) ?></td>
                         <td>Rp. <?php echo number_format($value['cabletv_total_price']) ?></td>
                         <td>Rp. <?php echo number_format($value['sf_total_price']) ?></td>
@@ -118,4 +124,26 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="modal-lg-detail-payment">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Detail Tagihan</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body-detail-payment">
+          
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 <?php $this->load->view('layouts/footer'); ?>

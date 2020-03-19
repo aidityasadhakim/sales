@@ -20,6 +20,8 @@
 <!-- DataTables -->
 <script src="<?php echo base_url('assets') ?>/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?php echo base_url('assets') ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- Select2 -->
+<script src="<?php echo base_url('assets') ?>/plugins/select2/js/select2.full.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo base_url('assets') ?>/dist/js/adminlte.min.js"></script>
 <script>
@@ -28,12 +30,12 @@
         var last_used = $('#el_last_used').val();
         var used = $('#el_used').val();
         var rate = $('#el_rate').val();
-        var abonemen = $('#abonemen').val();
+        var pasum = $('#pasum').val();
         var ppju = $('#ppju').val();
         var ppn = $('#ppn').val();
 
         var total_used = parseInt(used) - parseInt(last_used);
-        var total_price = parseInt(rate) * parseInt(total_used) + (parseInt(abonemen) + parseInt(ppju) + parseInt(ppn));
+        var total_price = parseInt(rate) * parseInt(total_used) + (parseInt(pasum) + parseInt(ppju) + parseInt(ppn));
 
         $('#el_total_used').val(total_used);
         $('.el_total_price').val(total_price);
@@ -42,9 +44,10 @@
         var last_used = $('#water_last_used').val();
         var used = $('#water_used').val();
         var rate = $('#water_rate').val();
+        var abonemen = $('#abonemen').val();
 
         var total_used = parseInt(used) - parseInt(last_used);
-        var total_price = parseInt(rate) * parseInt(total_used);
+        var total_price = (parseInt(rate) * parseInt(total_used)) + parseInt(abonemen);
 
         $('#water_total_used').val(total_used);
         $('.water_total_price').val(total_price);
@@ -153,6 +156,33 @@
         });
 
         $("#data-table").DataTable();
+
+        $(".select2").select2({
+          theme: 'bootstrap4'
+        });
+
+        $('.detail-payment').on('click', function(event) {
+            event.preventDefault();
+
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $.ajax({
+                url: base_url + 'payment/getDetail',
+                type: 'POST',
+                dataType: 'html',
+                data: {id: id, type: type},
+            })
+            .done(function(data) {
+                $('#modal-lg-detail-payment').modal('show');
+                $('#modal-body-detail-payment').html(data);
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+        });
     });
 </script>
 </body>

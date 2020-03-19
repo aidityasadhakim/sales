@@ -32,11 +32,12 @@ class Transaction extends CI_Controller {
             $unit_id = $this->input->post('unit_id');
             $transaction_date = $this->input->post('transaction_date');
             $period = $this->input->post('period').'-01';
-            $due_date = $period.'-20';
+            $due_date = $this->input->post('period').'-20';
             $el_last_used = $this->input->post('el_last_used');
             $el_used = $this->input->post('el_used');
             $el_total_used = $this->input->post('el_total_used');
             $el_rate = $this->input->post('el_rate');
+            $pasum = $this->input->post('pasum');
             $abonemen = $this->input->post('abonemen');
             $ppju = $this->input->post('ppju');
             $ppn = $this->input->post('ppn');
@@ -63,6 +64,7 @@ class Transaction extends CI_Controller {
                         'el_used'  => $el_used,
                         'el_total_used'  => $el_total_used,
                         'el_rate'  => $el_rate,
+                        'pasum'  => $pasum,
                         'abonemen'  => $abonemen,
                         'ppju'  => $ppju,
                         'ppn'  => $ppn,

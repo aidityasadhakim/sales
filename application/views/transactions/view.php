@@ -78,8 +78,8 @@
                         <td>Rp. <?php echo number_format($value['grand_total']) ?></td>
                         <td>
                           <div class="btn-group">
-                            <a href="<?php echo base_url('mansion/update/'.$value['id']) ?>" class="btn btn-success">Ubah</a>
-                            <a href="<?php echo base_url('mansion/delete/'.$value['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Hapus</a>
+                            <a href="<?php echo base_url('transaction/update/'.$value['id']) ?>" class="btn btn-success">Ubah</a>
+                            <a href="<?php echo base_url('transaction/delete/'.$value['id']) ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Hapus</a>
                           </div>
                         </td>
                       </tr>

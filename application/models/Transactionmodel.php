@@ -37,6 +37,19 @@ class Transactionmodel extends CI_Model {
         }
     }
 
+    public function getDataUnitByTransId($id, $table)
+    {
+        $this->db->where('deleted_at', null);
+        $this->db->where('id',$id);
+        $query = $this->db->get($table);
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        }
+        else {
+            return array();
+        }
+    }
+
     public function getLastMonthBill($type, $id, $month, $year)
     {
         $this->db->where('deleted_at', null);

@@ -16,12 +16,12 @@
           <div class="col-lg-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="m-0">Form Ubah Apartemen</h5>
+                <h5 class="m-0">Form Ubah Mansion</h5>
               </div>
               <form class="form-horizontal" method="post">
                 <div class="card-body">
                   <div class="form-group row">
-                    <label for="code" class="col-sm-2 col-form-label">Kode Apartemen</label>
+                    <label for="code" class="col-sm-2 col-form-label">Kode Mansion</label>
                     <div class="col-sm-3">
                       <input type="text" name="code" class="form-control" id="code" value="<?php echo $row['code'] ?>" required>
                     </div>

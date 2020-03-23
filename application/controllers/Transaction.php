@@ -20,7 +20,12 @@ class Transaction extends CI_Controller {
         $data['page'] = 'trans_'.$type;
         $data['type'] = $type;
         $data['transactions'] = $this->trans->getAllDataByType($type);
-        $this->load->view('transactions/view', $data);
+        if ($type == 1) {
+            $this->load->view('transactions/residence_view', $data);
+        }
+        elseif ($type == 2) {
+            $this->load->view('transactions/mansion_view', $data);
+        }
     }
 
     // Add a new item
@@ -94,11 +99,12 @@ class Transaction extends CI_Controller {
             $data['type'] = $type;
             if ($type == 1) {
                 $data['units'] = $this->res->getAllData();
+                $this->load->view('transactions/residence_insert', $data);
             }
             else {
                 $data['units'] = $this->mans->getAllData();
+                $this->load->view('transactions/mansion_insert', $data);
             }
-            $this->load->view('transactions/insert', $data);
         }
     }
 
@@ -173,11 +179,12 @@ class Transaction extends CI_Controller {
             $data['type'] = $type;
             if ($type == 1) {
                 $data['unit'] = $this->trans->getDataUnitByTransId($data['row']['unit_id'], 'residences');
+                $this->load->view('transactions/residence_update',$data);
             }
             else {
-                $data['units'] = $this->trans->getDataUnitByTransId($data['row']['unit_id'], 'mansions');
+                $data['unit'] = $this->trans->getDataUnitByTransId($data['row']['unit_id'], 'mansions');
+                $this->load->view('transactions/mansion_update',$data);
             }
-            $this->load->view('transactions/update',$data);
         }
     }
 

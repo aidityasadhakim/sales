@@ -35,43 +35,6 @@
                           <input type="month" name="period" class="form-control" id="period" value="<?php echo date('Y-m') ?>" required>
                         </div>
                       </div>
-                      <?php if ($type == 1): ?>
-                      <div class="form-group row">
-                        <label for="unit_id" class="col-sm-3 col-form-label">Kode Unit</label>
-                        <div class="col-sm-6">
-                          <select name="unit_id" class="form-control select2" id="unit_id" required>
-                            <option value="">--Pilih Apartemen--</option>
-                            <?php foreach ($units as $key => $value): ?>
-                            <option value="<?php echo $value['id'] ?>"><?php echo $value['code'].' / '.$value['owner'].' / '.$value['tower'].'-'.$value['floor'].$value['blok'] ?></option>
-                            <?php endforeach ?>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="owner_name" class="col-sm-3 col-form-label">Nama Pemilik</label>
-                        <div class="col-sm-4">
-                          <input type="text" name="owner_name" class="form-control" id="owner_name" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="tower" class="col-sm-3 col-form-label">Tower</label>
-                        <div class="col-sm-2">
-                          <input type="text" name="tower" class="form-control" id="tower" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="floor" class="col-sm-3 col-form-label">Lantai</label>
-                        <div class="col-sm-2">
-                          <input type="text" name="floor" class="form-control" id="floor" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="blok" class="col-sm-3 col-form-label">Blok</label>
-                        <div class="col-sm-2">
-                          <input type="text" name="blok" class="form-control" id="blok" readonly>
-                        </div>
-                      </div>
-                      <?php else: ?>
                       <div class="form-group row">
                         <label for="unit_id" class="col-sm-3 col-form-label">Kode Unit</label>
                         <div class="col-sm-6">
@@ -101,16 +64,9 @@
                           <input type="text" name="blok" class="form-control" id="blok" readonly>
                         </div>
                       </div>
-                      <?php endif ?>
                     </div>
                     <div class="col">
                       <legend>Total Tagihan</legend>
-                      <div class="form-group row">
-                        <label for="el_total_price" class="col-sm-3 col-form-label">Tagihan Listrik</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="el_total_price" class="form-control el_total_price" id="el_total_price" value="0" readonly>
-                        </div>
-                      </div>
                       <div class="form-group row">
                         <label for="water_total_price" class="col-sm-3 col-form-label">Tagihan Air</label>
                         <div class="col-sm-6">
@@ -139,57 +95,6 @@
                   </div>
                   <legend></legend>
                   <div class="row">
-                    <div class="col">
-                      <legend>Tagihan Listrik</legend>
-                      <div class="form-group row">
-                        <label for="el_last_used" class="col-sm-3 col-form-label">Pemakaian Bulan Lalu</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="el_last_used" class="form-control" id="el_last_used" value="0" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="el_used" class="col-sm-3 col-form-label">Pemakaian Bulan Ini</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="el_used" class="form-control" id="el_used" value="0" onblur="validateElPrice()" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="el_total_used" class="col-sm-3 col-form-label">Total Pemakaian</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="el_total_used" class="form-control" id="el_total_used" value="0" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="el_rate" class="col-sm-3 col-form-label">Tarif Per KWH</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="el_rate" class="form-control" id="el_rate" value="0" readonly>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="pasum" class="col-sm-3 col-form-label">Pasum</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="pasum" class="form-control" id="pasum" value="0" onblur="validateElPrice()" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="ppju" class="col-sm-3 col-form-label">PPJU</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="ppju" class="form-control" id="ppju" value="0" onblur="validateElPrice()" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="ppn" class="col-sm-3 col-form-label">PPN</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="ppn" class="form-control" id="ppn" value="0" onblur="validateElPrice()" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="el_subtotal_price" class="col-sm-3 col-form-label">Total Tagihan Listrik</label>
-                        <div class="col-sm-6">
-                          <input type="text" name="el_subtotal_price" class="form-control el_total_price" id="el_subtotal_price" value="0" readonly>
-                        </div>
-                      </div>
-                    </div>
                     <div class="col">
                       <legend>Tagihan Air</legend>
                       <div class="form-group row">

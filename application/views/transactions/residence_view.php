@@ -51,7 +51,6 @@
                         <td><?php echo $key+1 ?></td>
                         <td>DPUB-<?php echo $value['id']; ?></td>
                         <td>
-                          <?php if ($value['unit_type'] == 1): ?>
                           Pemilik: <strong><?php echo getDataColumn('residences', 'id', $value['unit_id'], 'owner'); ?></strong>
                           <br>
                           Tower: <strong><?php echo getDataColumn('residences', 'id', $value['unit_id'], 'tower'); ?></strong>
@@ -60,14 +59,6 @@
                           <br>
                           Blok: <strong><?php echo getDataColumn('residences', 'id', $value['unit_id'], 'blok'); ?></strong>
                           <br>
-                          <?php else: ?>  
-                          Pemilik: <strong><?php echo getDataColumn('mansions', 'id', $value['unit_id'], 'owner'); ?></strong>
-                          <br>
-                          Tipe: <strong><?php echo getDataColumn('mansions', 'id', $value['unit_id'], 'tower'); ?></strong>
-                          <br>
-                          Blok: <strong><?php echo getDataColumn('mansions', 'id', $value['unit_id'], 'blok'); ?></strong>
-                          <br>
-                          <?php endif ?>
                         </td>
                         <td><?php echo date('F Y', strtotime($value['period'])) ?></td>
                         <td>Rp. <?php echo number_format($value['el_total_price']) ?></td>

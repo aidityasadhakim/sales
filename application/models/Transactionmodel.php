@@ -77,6 +77,21 @@ class Transactionmodel extends CI_Model {
         return $query->num_rows();
     }
 
+    public function getAllDataByUnitId($type, $unit_id)
+    {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('unit_type', $type);
+        $this->db->where('unit_id', $unit_id);
+        $this->db->where('deleted_at', null);
+        $query = $this->db->get($this->table);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
     public function insertData($data)
     {
         $data['created_at'] = date('Y-m-d H:i:s');

@@ -163,8 +163,7 @@ class Transaction extends CI_Controller {
                         'cabletv_total_price'  => $cabletv_total_price,
                         'sf_total_price'  => $sf_total_price,
                         'grand_total' => $grand_total,
-                        'created_by' => $this->session->userdata('id'),
-                        'payment_status' => 0
+                        'updated_by' => $this->session->userdata('id')
                         );  
             
 

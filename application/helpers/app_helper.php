@@ -38,18 +38,6 @@ function getLabelLevelUser($level) {
     }
 }
 
-if (!function_exists('getLabelUnitType'))
-{
-function getLabelUnitType($type) {
-        if ($type == 1) {
-            return 'Apartemen';
-        } 
-        else if ($type == 2) {
-            return 'Mansion';
-        }
-    }
-}
-
 if (!function_exists('getDataColumn'))
 {
 function getDataColumn($table, $condition, $value, $field) {
@@ -62,6 +50,47 @@ function getDataColumn($table, $condition, $value, $field) {
         }
         else {
             return null;
+        }
+    }
+}
+
+if (!function_exists('getTowerByFloorId'))
+{
+function getTowerByFloorId($floor_id, $field = '') {
+        $CI =& get_instance();
+        $CI->db->where('id', $floor_id);
+        $query = $CI->db->get('towers');
+        if ($query->num_rows() > 0) {
+            $data = $query->row_array();
+            $parent_id = $data['parent_id'];
+            $CI->db->where('id', $parent_id);
+            $queryTower = $CI->db->get('towers');
+            if ($queryTower->num_rows() > 0) {
+                $dataTower = $queryTower->row_array();
+                return $dataTower[$field];
+            }
+            else {
+                return '-';
+            }
+        }
+        else {
+            return '-';
+        }
+    }
+}
+
+if (!function_exists('checkedFacility'))
+{
+function checkedFacilityUnit($unit_id, $facility_id) {
+        $CI =& get_instance();
+        $CI->db->where('unit_id', $unit_id);
+        $CI->db->where('facility_id', $facility_id);
+        $query = $CI->db->get('unit_facilities');
+        if ($query->num_rows() > 0) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

@@ -1,18 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Facilitymodel extends CI_Model {
+class Residencemodel extends CI_Model {
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    var $table = 'facilities';
+    var $table = 'residences';
 
-    public function getAllData($type = null)
+    public function getAllData()
     {
-        $this->db->order_by('name', 'asc');
+        $this->db->order_by('id', 'desc');
         $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
@@ -58,6 +58,6 @@ class Facilitymodel extends CI_Model {
 
 }
 
-/* End of file Facilitymodel.php */
-/* Location: ./application/models/backend/Facilitymodel.php */
+/* End of file Residencemodel.php */
+/* Location: ./application/models/backend/Residencemodel.php */
  ?>

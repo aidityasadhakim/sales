@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>DPU Opname &amp; Inventory | <?php echo $title; ?></title>
+  <title>DPU Bills | <?php echo $title; ?></title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?php echo base_url('assets') ?>/plugins/fontawesome-free/css/all.min.css">
@@ -23,12 +23,12 @@
 <div class="wrapper">
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-indigo elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?php echo base_url('dashboard') ?>" class="brand-link">
       <img src="<?php echo base_url('assets') ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">DPU Opname</span>
+      <span class="brand-text font-weight-light">DPU Bills</span>
     </a>
 
     <!-- Sidebar -->
@@ -56,8 +56,8 @@
                   </p>
                 </a>
             </li>
-            <li class="nav-item has-treeview<?php echo ($page == 'unit' || $page == 'facility') ? ' menu-open' : ''; ?>">
-                <a href="#" class="nav-link<?php echo ($page == 'unit' || $page == 'facility') ? ' active' : ''; ?>">
+            <li class="nav-item has-treeview<?php echo ($page == 'residence' || $page == 'mansion' || $page == 'rate') ? ' menu-open' : ''; ?>">
+                <a href="#" class="nav-link<?php echo ($page == 'residence' || $page == 'mansion' || $page == 'rate') ? ' active' : ''; ?>">
                   <i class="nav-icon fas fa-archive"></i>
                   <p>
                     Data Master
@@ -66,21 +66,96 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="<?php echo base_url('unit') ?>" class="nav-link<?php echo ($page == 'unit') ? ' active' : ''; ?>">
+                    <a href="<?php echo base_url('residence') ?>" class="nav-link<?php echo ($page == 'residence') ? ' active' : ''; ?>">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Unit</p>
+                      <p>Apartemen</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url('facility') ?>" class="nav-link<?php echo ($page == 'facility') ? ' active' : ''; ?>">
+                    <a href="<?php echo base_url('mansion') ?>" class="nav-link<?php echo ($page == 'mansion') ? ' active' : ''; ?>">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Fasilitas</p>
+                      <p>Mansion</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('rate') ?>" class="nav-link<?php echo ($page == 'rate') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tarif</p>
                     </a>
                   </li>
                 </ul>
             </li>
-            <li class="nav-item has-treeview<?php echo ($page == 'report_facility') ? ' menu-open' : ''; ?>">
-                <a href="#" class="nav-link<?php echo ($page == 'report_facility') ? ' active' : ''; ?>">
+            <li class="nav-item has-treeview<?php echo ($page == 'trans_1' || $page == 'trans_2') ? ' menu-open' : ''; ?>">
+                <a href="#" class="nav-link<?php echo ($page == 'trans_1' || $page == 'trans_2') ? ' active' : ''; ?>">
+                  <i class="nav-icon fas fa-calculator"></i>
+                  <p>
+                    Input Tagihan
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('transaction/index/1') ?>" class="nav-link<?php echo ($page == 'trans_1') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Apartemen</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('transaction/index/2') ?>" class="nav-link<?php echo ($page == 'trans_2') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Mansion</p>
+                    </a>
+                  </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview<?php echo ($page == 'payment_1' || $page == 'payment_2') ? ' menu-open' : ''; ?>">
+                <a href="#" class="nav-link<?php echo ($page == 'payment_1' || $page == 'payment_2') ? ' active' : ''; ?>">
+                  <i class="nav-icon fas fa-money-bill-alt"></i>
+                  <p>
+                    Input Pembayaran
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('payment/index/1') ?>" class="nav-link<?php echo ($page == 'payment_1') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Apartemen</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('payment/index/2') ?>" class="nav-link<?php echo ($page == 'payment_2') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Mansion</p>
+                    </a>
+                  </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview<?php echo ($page == 'bill_1' || $page == 'bill_2') ? ' menu-open' : ''; ?>">
+                <a href="#" class="nav-link<?php echo ($page == 'bill_1' || $page == 'bill_2') ? ' active' : ''; ?>">
+                  <i class="nav-icon fas fa-list-alt"></i>
+                  <p>
+                    Cek Tagihan
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('bill/index/1') ?>" class="nav-link<?php echo ($page == 'bill_1') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Apartemen</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url('bill/index/2') ?>" class="nav-link<?php echo ($page == 'bill_2') ? ' active' : ''; ?>">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Mansion</p>
+                    </a>
+                  </li>
+                </ul>
+            </li>
+            <li class="nav-item has-treeview<?php echo ($page == 'period') ? ' menu-open' : ''; ?>">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-print"></i>
                   <p>
                     Laporan
@@ -89,9 +164,15 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="<?php echo base_url('report/facility') ?>" class="nav-link<?php echo ($page == 'report_facility') ? ' active' : ''; ?>">
+                    <a href="<?php echo base_url('report/period') ?>" class="nav-link<?php echo ($page == 'period') ? ' active' : ''; ?>">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Fasilitas Kamar</p>
+                      <p>Per Periode</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Tunggakan</p>
                     </a>
                   </li>
                 </ul>

@@ -1,18 +1,19 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ownermodel extends CI_Model {
+class Mansionmodel extends CI_Model {
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    var $table = 'owners';
+    var $table = 'mansions';
 
     public function getAllData()
     {
-        $this->db->where('status', 1);
+        $this->db->order_by('id', 'desc');
+        $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->result_array();
@@ -24,24 +25,11 @@ class Ownermodel extends CI_Model {
 
     public function getDataById($id)
     {
-        $this->db->where('status',1);
+        $this->db->where('deleted_at', null);
         $this->db->where('id',$id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
-            return array();
-        }
-    }
-
-    public function getDataByType($type)
-    {
-        $this->db->where('status', 1);
-        $this->db->where('type', $type);
-        $query = $this->db->get($this->table);
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
         }
         else {
             return array();
@@ -63,13 +51,13 @@ class Ownermodel extends CI_Model {
 
     public function deleteData($id)
     {
-        $data = array('status' => 0, 'updated_at' => date('Y-m-d H:i:s'));
+        $data = array('deleted_at' => date('Y-m-d H:i:s'));
         $this->db->where('id',$id);
         $this->db->update($this->table,$data);
     }
 
 }
 
-/* End of file Ownermodel.php */
-/* Location: ./application/models/backend/Ownermodel.php */
+/* End of file Mansionmodel.php */
+/* Location: ./application/models/backend/Mansionmodel.php */
  ?>

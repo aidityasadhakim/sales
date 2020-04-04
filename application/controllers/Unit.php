@@ -163,7 +163,7 @@ class Unit extends CI_Controller {
             $name = $this->input->post('name');
 
             $config['upload_path'] = './uploads/units/';
-            $config['allowed_types'] = 'gif|jpg|png';
+            $config['allowed_types'] = 'gif|jpg|jpeg|png';
             
             $this->load->library('upload', $config);
             
@@ -210,7 +210,7 @@ class Unit extends CI_Controller {
             $name = $this->input->post('name');
 
             $config['upload_path'] = './uploads/units/';
-            $config['allowed_types'] = 'gif|jpg|png';
+            $config['allowed_types'] = 'gif|jpg|jpeg||png';
             
             $this->load->library('upload', $config);
             

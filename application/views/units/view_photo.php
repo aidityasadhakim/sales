@@ -26,6 +26,7 @@
                   </div>
                 <?php endif; ?>
                 <p>
+                  <a href="<?php echo base_url('unit') ?>" class="btn btn-default">Kembali</a>
                   <a href="<?php echo base_url('unit/add_photo/'.$row['id']) ?>" class="btn btn-primary">Tambah</a>
                 </p>
                 <div class="table-responsive">

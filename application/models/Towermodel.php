@@ -14,7 +14,7 @@ class Towermodel extends CI_Model {
     {
         $this->db->order_by('id', 'desc');
         $this->db->where('parent_id', 0);
-        $this->db->where('status', 1);
+        $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->result_array();
@@ -26,7 +26,7 @@ class Towermodel extends CI_Model {
 
     public function getDataById($id)
     {
-        $this->db->where('status',1);
+        $this->db->where('deleted_at', null);
         $this->db->where('id',$id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
@@ -52,7 +52,7 @@ class Towermodel extends CI_Model {
 
     public function deleteData($id)
     {
-        $data = array('status' => 0, 'updated_at' => date('Y-m-d H:i:s'));
+        $data = array('deleted_at' => date('Y-m-d H:i:s'));
         $this->db->where('id',$id);
         $this->db->update($this->table,$data);
     }
@@ -61,7 +61,7 @@ class Towermodel extends CI_Model {
     {
         $this->db->order_by('id', 'desc');
         $this->db->where('parent_id', $parent_id);
-        $this->db->where('status', 1);
+        $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->result_array();

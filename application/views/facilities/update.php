@@ -30,7 +30,7 @@
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-info" name="submit" value="add">Submit</button>
-                  <a href="<?php echo base_url('facilities') ?>" class="btn btn-default float-right">Cancel</a>
+                  <a href="<?php echo base_url('facility') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
                 <!-- /.card-footer -->
               </form>

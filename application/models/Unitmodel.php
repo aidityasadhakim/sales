@@ -32,7 +32,7 @@ class Unitmodel extends CI_Model {
 
     public function getDataById($id)
     {
-        $this->db->where('status !=', 0);
+        $this->db->where('deleted_at', null);
         $this->db->where('id',$id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
@@ -71,7 +71,7 @@ class Unitmodel extends CI_Model {
 
     public function deleteData($id)
     {
-        $data = array('status' => 0, 'updated_at' => date('Y-m-d H:i:s'));
+        $data = array('deleted_at' => date('Y-m-d H:i:s'));
         $this->db->where('id',$id);
         $this->db->update($this->table,$data);
     }

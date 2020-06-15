@@ -1,16 +1,17 @@
-<?php
+<?php 
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Facilitymodel extends CI_Model {
+class PaymentMethodmodel extends CI_Model {
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    var $table = 'facilities';
+    var $table = 'payment_methods';
 
-    public function getAllData($type = null)
+    public function getAllData()
     {
         $this->db->order_by('name', 'asc');
         $this->db->where('deleted_at', null);
@@ -26,7 +27,7 @@ class Facilitymodel extends CI_Model {
     public function getDataById($id)
     {
         $this->db->where('deleted_at', null);
-        $this->db->where('id',$id);
+        $this->db->where('id', $id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();
@@ -40,6 +41,7 @@ class Facilitymodel extends CI_Model {
     {
         $data['created_at'] = date('Y-m-d H:i:s');
         $this->db->insert($this->table,$data);
+        return $this->db->insert_id();
     }
 
     public function updateData($id,$data)
@@ -58,6 +60,6 @@ class Facilitymodel extends CI_Model {
 
 }
 
-/* End of file Facilitymodel.php */
-/* Location: ./application/models/backend/Facilitymodel.php */
+/* End of file PaymentMethodmodel.php */
+/* Location: ./application/models/PaymentMethodmodel.php */
  ?>

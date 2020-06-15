@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>DPU Opname &amp; Inventory | <?php echo $title; ?></title>
+  <title>Istana HP Sales &amp; Inventory | <?php echo $title ?></title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?php echo base_url('assets') ?>/plugins/fontawesome-free/css/all.min.css">
@@ -19,94 +19,98 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition layout-top-nav">
 <div class="wrapper">
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-indigo elevation-4">
-    <!-- Brand Logo -->
-    <a href="<?php echo base_url('dashboard') ?>" class="brand-link">
-      <img src="<?php echo base_url('assets') ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">DPU Opname</span>
-    </a>
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+    <div class="container">
+      <a href="<?php echo base_url() ?>" class="navbar-brand">
+        <img src="<?php echo base_url('assets') ?>/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">ISTANA HP</span>
+      </a>
+      
+      <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="<?php echo base_url('assets') ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">Administrator</a>
-        </div>
+      <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="<?php echo base_url('dashboard') ?>" class="nav-link">Dasbor</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Data Master</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li><a href="<?php echo base_url('item') ?>" class="dropdown-item">Barang</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="<?php echo base_url('customer') ?>" class="dropdown-item">Pelanggan</a></li>
+              <li><a href="<?php echo base_url('supplier') ?>" class="dropdown-item">Pemasok</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="<?php echo base_url('PaymentMethod') ?>" class="dropdown-item">Jenis Pembayaran</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Penjualan</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li><a href="#" class="dropdown-item">Nota Jual </a></li>
+              <li><a href="#" class="dropdown-item">Nota Jual Sementara</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="#" class="dropdown-item">Nota Servis</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="#" class="dropdown-item">Retur</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Pembelian</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li><a href="#" class="dropdown-item">Nota Beli </a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Laporan</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li><a href="#" class="dropdown-item">Laporan Stok </a></li>
+              <li><a href="#" class="dropdown-item">Laporan Kas Masuk</a></li>
+              <li><a href="#" class="dropdown-item">Laporan Kas Keluar</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="#" class="dropdown-item">Laporan Penjualan</a></li>
+              <li><a href="#" class="dropdown-item">Laporan Pembelian</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="#" class="dropdown-item">Laporan Laba/Rugi</a></li>
+              <li><a href="#" class="dropdown-item">Laporan Utang</a></li>
+              <li><a href="#" class="dropdown-item">Laporan Piutang</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-            <li class="nav-item">
-                <a href="<?php echo base_url('dashboard') ?>" class="nav-link<?php echo ($page == 'dashboard') ? ' active' : ''; ?>">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                    Dasbor
-                  </p>
-                </a>
+      <!-- Right navbar links -->
+      <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+        <li class="nav-item dropdown user-menu">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+            <img src="<?php echo base_url('assets') ?>/dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+            <span class="d-none d-md-inline"><?php echo $this->session->userdata('full_name'); ?></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <!-- User image -->
+            <li class="user-header bg-primary">
+              <img src="<?php echo base_url('assets') ?>/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+
+              <p>
+                <?php echo $this->session->userdata('full_name'); ?> - <?php echo getLabelLevelUser($this->session->userdata('level')); ?>
+              </p>
             </li>
-            <li class="nav-item has-treeview<?php echo ($page == 'unit' || $page == 'facility') ? ' menu-open' : ''; ?>">
-                <a href="#" class="nav-link<?php echo ($page == 'unit' || $page == 'facility') ? ' active' : ''; ?>">
-                  <i class="nav-icon fas fa-archive"></i>
-                  <p>
-                    Data Master
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="<?php echo base_url('unit') ?>" class="nav-link<?php echo ($page == 'unit') ? ' active' : ''; ?>">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Unit</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="<?php echo base_url('facility') ?>" class="nav-link<?php echo ($page == 'facility') ? ' active' : ''; ?>">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Fasilitas</p>
-                    </a>
-                  </li>
-                </ul>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <a href="#" class="btn btn-default btn-flat">Pengaturan</a>
+              <a href="<?php echo base_url('dashboard/logout') ?>" class="btn btn-default btn-flat float-right">Keluar</a>
             </li>
-            <li class="nav-item has-treeview<?php echo ($page == 'report_facility') ? ' menu-open' : ''; ?>">
-                <a href="#" class="nav-link<?php echo ($page == 'report_facility') ? ' active' : ''; ?>">
-                  <i class="nav-icon fas fa-print"></i>
-                  <p>
-                    Laporan
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="<?php echo base_url('report/facility') ?>" class="nav-link<?php echo ($page == 'report_facility') ? ' active' : ''; ?>">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Fasilitas Kamar</p>
-                    </a>
-                  </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="<?php echo base_url('dashboard/logout') ?>" class="nav-link">
-                  <i class="nav-icon fas fa-sign-out-alt"></i>
-                  <p>
-                    Keluar
-                  </p>
-                </a>
-            </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+          </ul>
+        </li>
+      </ul>
     </div>
-    <!-- /.sidebar -->
-  </aside>
+  </nav>
+  <!-- /.navbar -->

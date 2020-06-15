@@ -23,9 +23,20 @@
               <div class="card-header">
                 <h5 class="card-title m-0"><?php echo $title; ?></h5>
               </div>
-              <div class="card-body">
-                <h6 class="card-title">Halo, <?php echo $this->session->userdata('full_name'); ?></h6>
-              </div>
+              <form class="form-horizontal" method="post">
+                <div class="card-body">
+                  <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Nama Cara Pembayaran</label>
+                    <div class="col-sm-4">
+                      <input type="text" name="name" class="form-control" id="name" required value="<?php echo $row['name'] ?>">
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-info" name="submit" value="add">Submit</button>
+                  <a href="<?php echo base_url('PaymentMethod') ?>" class="btn btn-default float-right">Cancel</a>
+                </div>
+              </form>
             </div>
           </div>
           <!-- /.col-md-6 -->

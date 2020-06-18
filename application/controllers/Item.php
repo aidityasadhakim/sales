@@ -75,7 +75,7 @@ class Item extends CI_Controller {
                         'note'  => $note
                         );            
 
-            $this->item->insertData($dataInsert);
+            $id = $this->item->insertData($dataInsert);
             $this->item->updateData($id, array('code' => 'ITM'.$id));
             $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
             redirect('item');

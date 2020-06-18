@@ -45,11 +45,11 @@
                   <div class="form-group row">
                     <label for="note" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-5">
-                      <input type="text" name="note" class="form-control" id="note" required>
+                      <input type="text" name="note" class="form-control" id="note">
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="method_id" class="col-sm-2 col-form-label">Pelanggan</label>
+                    <label for="method_id" class="col-sm-2 col-form-label">Metode Pembayaran</label>
                     <div class="col-sm-3">
                       <select name="method_id" class="form-control select2" id="method_id" readonly>
                         <option value="">--Pilih Pembayaran--</option>
@@ -91,7 +91,7 @@
                           <td><input type="text" name="price[]" class="form-control price" readonly required></td>
                           <td>
                             <input type="hidden" class="form-control qty-available">
-                            <input type="text" name="qty[]" class="form-control qty" required>
+                            <input type="text" name="qty[]" class="form-control qty number" required>
                           </td>
                           <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required></td>
                           <td>&nbsp;</td>
@@ -104,7 +104,7 @@
                         </tr>
                         <tr>
                           <td colspan="3" class="text-right"><strong>Bayar</strong></td>
-                          <td colspan="2"><input type="text" name="cash" class="form-control" id="cash" required></td>
+                          <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="0"></td>
                         </tr>
                         <tr>
                           <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
@@ -184,6 +184,23 @@
       if (e.shiftKey) { enterKey() } else { enterKey() }
     });
 
+    function trimLeadZero(s) {
+      return s.replace(/^0+/, "");
+    }
+
+    function validateCash() {
+      var total = $('#total').val();
+      var cash = $('#cash').val();
+      var changes = parseInt(cash) - parseInt(total);
+      if (parseInt(changes) < 0) {
+        $('.btn-submit').prop('disabled', 'disabled');
+      }
+      else{
+        $('.btn-submit').removeAttr('disabled');
+      }
+      $('#changes').val(changes);
+    }
+
     function sumGrandTotal() {
       var sum = 0;
       $('.subtotal').each(function(){
@@ -212,6 +229,7 @@
           $(obj).closest('tr').find('.qty').focus();
           $(obj).closest('tr').find('.subtotal').val(subtotal);
           sumGrandTotal();
+          validateCash();
       })
       .fail(function() {
         console.log("error");
@@ -235,18 +253,24 @@
         else {
           var subtotal = parseInt(price) * parseInt(qty);
           $(obj).closest('tr').find('.subtotal').val(subtotal);
-          $('.btn-submit').removeAttr('disabled');
           sumGrandTotal();
+          validateCash();
         }
       }
     });
 
     $(document).on("keyup", "#cash", function(e){
+      var s;
+      if($(this).val().trim().length === 0){
+          $(this).val(0);
+          s = 0;
+      }
+      else {
+        var s = trimLeadZero($(this).val());
+        $(this).val(s);
+      }
       if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
-        var cash = $(this).val();
-        var grandtotal = $('#total').val();
-        var changes = parseInt(cash) - parseInt(grandtotal);
-        $('#changes').val(changes);
+        validateCash();
       }
     });
 

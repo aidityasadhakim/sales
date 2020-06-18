@@ -20,7 +20,7 @@ class Salemodel extends CI_Model {
 
     private function _getDatatablesQuery()
     {
-        $this->db->select('*, c.name as c_name, m.name as m_name');
+        $this->db->select('*, s.id as s_id, c.name as c_name, m.name as m_name');
         $this->db->where('s.deleted_at', null);
         $this->db->from('sales as s');
         $this->db->join('customers as c', 'c.id = s.customer_id');
@@ -110,6 +110,19 @@ class Salemodel extends CI_Model {
         }
     }
 
+    public function getDataDetailByIdTrans($id)
+    {
+        $this->db->where('sale_id', $id);
+        $this->db->join('items as i', 'i.id = sale_details.item_id');
+        $query = $this->db->get($this->table_detail);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
     public function insertData($data)
     {
         $this->db->trans_begin();
@@ -164,11 +177,63 @@ class Salemodel extends CI_Model {
         return $this->db->affected_rows();
     }
 
-    public function updateData($id,$data)
+    public function increaseStock($item_id = '', $qty)
     {
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id',$id);
-        $this->db->update($this->table,$data);
+        $this->db->set('stock', 'stock + '.$qty, FALSE);
+        $this->db->where('id', $item_id);
+        $this->db->update($this->table_item);
+    }
+
+    public function updateData($id, $data)
+    {
+        $this->db->trans_begin();
+        $dataUpdate = array('transaction_date' => $data['transaction_date'],
+                        'customer_id'  => $data['customer_id'],
+                        'code'  => '-',
+                        'total'  => $data['total'],
+                        'cash'  => $data['cash'],
+                        'changes' => $data['changes'],
+                        'method_id' => $data['method_id'],
+                        'is_cash'  => $data['is_cash'],
+                        'status' => 2,
+                        'type' => 'sale',
+                        'note' => $data['note'],
+                        'updated_at' => date('Y-m-d H:i:s')
+                        ); 
+        $this->db->where('id', $id);
+        $this->db->update($this->table, $dataUpdate);
+
+        $this->db->where('sale_id', $id);
+        $this->db->delete($this->table_detail);
+
+        $this->db->where('transaction_id', $id);
+        $this->db->where('type', 'sale');
+        $this->db->delete('stock_mutations');
+
+        foreach ($data['item_ids'] as $key => $value) {
+            $dataInsertDetail = array('sale_id' => $id,
+                                    'item_id' => $value,
+                                    'qty' => $data['qty'][$key],
+                                    'price' => $data['price'][$key]
+                                    );
+            $this->db->insert($this->table_detail, $dataInsertDetail);
+            $dataInsertMutation = array('transaction_id' => $id,
+                                    'item_id' => $value,
+                                    'amount' => '-'.$data['qty'][$key],
+                                    'type' => 'sale',
+                                    'created_at' => date('Y-m-d H:i:s')
+                                    );
+            $this->db->insert('stock_mutations', $dataInsertMutation);
+
+            $res = $this->decreaseStock($value, $data['qty'][$key]);
+
+            if ($res == 0) {
+                $this->db->trans_rollback();
+                return array('msg' => 'fail');
+            }
+        }
+        $this->db->trans_commit();
+        return array('msg' => 'success');
     }
 
     public function updateDataSalesById($id, $data)
@@ -183,6 +248,13 @@ class Salemodel extends CI_Model {
         $data = array('deleted_at' => date('Y-m-d H:i:s'));
         $this->db->where('id',$id);
         $this->db->update($this->table,$data);
+
+        $this->db->where('sale_id', $id);
+        $this->db->delete($this->table_detail);
+
+        $this->db->where('transaction_id', $id);
+        $this->db->where('type', 'sale');
+        $this->db->delete('stock_mutations');
     }
 
 }

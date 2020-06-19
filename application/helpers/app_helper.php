@@ -53,3 +53,25 @@ function getDataColumn($table, $condition, $value, $field) {
         }
     }
 }
+
+if (!function_exists('decreaseStock'))
+{
+function decreaseStock($item_id = '', $qty) {
+        $CI =& get_instance();
+        $CI->db->set('stock', 'stock - '.$qty, FALSE);
+        $CI->db->where('id', $item_id);
+        $CI->db->where('stock >=', $qty);
+        $CI->db->update('items');
+        return $CI->db->affected_rows();
+    }
+}
+
+if (!function_exists('increaseStock'))
+{
+function increaseStock($item_id = '', $qty) {
+        $CI =& get_instance();
+        $CI->db->set('stock', 'stock + '.$qty, FALSE);
+        $CI->db->where('id', $item_id);
+        $CI->db->update('items');
+    }
+}

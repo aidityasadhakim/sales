@@ -34,6 +34,7 @@ class Item extends CI_Controller {
             $row[] = ucfirst($field->type);
             $row[] = $field->note;
             $row[] = '<div class="btn-group">
+                            <a href="'.base_url('stock/index/'.$field->id).'" class="btn btn-warning">Stok</a>
                             <a href="'.base_url('item/update/'.$field->id).'" class="btn btn-success">Ubah</a>
                             <a href="'.base_url('item/delete/'.$field->id).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
                           </div>';

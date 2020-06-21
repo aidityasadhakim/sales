@@ -6,7 +6,7 @@
       <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark"> <?php echo $title; ?> - <?php echo getDataColumn('items', 'id', $item_id, 'name') ?></h1>
+            <h1 class="m-0 text-dark"> <?php echo $title; ?> </h1>
           </div>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -21,7 +21,7 @@
 
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h5 class="card-title m-0"><?php echo $title; ?> - <?php echo getDataColumn('items', 'id', $item_id, 'name') ?></h5>
+                <h5 class="card-title m-0"><?php echo $title; ?></h5>
               </div>
               <div class="card-body">
                 <?php if($this->session->flashdata('msg')): ?>
@@ -30,38 +30,30 @@
                       <?php echo $this->session->flashdata('msg'); ?>
                   </div>
                 <?php endif; ?>
-                <?php if($this->session->flashdata('error')): ?>
-                  <div class="alert alert-danger">
-                      <button type="button" class="close" data-dismiss="alert">X</button>
-                      <?php echo $this->session->flashdata('error'); ?>
-                  </div>
-                <?php endif; ?>
                 <p>
-                  <a href="<?php echo base_url('item') ?>" class="btn btn-default">Kembali</a>
-                  <a href="<?php echo base_url('stock/add/increase/'.$item_id) ?>" class="btn btn-primary">Tambahkan Stok</a>
-                  <a href="<?php echo base_url('stock/add/decrease/'.$item_id) ?>" class="btn btn-warning">Kurangkan Stok</a>
+                  <a href="<?php echo base_url('retur/add') ?>" class="btn btn-primary">Tambah</a>
                 </p>
                 <div class="table-responsive">
-                  <table class="table table-bordered" id="data-table-customer">
+                  <table class="table table-bordered" id="data-table-return">
                     <thead>
                       <tr>
                         <th>No</th>
                         <th>Tanggal</th>
-                        <th>Jumlah</th>
+                        <th>Kode Penjualan</th>
                         <th>Keterangan</th>
                         <th>#</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <?php foreach ($stocks as $key => $value): ?>
+                      <?php foreach ($returns as $key => $value): ?>
                         <tr>
                           <td><?php echo $key+1 ?></td>
-                          <td><?php echo date('d F Y', strtotime($value['created_at'])) ?></td>
-                          <td><?php echo $value['amount'] ?></td>
+                          <td><?php echo date('d F Y', strtotime($value['transaction_date'])) ?></td>
+                          <td><?php echo $value['s_code'] ?></td>
                           <td><?php echo $value['note'] ?></td>
                           <td>
                             <div class="btn-group">
-                              <a href="<?php echo base_url('stock/delete/'.$value['id']); ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Hapus</a>
+                              <a href="<?php echo base_url('retur/detail/'.$value['id']); ?>" class="btn btn-default">Detail</a>
                             </div>
                           </td>
                         </tr>

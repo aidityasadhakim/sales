@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Salemodel extends CI_Model {
+class Servicemodel extends CI_Model {
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class Salemodel extends CI_Model {
     {
         $this->db->select('*, s.id as s_id, c.name as c_name, m.name as m_name');
         $this->db->where('s.deleted_at', null);
-        $this->db->where('s.type', 'sale');
+        $this->db->where('s.type', 'service');
         $this->db->from('sales as s');
         $this->db->join('customers as c', 'c.id = s.customer_id');
         $this->db->join('payment_methods as m', 'm.id = s.method_id');
@@ -136,7 +136,7 @@ class Salemodel extends CI_Model {
                         'method_id' => $data['method_id'],
                         'is_cash'  => $data['is_cash'],
                         'status' => 2,
-                        'type' => 'sale',
+                        'type' => 'service',
                         'note' => $data['note'],
                         'created_at' => date('Y-m-d H:i:s')
                         ); 
@@ -146,14 +146,13 @@ class Salemodel extends CI_Model {
         foreach ($data['item_ids'] as $key => $value) {
             $dataInsertDetail = array('sale_id' => $idx,
                                     'item_id' => $value,
-                                    'qty' => $data['qty'][$key],
-                                    'price' => $data['price'][$key]
+                                    'qty' => $data['qty'][$key]
                                     );
             $this->db->insert($this->table_detail, $dataInsertDetail);
             $dataInsertMutation = array('transaction_id' => $idx,
                                     'item_id' => $value,
                                     'amount' => '-'.$data['qty'][$key],
-                                    'type' => 'sale',
+                                    'type' => 'service',
                                     'created_at' => date('Y-m-d H:i:s')
                                     );
             $this->db->insert('stock_mutations', $dataInsertMutation);
@@ -197,7 +196,7 @@ class Salemodel extends CI_Model {
                         'method_id' => $data['method_id'],
                         'is_cash'  => $data['is_cash'],
                         'status' => 2,
-                        'type' => 'sale',
+                        'type' => 'service',
                         'note' => $data['note'],
                         'updated_at' => date('Y-m-d H:i:s')
                         ); 
@@ -208,20 +207,19 @@ class Salemodel extends CI_Model {
         $this->db->delete($this->table_detail);
 
         $this->db->where('transaction_id', $id);
-        $this->db->where('type', 'sale');
+        $this->db->where('type', 'service');
         $this->db->delete('stock_mutations');
 
         foreach ($data['item_ids'] as $key => $value) {
             $dataInsertDetail = array('sale_id' => $id,
                                     'item_id' => $value,
-                                    'qty' => $data['qty'][$key],
-                                    'price' => $data['price'][$key]
+                                    'qty' => $data['qty'][$key]
                                     );
             $this->db->insert($this->table_detail, $dataInsertDetail);
             $dataInsertMutation = array('transaction_id' => $id,
                                     'item_id' => $value,
                                     'amount' => '-'.$data['qty'][$key],
-                                    'type' => 'sale',
+                                    'type' => 'service',
                                     'created_at' => date('Y-m-d H:i:s')
                                     );
             $this->db->insert('stock_mutations', $dataInsertMutation);
@@ -237,7 +235,7 @@ class Salemodel extends CI_Model {
         return array('msg' => 'success');
     }
 
-    public function updateDataSalesById($id, $data)
+    public function updateDataServicesById($id, $data)
     {
         $data['updated_at'] = date('Y-m-d H:i:s');
         $this->db->where('id',$id);
@@ -254,7 +252,7 @@ class Salemodel extends CI_Model {
         $this->db->delete($this->table_detail);
 
         $this->db->where('transaction_id', $id);
-        $this->db->where('type', 'sale');
+        $this->db->where('type', 'service');
         $this->db->delete('stock_mutations');
     }
 

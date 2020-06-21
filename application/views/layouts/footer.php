@@ -79,6 +79,8 @@
 
         $('#data-table-supplier').DataTable();
 
+        $('#data-table-return').DataTable();
+
         $(".select2").select2({
           theme: 'bootstrap4'
         });

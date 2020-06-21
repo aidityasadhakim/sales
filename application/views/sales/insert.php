@@ -71,7 +71,7 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>Nama Barang</th>
+                          <th width="30%">Nama Barang</th>
                           <th>Harga</th>
                           <th>Jumlah</th>
                           <th>Subtotal</th>

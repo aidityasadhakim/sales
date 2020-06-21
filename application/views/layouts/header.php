@@ -58,9 +58,9 @@
               <li><a href="<?php echo base_url('sale') ?>" class="dropdown-item">Nota Jual </a></li>
               <li><a href="#" class="dropdown-item">Nota Jual Sementara</a></li>
               <li class="dropdown-divider"></li>
-              <li><a href="#" class="dropdown-item">Nota Servis</a></li>
+              <li><a href="<?php echo base_url('service') ?>" class="dropdown-item">Nota Servis</a></li>
               <li class="dropdown-divider"></li>
-              <li><a href="#" class="dropdown-item">Retur</a></li>
+              <li><a href="<?php echo base_url('retur') ?>" class="dropdown-item">Retur</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

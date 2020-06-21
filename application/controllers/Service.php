@@ -2,13 +2,13 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Sale extends CI_Controller {
+class Service extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
         isLogin();
-        $this->load->model('Salemodel', 'sale');
+        $this->load->model('Servicemodel', 'service');
         $this->load->model('Customermodel', 'customer');
         $this->load->model('PaymentMethodmodel', 'method');
         $this->load->model('Itemmodel', 'item');
@@ -17,14 +17,14 @@ class Sale extends CI_Controller {
     // List all your items
     public function index( $offset = 0 )
     {
-        $data['title'] = 'Nota Penjualan';
-        $data['page'] = 'sales';
-        $this->load->view('sales/view', $data);
+        $data['title'] = 'Nota Servis';
+        $data['page'] = 'services';
+        $this->load->view('services/view', $data);
     }
 
     function getDataTable()
     {
-        $list = $this->sale->getDataTables();
+        $list = $this->service->getDataTables();
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {
@@ -38,8 +38,8 @@ class Sale extends CI_Controller {
             $row[] = $field['m_name'];
             $row[] = $field['note'];
             $row[] = '<div class="btn-group">
-                            <a href="'.base_url('sale/update/'.$field['s_id']).'" class="btn btn-success">Ubah</a>
-                            <a href="'.base_url('sale/delete/'.$field['s_id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
+                            <a href="'.base_url('service/update/'.$field['s_id']).'" class="btn btn-success">Ubah</a>
+                            <a href="'.base_url('service/delete/'.$field['s_id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
                           </div>';
  
             $data[] = $row;
@@ -47,8 +47,8 @@ class Sale extends CI_Controller {
  
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->sale->countAll(),
-            "recordsFiltered" => $this->sale->countFiltered(),
+            "recordsTotal" => $this->service->countAll(),
+            "recordsFiltered" => $this->service->countFiltered(),
             "data" => $data,
         );
         echo json_encode($output);
@@ -85,37 +85,37 @@ class Sale extends CI_Controller {
                         'item_ids'  => $item_ids,
                         'price'  => $price,
                         'status' => 2,
-                        'type' => 'sale',
+                        'type' => 'service',
                         'note' => $note,
                         'qty'  => $qty
                         );            
 
-            $result = $this->sale->insertData($dataInsert);
+            $result = $this->service->insertData($dataInsert);
             if ($result['msg'] == 'success') {
-                $this->sale->updateDataSalesById($result['trans_id'], array('code' => 'IHS'.$result['trans_id']));
+                $this->service->updateDataServicesById($result['trans_id'], array('code' => 'IHS'.$result['trans_id']));
                 $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
-                redirect('sale');
+                redirect('service');
             }
             else {
                 $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak cukup.');
-                redirect('sale');   
+                redirect('service');   
             }
         }
         else {
-            $data['title'] = 'Tambah Data Penjualan';
+            $data['title'] = 'Tambah Data Servis';
             $data['page']  = 'master';
             $data['customers'] = $this->customer->getAllData();
             $data['methods'] = $this->method->getAllData();
-            $data['items'] = $this->sale->getAllItems();
-            $this->load->view('sales/insert',$data);
+            $data['items'] = $this->service->getAllItems();
+            $this->load->view('services/insert',$data);
         }
     }
 
     //Update one item
     public function update( $id = NULL )
     {
-        $data['row'] = $this->sale->getDataById($id);
-        $data['details'] = $this->sale->getDataDetailByIdTrans($id);
+        $data['row'] = $this->service->getDataById($id);
+        $data['details'] = $this->service->getDataDetailByIdTrans($id);
         if ($this->input->post('submit')) {
 
             $transaction_date = $this->input->post('transaction_date');
@@ -144,37 +144,37 @@ class Sale extends CI_Controller {
                         'item_ids'  => $item_ids,
                         'price'  => $price,
                         'status' => 2,
-                        'type' => 'sale',
+                        'type' => 'service',
                         'note' => $note,
                         'qty'  => $qty
                         );            
 
-            $result = $this->sale->updateData($id, $dataUpdate);
+            $result = $this->service->updateData($id, $dataUpdate);
             if ($result['msg'] == 'success') {
                 $this->session->set_flashdata('msg', 'Data berhasil diubah!');
-                redirect('sale');
+                redirect('service');
             }
             else {
                 $this->session->set_flashdata('error', 'Data gagal diubah! Stok tidak cukup.');
-                redirect('sale');   
+                redirect('service');   
             }
         }
         else {
-            $data['title'] = 'Ubah Data Penjualan';
+            $data['title'] = 'Ubah Data Servis';
             $data['page']  = 'master';
             $data['customers'] = $this->customer->getAllData();
             $data['methods'] = $this->method->getAllData();
-            $data['items'] = $this->sale->getAllItems();
-            $this->load->view('sales/update',$data);
+            $data['items'] = $this->service->getAllItems();
+            $this->load->view('services/update',$data);
         }
     }
 
     //Delete one item
     public function delete( $id = NULL )
     {
-        $this->sale->deleteData($id);
+        $this->service->deleteData($id);
         $this->session->set_flashdata('msg', 'Data berhasil dihapus!');
-        redirect('sale');
+        redirect('service');
     }
 
     public function getDataProduct()
@@ -186,7 +186,7 @@ class Sale extends CI_Controller {
     }
 }
 
-/* End of file Sale.php */
-/* Location: ./application/controllers/Sale.php */
+/* End of file Service.php */
+/* Location: ./application/controllers/Service.php */
 
  ?>

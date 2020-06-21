@@ -71,10 +71,8 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th width="30%">Nama Barang</th>
-                          <th>Harga</th>
+                          <th>Nama Barang</th>
                           <th>Jumlah</th>
-                          <th>Subtotal</th>
                           <th>#</th>
                         </tr>
                       </thead>
@@ -89,12 +87,10 @@
                               <?php endforeach ?>
                             </select>
                           </td>
-                          <td><input type="text" name="price[]" class="form-control price" readonly required value="<?php echo $value['price'] ?>"></td>
                           <td>
                             <input type="hidden" class="form-control qty-available" value="<?php echo $value['stock'] + $value['qty'] ?>">
                             <input type="text" name="qty[]" class="form-control qty number" required value="<?php echo $value['qty'] ?>">
                           </td>
-                          <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required value="<?php echo $value['price']*$value['qty'] ?>"></td>
                           <td>
                             <?php if ($key > 0): ?>
                               <a href="#" class="remove_field btn btn-danger">X</a>
@@ -107,15 +103,15 @@
                       </tbody>
                       <tfoot>
                         <tr>
-                          <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
-                          <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required value="<?php echo $row['total'] ?>"></td>
+                          <td class="text-right"><strong>Total Biaya</strong></td>
+                          <td colspan="2"><input type="text" name="total" class="form-control" id="total" required value="<?php echo $row['total'] ?>"></td>
                         </tr>
                         <tr>
-                          <td colspan="3" class="text-right"><strong>Bayar</strong></td>
+                          <td class="text-right"><strong>Bayar</strong></td>
                           <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="<?php echo $row['cash'] ?>"></td>
                         </tr>
                         <tr>
-                          <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
+                          <td class="text-right"><strong>Kembalian</strong></td>
                           <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required value="<?php echo $row['changes'] ?>"></td>
                         </tr>
                       </tfoot>
@@ -192,14 +188,6 @@
       if (e.shiftKey) { enterKey() } else { enterKey() }
     });
 
-    function sumGrandTotal() {
-      var sum = 0;
-      $('.subtotal').each(function(){
-          sum += parseInt($(this).val());  // Or this.innerHTML, this.innerText
-      });
-      $('#total').val(sum);
-    }
-
     function validateCash() {
       var total = $('#total').val();
       var cash = $('#cash').val();
@@ -224,15 +212,10 @@
         dataType: 'json'
       })
       .done(function(data) {
-          var harga = data.price;
-          $(obj).closest('tr').find('.price').val(harga);
           $(obj).closest('tr').find('.qty-available').val(data.stock);
           var jumlah = 1;
-          var subtotal = parseInt(harga) * parseInt(jumlah);
           $(obj).closest('tr').find('.qty').val(jumlah);
           $(obj).closest('tr').find('.qty').focus();
-          $(obj).closest('tr').find('.subtotal').val(subtotal);
-          sumGrandTotal();
           validateCash();
       })
       .fail(function() {
@@ -249,15 +232,11 @@
         var obj = this;
         var qty = $(this).val();
         var qtyAvailable = $(this).closest('tr').find('.qty-available').val();
-        var price = $(obj).closest('tr').find('.price').val();
         if (parseInt(qty) > parseInt(qtyAvailable)) {
           alert('Stok Kurang');
           $('.btn-submit').prop('disabled', 'disabled');
         }
         else {
-          var subtotal = parseInt(price) * parseInt(qty);
-          $(obj).closest('tr').find('.subtotal').val(subtotal);
-          sumGrandTotal();
           validateCash();
         }
       }

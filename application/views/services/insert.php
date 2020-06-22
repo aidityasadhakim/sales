@@ -34,7 +34,7 @@
                   <div class="form-group row">
                     <label for="customer_id" class="col-sm-2 col-form-label">Pelanggan</label>
                     <div class="col-sm-4">
-                      <select name="customer_id" class="form-control select2" id="customer_id" readonly>
+                      <select name="customer_id" class="form-control select2" id="customer_id" required>
                         <option value="">--Pilih Pelanggan--</option>
                         <?php foreach ($customers as $key => $value): ?>
                         <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
@@ -51,7 +51,7 @@
                   <div class="form-group row">
                     <label for="method_id" class="col-sm-2 col-form-label">Metode Pembayaran</label>
                     <div class="col-sm-3">
-                      <select name="method_id" class="form-control select2" id="method_id" readonly>
+                      <select name="method_id" class="form-control select2" id="method_id" required>
                         <option value="">--Pilih Pembayaran--</option>
                         <?php foreach ($methods as $key => $value): ?>
                         <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>

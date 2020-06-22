@@ -28,16 +28,16 @@
                   <div class="form-group row">
                     <label for="transaction_date" class="col-sm-2 col-form-label">Tanggal Transaksi</label>
                     <div class="col-sm-4">
-                      <input type="date" name="transaction_date" class="form-control" id="transaction_date" required readonly value="<?php echo $row['transaction_date']; ?>">
+                      <input type="date" name="transaction_date" class="form-control" id="transaction_date" required readonly value="<?php echo date('Y-m-d') ?>">
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="customer_id" class="col-sm-2 col-form-label">Pelanggan</label>
+                    <label for="supplier_id" class="col-sm-2 col-form-label">Supplier</label>
                     <div class="col-sm-4">
-                      <select name="customer_id" class="form-control select2" id="customer_id" required>
-                        <option value="">--Pilih Pelanggan--</option>
-                        <?php foreach ($customers as $key => $value): ?>
-                        <option value="<?php echo $value['id'] ?>"<?php echo ($value['id'] == $row['customer_id']) ? ' selected' : '' ?>><?php echo $value['name'] ?></option>
+                      <select name="supplier_id" class="form-control select2" id="supplier_id" required>
+                        <option value="">--Pilih Supplier--</option>
+                        <?php foreach ($suppliers as $key => $value): ?>
+                        <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
                       <?php endforeach ?>
                       </select>
                     </div>
@@ -45,7 +45,7 @@
                   <div class="form-group row">
                     <label for="note" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-5">
-                      <input type="text" name="note" class="form-control" id="note" value="<?php echo $row['note'] ?>">
+                      <input type="text" name="note" class="form-control" id="note">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -54,7 +54,7 @@
                       <select name="method_id" class="form-control select2" id="method_id" required>
                         <option value="">--Pilih Pembayaran--</option>
                         <?php foreach ($methods as $key => $value): ?>
-                        <option value="<?php echo $value['id'] ?>"<?php echo ($value['id'] == $row['method_id']) ? ' selected' : '' ?>><?php echo $value['name'] ?></option>
+                        <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
                         <?php endforeach ?>
                       </select>
                     </div>
@@ -62,7 +62,7 @@
                   <div class="form-group row">
                     <div class="offset-sm-2 col-sm-10">
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="is_cash" name="is_cash" value="0"<?php echo ($row['is_cash'] == 0) ? ' checked' : '' ?>>
+                        <input type="checkbox" class="form-check-input" id="is_cash" name="is_cash" value="0">
                         <label class="form-check-label" for="is_cash">Utang</label>
                       </div>
                     </div>
@@ -79,44 +79,36 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <?php foreach ($details as $key => $value): ?>
                         <tr class="tr-input-field">
                           <td>
                             <select name="item_ids[]" class="form-control select-product item-id">
                               <option value="">--Pilih Barang--</option>
-                              <?php foreach ($items as $keyItem => $valueItem): ?>
-                              <option value="<?php echo $value['id'] ?>"<?php echo ($valueItem['id'] == $value['item_id']) ? ' selected' : '' ?>><?php echo $valueItem['name'] ?></option>
+                              <?php foreach ($items as $key => $value): ?>
+                              <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
                               <?php endforeach ?>
                             </select>
                           </td>
-                          <td><input type="text" name="price[]" class="form-control price" readonly required value="<?php echo $value['price'] ?>"></td>
+                          <td><input type="text" name="price[]" class="form-control price" required></td>
                           <td>
-                            <input type="hidden" class="form-control qty-available" value="<?php echo $value['stock'] + $value['qty'] ?>">
-                            <input type="text" name="qty[]" class="form-control qty number" required value="<?php echo $value['qty'] ?>">
+                            <input type="hidden" class="form-control qty-available">
+                            <input type="text" name="qty[]" class="form-control qty number" required>
                           </td>
-                          <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required value="<?php echo $value['price']*$value['qty'] ?>"></td>
-                          <td>
-                            <?php if ($key > 0): ?>
-                              <a href="#" class="remove_field btn btn-danger">X</a>
-                            <?php else: ?>
-                              &nbsp;
-                            <?php endif ?>
-                          </td>
+                          <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required></td>
+                          <td>&nbsp;</td>
                         </tr>
-                        <?php endforeach ?>
                       </tbody>
                       <tfoot>
                         <tr>
                           <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
-                          <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required value="<?php echo $row['total'] ?>"></td>
+                          <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required></td>
                         </tr>
                         <tr>
                           <td colspan="3" class="text-right"><strong>Bayar</strong></td>
-                          <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="<?php echo $row['cash'] ?>"></td>
+                          <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="0"></td>
                         </tr>
                         <tr>
                           <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
-                          <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required value="<?php echo $row['changes'] ?>"></td>
+                          <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required></td>
                         </tr>
                       </tfoot>
                     </table>
@@ -126,7 +118,7 @@
                   </p>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-info btn-submit" name="submit" value="edit">Submit</button>
+                  <button type="submit" class="btn btn-info btn-submit" name="submit" value="add">Submit</button>
                   <a href="<?php echo base_url('sale') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
               </form>
@@ -192,12 +184,8 @@
       if (e.shiftKey) { enterKey() } else { enterKey() }
     });
 
-    function sumGrandTotal() {
-      var sum = 0;
-      $('.subtotal').each(function(){
-          sum += parseInt($(this).val());  // Or this.innerHTML, this.innerText
-      });
-      $('#total').val(sum);
+    function trimLeadZero(s) {
+      return s.replace(/^0+/, "");
     }
 
     function validateCash() {
@@ -213,12 +201,20 @@
       $('#changes').val(changes);
     }
 
+    function sumGrandTotal() {
+      var sum = 0;
+      $('.subtotal').each(function(){
+          sum += parseInt($(this).val());  // Or this.innerHTML, this.innerText
+      });
+      $('#total').val(sum);
+    }
+
     $(document).on("change", ".item-id", function(){
       var obj = this;
       var id = $(this).val();
       
       $.ajax({
-        url: base_url + 'sale/getDataProduct',
+        url: base_url + 'purchase/getDataProduct',
         type: 'POST',
         data: {'id': id},
         dataType: 'json'
@@ -226,7 +222,6 @@
       .done(function(data) {
           var harga = data.price;
           $(obj).closest('tr').find('.price').val(harga);
-          $(obj).closest('tr').find('.qty-available').val(data.stock);
           var jumlah = 1;
           var subtotal = parseInt(harga) * parseInt(jumlah);
           $(obj).closest('tr').find('.qty').val(jumlah);
@@ -248,23 +243,37 @@
       if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
         var obj = this;
         var qty = $(this).val();
-        var qtyAvailable = $(this).closest('tr').find('.qty-available').val();
         var price = $(obj).closest('tr').find('.price').val();
-        if (parseInt(qty) > parseInt(qtyAvailable)) {
-          alert('Stok Kurang');
-          $('.btn-submit').prop('disabled', 'disabled');
-        }
-        else {
-          var subtotal = parseInt(price) * parseInt(qty);
-          $(obj).closest('tr').find('.subtotal').val(subtotal);
-          sumGrandTotal();
-          validateCash();
-        }
+        var subtotal = parseInt(price) * parseInt(qty);
+        $(obj).closest('tr').find('.subtotal').val(subtotal);
+        sumGrandTotal();
+        validateCash();
+      }
+    });
+
+    $(document).on("keyup", ".price", function(e){
+      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
+        var obj = this;
+        var price = $(this).val();
+        var qty = $(obj).closest('tr').find('.qty').val();
+        var subtotal = parseInt(price) * parseInt(qty);
+        $(obj).closest('tr').find('.subtotal').val(subtotal);
+        sumGrandTotal();
+        validateCash();
       }
     });
 
     $(document).on("keyup", "#cash", function(e){
-      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode == 8 && $(this).val() != '')) {
+      var s;
+      if($(this).val().trim().length === 0){
+          $(this).val(0);
+          s = 0;
+      }
+      else {
+        var s = trimLeadZero($(this).val());
+        $(this).val(s);
+      }
+      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
         validateCash();
       }
     });

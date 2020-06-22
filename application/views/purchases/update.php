@@ -32,12 +32,12 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="customer_id" class="col-sm-2 col-form-label">Pelanggan</label>
+                    <label for="supplier_id" class="col-sm-2 col-form-label">Supplier</label>
                     <div class="col-sm-4">
-                      <select name="customer_id" class="form-control select2" id="customer_id" required>
-                        <option value="">--Pilih Pelanggan--</option>
-                        <?php foreach ($customers as $key => $value): ?>
-                        <option value="<?php echo $value['id'] ?>"<?php echo ($value['id'] == $row['customer_id']) ? ' selected' : '' ?>><?php echo $value['name'] ?></option>
+                      <select name="supplier_id" class="form-control select2" id="supplier_id" required>
+                        <option value="">--Pilih Supplier--</option>
+                        <?php foreach ($suppliers as $key => $value): ?>
+                        <option value="<?php echo $value['id'] ?>"<?php echo ($value['id'] == $row['supplier_id']) ? ' selected' : '' ?>><?php echo $value['name'] ?></option>
                       <?php endforeach ?>
                       </select>
                     </div>
@@ -89,9 +89,8 @@
                               <?php endforeach ?>
                             </select>
                           </td>
-                          <td><input type="text" name="price[]" class="form-control price" readonly required value="<?php echo $value['price'] ?>"></td>
+                          <td><input type="text" name="price[]" class="form-control price" required value="<?php echo $value['price'] ?>"></td>
                           <td>
-                            <input type="hidden" class="form-control qty-available" value="<?php echo $value['stock'] + $value['qty'] ?>">
                             <input type="text" name="qty[]" class="form-control qty number" required value="<?php echo $value['qty'] ?>">
                           </td>
                           <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required value="<?php echo $value['price']*$value['qty'] ?>"></td>
@@ -127,7 +126,7 @@
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-info btn-submit" name="submit" value="edit">Submit</button>
-                  <a href="<?php echo base_url('sale') ?>" class="btn btn-default float-right">Cancel</a>
+                  <a href="<?php echo base_url('purchase') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
               </form>
             </div>
@@ -218,7 +217,7 @@
       var id = $(this).val();
       
       $.ajax({
-        url: base_url + 'sale/getDataProduct',
+        url: base_url + 'purchase/getDataProduct',
         type: 'POST',
         data: {'id': id},
         dataType: 'json'
@@ -226,7 +225,6 @@
       .done(function(data) {
           var harga = data.price;
           $(obj).closest('tr').find('.price').val(harga);
-          $(obj).closest('tr').find('.qty-available').val(data.stock);
           var jumlah = 1;
           var subtotal = parseInt(harga) * parseInt(jumlah);
           $(obj).closest('tr').find('.qty').val(jumlah);
@@ -260,6 +258,19 @@
           sumGrandTotal();
           validateCash();
         }
+      }
+    });
+
+    $(document).on("keyup", ".price", function(e){
+      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
+        var obj = this;
+        var price = $(this).val();
+        var qtyAvailable = $(this).closest('tr').find('.qty-available').val();
+        var qty = $(obj).closest('tr').find('.qty').val();
+        var subtotal = parseInt(price) * parseInt(qty);
+        $(obj).closest('tr').find('.subtotal').val(subtotal);
+        sumGrandTotal();
+        validateCash();
       }
     });
 

@@ -33,6 +33,9 @@ function getLabelLevelUser($level) {
             return 'Administrator';
         } 
         else if ($level == 2) {
+            return 'Sub Admin';
+        }
+        else if ($level == 3) {
             return 'Operator';
         }
     }

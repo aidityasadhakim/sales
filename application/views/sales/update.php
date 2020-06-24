@@ -110,11 +110,11 @@
                           <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
                           <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required value="<?php echo $row['total'] ?>"></td>
                         </tr>
-                        <tr>
+                        <tr id="tr-cash">
                           <td colspan="3" class="text-right"><strong>Bayar</strong></td>
                           <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="<?php echo $row['cash'] ?>"></td>
                         </tr>
-                        <tr>
+                        <tr id="tr-changes">
                           <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
                           <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required value="<?php echo $row['changes'] ?>"></td>
                         </tr>
@@ -201,16 +201,22 @@
     }
 
     function validateCash() {
-      var total = $('#total').val();
-      var cash = $('#cash').val();
-      var changes = parseInt(cash) - parseInt(total);
-      if (parseInt(changes) < 0) {
-        $('.btn-submit').prop('disabled', 'disabled');
-      }
-      else{
+      if($('#is_cash').prop('checked')) {
         $('.btn-submit').removeAttr('disabled');
+        $('#changes').val(0);
       }
-      $('#changes').val(changes);
+      else {
+        var total = $('#total').val();
+        var cash = $('#cash').val();
+        var changes = parseInt(cash) - parseInt(total);
+        if (parseInt(changes) < 0) {
+          $('.btn-submit').prop('disabled', 'disabled');
+        }
+        else{
+          $('.btn-submit').removeAttr('disabled');
+        }
+        $('#changes').val(changes);
+      }
     }
 
     $(document).on("change", ".item-id", function(){
@@ -267,6 +273,24 @@
       if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode == 8 && $(this).val() != '')) {
         validateCash();
       }
+    });
+
+    $('#is_cash').click(function(event) {
+      if($(this).prop('checked')) {
+        $('#method_id').removeAttr('required');
+        $('#cash').removeAttr('required');
+        $('#changes').removeAttr('required');
+        $('table.table tr').filter('#tr-cash').hide();
+        $('table.table tr').filter('#tr-changes').hide();
+      }
+      else {
+        $('#method_id').prop('required', 'required');
+        $('#cash').prop('required', 'required');
+        $('#changes').prop('required', 'required');
+        $('table.table tr').filter('#tr-cash').show();
+        $('table.table tr').filter('#tr-changes').show();
+      }
+      validateCash();
     });
 
   });

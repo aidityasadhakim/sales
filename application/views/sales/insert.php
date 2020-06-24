@@ -34,7 +34,7 @@
                   <div class="form-group row">
                     <label for="customer_id" class="col-sm-2 col-form-label">Pelanggan</label>
                     <div class="col-sm-4">
-                      <select name="customer_id" class="form-control select2" id="customer_id" readonly>
+                      <select name="customer_id" class="form-control select2" id="customer_id" required>
                         <option value="">--Pilih Pelanggan--</option>
                         <?php foreach ($customers as $key => $value): ?>
                         <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
@@ -51,7 +51,7 @@
                   <div class="form-group row">
                     <label for="method_id" class="col-sm-2 col-form-label">Metode Pembayaran</label>
                     <div class="col-sm-3">
-                      <select name="method_id" class="form-control select2" id="method_id" readonly>
+                      <select name="method_id" class="form-control select2" id="method_id" required>
                         <option value="">--Pilih Pembayaran--</option>
                         <?php foreach ($methods as $key => $value): ?>
                         <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
@@ -102,11 +102,11 @@
                           <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
                           <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required></td>
                         </tr>
-                        <tr>
+                        <tr id="tr-cash">
                           <td colspan="3" class="text-right"><strong>Bayar</strong></td>
                           <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="0"></td>
                         </tr>
-                        <tr>
+                        <tr id="tr-changes">
                           <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
                           <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required></td>
                         </tr>
@@ -189,16 +189,22 @@
     }
 
     function validateCash() {
-      var total = $('#total').val();
-      var cash = $('#cash').val();
-      var changes = parseInt(cash) - parseInt(total);
-      if (parseInt(changes) < 0) {
-        $('.btn-submit').prop('disabled', 'disabled');
-      }
-      else{
+      if($('#is_cash').prop('checked')) {
         $('.btn-submit').removeAttr('disabled');
+        $('#changes').val(0);
       }
-      $('#changes').val(changes);
+      else {
+        var total = $('#total').val();
+        var cash = $('#cash').val();
+        var changes = parseInt(cash) - parseInt(total);
+        if (parseInt(changes) < 0) {
+          $('.btn-submit').prop('disabled', 'disabled');
+        }
+        else{
+          $('.btn-submit').removeAttr('disabled');
+        }
+        $('#changes').val(changes);
+      }
     }
 
     function sumGrandTotal() {
@@ -272,6 +278,24 @@
       if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
         validateCash();
       }
+    });
+
+    $('#is_cash').click(function(event) {
+      if($(this).prop('checked')) {
+        $('#method_id').removeAttr('required');
+        $('#cash').removeAttr('required');
+        $('#changes').removeAttr('required');
+        $('table.table tr').filter('#tr-cash').hide();
+        $('table.table tr').filter('#tr-changes').hide();
+      }
+      else {
+        $('#method_id').prop('required', 'required');
+        $('#cash').prop('required', 'required');
+        $('#changes').prop('required', 'required');
+        $('table.table tr').filter('#tr-cash').show();
+        $('table.table tr').filter('#tr-changes').show();
+      }
+      validateCash();
     });
 
   });

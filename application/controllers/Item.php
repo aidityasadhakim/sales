@@ -33,8 +33,14 @@ class Item extends CI_Controller {
             $row[] = '<strong>Harga Jual: </strong> Rp. '.number_format($field->salePrice).'<br><strong>Harga Beli: </strong> Rp. '.number_format($field->buyPrice);
             $row[] = ucfirst($field->type);
             $row[] = $field->note;
+            if ($this->session->userdata('level') == 1) {
+                $button_stock = '<a href="'.base_url('stock/index/'.$field->id).'" class="btn btn-warning">Stok</a>';
+            }
+            else {
+                $button_stock = '';
+            }
             $row[] = '<div class="btn-group">
-                            <a href="'.base_url('stock/index/'.$field->id).'" class="btn btn-warning">Stok</a>
+                            '.$button_stock.'                            
                             <a href="'.base_url('item/update/'.$field->id).'" class="btn btn-success">Ubah</a>
                             <a href="'.base_url('item/delete/'.$field->id).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
                           </div>';

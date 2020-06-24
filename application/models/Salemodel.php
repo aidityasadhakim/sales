@@ -14,18 +14,18 @@ class Salemodel extends CI_Model {
     var $table_customer = 'customers';
     var $table_item = 'items';
     var $table_payment = 'payment_methods';
+    var $table_claim = 'claim_paids';
     var $column_order = array(null, 'transaction_date', 'customer_id', 'code', 'total', 'cash', 'changes', 'method_id', 'is_cash', 'status', 'type', 'note');
     var $column_search = array('s.code', 'c.name');
     var $order = array('s.id' => 'desc');
 
     private function _getDatatablesQuery()
     {
-        $this->db->select('*, s.id as s_id, c.name as c_name, m.name as m_name');
+        $this->db->select('*, s.id as s_id, c.name as c_name');
         $this->db->where('s.deleted_at', null);
         $this->db->where('s.type', 'sale');
         $this->db->from('sales as s');
         $this->db->join('customers as c', 'c.id = s.customer_id');
-        $this->db->join('payment_methods as m', 'm.id = s.method_id');
  
         $i = 0;
      
@@ -256,6 +256,12 @@ class Salemodel extends CI_Model {
         $this->db->where('transaction_id', $id);
         $this->db->where('type', 'sale');
         $this->db->delete('stock_mutations');
+    }
+
+    public function insertDataPay($data)
+    {
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $this->db->insert($this->table_claim, $data);
     }
 
 }

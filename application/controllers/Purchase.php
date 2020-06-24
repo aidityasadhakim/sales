@@ -35,9 +35,15 @@ class Purchase extends CI_Controller {
             $row[] = $field['sup_name'];
             $row[] = 'Rp. '.number_format($field['total']);
             $row[] = ($field['is_cash'] == 1) ? 'Lunas' : 'Utang';
-            $row[] = $field['m_name'];
             $row[] = $field['note'];
+            if ($field['is_cash'] == 0) {
+                $button_pay = '<a href="'.base_url('purchase/pay/'.$field['p_id']).'" class="btn btn-warning">Bayar</a>';
+            }
+            else {
+                $button_pay = '';
+            }
             $row[] = '<div class="btn-group">
+                            '.$button_pay.'
                             <a href="'.base_url('purchase/update/'.$field['p_id']).'" class="btn btn-success">Ubah</a>
                             <a href="'.base_url('purchase/delete/'.$field['p_id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
                           </div>';
@@ -183,6 +189,46 @@ class Purchase extends CI_Controller {
         $row = $this->item->getDataById($id);
         $data = array('price' => $row['buyPrice'], 'stock' => $row['stock']);
         echo json_encode($data);
+    }
+
+    public function pay($id = '')
+    {
+        $data['row'] = $this->purchase->getDataById($id);
+        if ($this->input->post('submit')) {
+
+            $transaction_date = $this->input->post('transaction_date');
+            $method_id = $this->input->post('method_id');
+            $total = $this->input->post('total');
+            $cash = $this->input->post('cash');
+            $changes = $this->input->post('changes');
+
+
+            $dataUpdate = array(
+                        'cash'  => $cash,
+                        'changes' => $changes,
+                        'method_id' => $method_id,
+                        'is_cash'  => 1
+                        );            
+
+            $this->purchase->updateDataPurchasesById($id, $dataUpdate);
+
+            $dataInsert = array('transaction_date' => $transaction_date, 
+                        'purchase_id' => $id,
+                        'amount' => $cash,
+                        'paid_by' => $this->session->userdata('id')
+                        );
+
+            $this->purchase->insertDataPay($dataInsert);
+            
+            $this->session->set_flashdata('msg', 'Pembayaran Berhasil!');
+            redirect('purchase');
+        }
+        else {
+            $data['title'] = 'Pembayaran Utang '.$data['row']['code'];
+            $data['page']  = 'master';
+            $data['methods'] = $this->method->getAllData();
+            $this->load->view('purchases/pay',$data);
+        }
     }
 }
 

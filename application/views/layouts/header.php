@@ -50,6 +50,10 @@
               <li><a href="<?php echo base_url('supplier') ?>" class="dropdown-item">Pemasok</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('PaymentMethod') ?>" class="dropdown-item">Jenis Pembayaran</a></li>
+              <?php if ($this->session->userdata('level') == 1): ?>
+              <li class="dropdown-divider"></li>
+              <li><a href="<?php echo base_url('operator') ?>" class="dropdown-item">Operator</a></li>  
+              <?php endif ?>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -105,7 +109,7 @@
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
-              <a href="#" class="btn btn-default btn-flat">Pengaturan</a>
+              <a href="<?php echo base_url('setting') ?>" class="btn btn-default btn-flat">Pengaturan</a>
               <a href="<?php echo base_url('dashboard/logout') ?>" class="btn btn-default btn-flat float-right">Keluar</a>
             </li>
           </ul>

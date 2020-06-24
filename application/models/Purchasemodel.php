@@ -14,17 +14,17 @@ class Purchasemodel extends CI_Model {
     var $table_supplier = 'suppliers';
     var $table_item = 'items';
     var $table_payment = 'payment_methods';
+    var $table_debt = 'debt_paids';
     var $column_order = array(null, 'transaction_date', 'supplier_id', 'code', 'total', 'cash', 'changes', 'method_id', 'is_cash', 'status', 'note');
     var $column_search = array('p.code', 'sup.name');
     var $order = array('p.id' => 'desc');
 
     private function _getDatatablesQuery()
     {
-        $this->db->select('*, p.id as p_id, sup.name as sup_name, m.name as m_name');
+        $this->db->select('*, p.id as p_id, sup.name as sup_name');
         $this->db->where('p.deleted_at', null);
         $this->db->from('purchases as p');
         $this->db->join('suppliers as sup', 'sup.id = p.supplier_id');
-        $this->db->join('payment_methods as m', 'm.id = p.method_id');
  
         $i = 0;
      
@@ -244,6 +244,12 @@ class Purchasemodel extends CI_Model {
         $this->db->where('transaction_id', $id);
         $this->db->where('type', 'purchase');
         $this->db->delete('stock_mutations');
+    }
+
+    public function insertDataPay($data)
+    {
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $this->db->insert($this->table_debt, $data);
     }
 
 }

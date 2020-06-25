@@ -41,6 +41,24 @@ function getLabelLevelUser($level) {
     }
 }
 
+if (!function_exists('getLabelTypeTransaction'))
+{
+function getLabelTypeTransaction($type) {
+        if ($type == 'sale') {
+            return 'Penjualan';
+        } 
+        elseif ($type == 'service') {
+            return 'Servis';
+        }
+        elseif ($type == 'purchase') {
+            return 'Pembelian';
+        }
+        elseif ($type == 'stock') {
+            return 'Stok';
+        }
+    }
+}
+
 if (!function_exists('getDataColumn'))
 {
 function getDataColumn($table, $condition, $value, $field) {

@@ -88,7 +88,7 @@
                               <?php endforeach ?>
                             </select>
                           </td>
-                          <td><input type="text" name="price[]" class="form-control price" readonly required></td>
+                          <td><input type="text" name="price[]" class="form-control price"<?php echo ($this->session->userdata('level') != 1) ? ' readonly' : '' ?> required></td>
                           <td>
                             <input type="hidden" class="form-control qty-available">
                             <input type="text" name="qty[]" class="form-control qty number" required>
@@ -262,6 +262,18 @@
           sumGrandTotal();
           validateCash();
         }
+      }
+    });
+
+    $(document).on("keyup", ".price", function(e){
+      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
+        var obj = this;
+        var price = $(this).val();
+        var qty = $(obj).closest('tr').find('.qty').val();
+        var subtotal = parseInt(price) * parseInt(qty);
+        $(obj).closest('tr').find('.subtotal').val(subtotal);
+        sumGrandTotal();
+        validateCash();
       }
     });
 

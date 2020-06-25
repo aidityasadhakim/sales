@@ -151,6 +151,7 @@ class Purchasemodel extends CI_Model {
             $dataInsertMutation = array('transaction_id' => $idx,
                                     'item_id' => $value,
                                     'amount' => $data['qty'][$key],
+                                    'type' => 'purchase',
                                     'created_at' => date('Y-m-d H:i:s')
                                     );
             $this->db->insert('stock_mutations', $dataInsertMutation);

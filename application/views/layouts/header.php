@@ -73,21 +73,24 @@
               <li><a href="<?php echo base_url('purchase') ?>" class="dropdown-item">Nota Beli </a></li>
             </ul>
           </li>
+          <?php if ($this->session->userdata('level') != 3): ?>
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Laporan</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="<?php echo base_url('report/stock') ?>" class="dropdown-item">Laporan Stok </a></li>
+              <li><a href="<?php echo base_url('report/stock') ?>" class="dropdown-item">Laporan Mutasi Stok </a></li>
+              <li><a href="<?php echo base_url('report/min_stock') ?>" class="dropdown-item">Laporan Stok Hampir habis</a></li>
               <li><a href="<?php echo base_url('report/cash_in') ?>" class="dropdown-item">Laporan Kas Masuk</a></li>
               <li><a href="<?php echo base_url('report/cash_out') ?>" class="dropdown-item">Laporan Kas Keluar</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('report/sales') ?>" class="dropdown-item">Laporan Penjualan</a></li>
               <li><a href="<?php echo base_url('report/purchases') ?>" class="dropdown-item">Laporan Pembelian</a></li>
               <li class="dropdown-divider"></li>
-              <li><a href="#" class="dropdown-item">Laporan Laba/Rugi</a></li>
-              <li><a href="#" class="dropdown-item">Laporan Utang</a></li>
-              <li><a href="#" class="dropdown-item">Laporan Piutang</a></li>
+              <li><a href="<?php echo base_url('report/profit') ?>" class="dropdown-item">Laporan Laba/Rugi</a></li>
+              <li><a href="<?php echo base_url('report/debt') ?>" class="dropdown-item">Laporan Utang</a></li>
+              <li><a href="<?php echo base_url('report/claim') ?>" class="dropdown-item">Laporan Piutang</a></li>
             </ul>
           </li>
+          <?php endif ?>
         </ul>
       </div>
 

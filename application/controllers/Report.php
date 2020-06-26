@@ -46,6 +46,14 @@ class Report extends CI_Controller {
         }
     }
 
+    public function min_stock()
+    {
+        $data['title'] = 'Laporan Stok Hampir Habis';
+        $data['page'] = 'report';
+        $data['items'] = $this->report->getDataMinStock();
+        $this->load->view('reports/min_stock_view', $data);
+    }
+
     public function cash_in()
     {
         if ($this->input->post('submit')) {
@@ -162,7 +170,6 @@ class Report extends CI_Controller {
             else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
-                $data['method_id'] = $this->input->post('method_id');
 
                 $data['purchases'] = $this->report->getDataPurchasesByPeriod($data['start_date'], $data['end_date']);
                 
@@ -173,6 +180,100 @@ class Report extends CI_Controller {
             $data['title'] = 'Laporan Pembelian';
             $data['page'] = 'report';
             $this->load->view('reports/purchases_view', $data);
+        }
+    }
+
+    public function profit()
+    {
+        if ($this->input->post('submit')) {
+            $type = $this->input->post('submit');
+            if ($type == 'view') {
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+
+                $data['total_sale'] = $this->report->getDataSumSalesByPeriod($data['start_date'], $data['end_date']);
+                $data['total_purchase'] = $this->report->getDataSumPurchasesByPeriod($data['start_date'], $data['end_date']);
+                $data['total_profit'] = $data['total_sale'] - $data['total_purchase'];
+
+                $data['title'] = 'Laporan Laba/Rugi';
+                $data['page'] = 'report';
+                $this->load->view('reports/profit_view', $data);
+            }
+            else if ($type == 'download') {
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+
+                $data['total_sale'] = $this->report->getDataSumSalesByPeriod($data['start_date'], $data['end_date']);
+                $data['total_purchase'] = $this->report->getDataSumPurchasesByPeriod($data['start_date'], $data['end_date']);
+                $data['total_profit'] = $data['total_sale'] - $data['total_purchase'];
+                
+                $this->load->view('reports/profit_view', $data);    
+            }
+        }
+        else {
+            $data['title'] = 'Laporan Laba/Rugi';
+            $data['page'] = 'report';
+            $this->load->view('reports/profit_view', $data);
+        }
+    }
+
+    public function debt()
+    {
+        if ($this->input->post('submit')) {
+            $type = $this->input->post('submit');
+            if ($type == 'view') {
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+
+                $data['debts'] = $this->report->getDataDebtByPeriod($data['start_date'], $data['end_date']);
+
+                $data['title'] = 'Laporan Utang';
+                $data['page'] = 'report';
+                $this->load->view('reports/debt_view', $data);
+            }
+            else if ($type == 'download') {
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+
+                $data['debts'] = $this->report->getDataDebtByPeriod($data['start_date'], $data['end_date']);
+                
+                $this->load->view('reports/debt_download', $data);   
+            }
+        }
+        else {
+            $data['title'] = 'Laporan Utang';
+            $data['page'] = 'report';
+            $this->load->view('reports/debt_view', $data);
+        }
+    }
+
+    public function claim()
+    {
+        if ($this->input->post('submit')) {
+            $type = $this->input->post('submit');
+            if ($type == 'view') {
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+
+                $data['claims'] = $this->report->getDataClaimByPeriod($data['start_date'], $data['end_date']);
+
+                $data['title'] = 'Laporan Piutang';
+                $data['page'] = 'report';
+                $this->load->view('reports/claim_view', $data);
+            }
+            else if ($type == 'download') {
+                $data['start_date'] = $this->input->post('start_date');
+                $data['end_date'] = $this->input->post('end_date');
+
+                $data['claims'] = $this->report->getDataClaimByPeriod($data['start_date'], $data['end_date']);
+                
+                $this->load->view('reports/claim_download', $data);   
+            }
+        }
+        else {
+            $data['title'] = 'Laporan Piutang';
+            $data['page'] = 'report';
+            $this->load->view('reports/claim_view', $data);
         }
     }
 

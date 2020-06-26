@@ -32,7 +32,8 @@ class Retur extends CI_Controller {
             $dataInsert = array(
                         'transaction_date'  => $transaction_date,
                         'sale_id'  => $sale_id,
-                        'note'  => $note
+                        'note'  => $note,
+                        'user_id' => $this->session->userdata('id')
                         );            
 
             $this->retur->insertData($dataInsert);

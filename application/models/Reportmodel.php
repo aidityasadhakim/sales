@@ -43,6 +43,20 @@ class Reportmodel extends CI_Model {
         }
     }
 
+    public function getDataMinStock()
+    {
+        $this->db->order_by('id', 'asc');
+        $this->db->where('deleted_at', null);
+        $this->db->where('stock < stockMin', NULL);
+        $query = $this->db->get($this->table_item);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
     public function getDataCashSaleByPeriod($start_date, $end_date, $method)
     {
         $this->db->order_by('id', 'desc');
@@ -107,6 +121,64 @@ class Reportmodel extends CI_Model {
         $this->db->where('DATE(transaction_date) >=', $start_date);
         $this->db->where('DATE(transaction_date) <=', $end_date);
         $query = $this->db->get($this->table_purchase);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getDataSumSalesByPeriod($start_date, $end_date)
+    {
+        $this->db->select_sum('total');
+        $this->db->where('deleted_at', null);
+        $this->db->where('status', 2);
+        $this->db->where('DATE(transaction_date) >=', $start_date);
+        $this->db->where('DATE(transaction_date) <=', $end_date);
+        $query = $this->db->get($this->table_sale);
+        $data = $query->row_array();
+        return $data['total'];
+    }
+
+    public function getDataSumPurchasesByPeriod($start_date, $end_date)
+    {
+        $this->db->select_sum('total');
+        $this->db->where('deleted_at', null);
+        $this->db->where('status', 2);
+        $this->db->where('DATE(transaction_date) >=', $start_date);
+        $this->db->where('DATE(transaction_date) <=', $end_date);
+        $query = $this->db->get($this->table_purchase);
+        $data = $query->row_array();
+        return $data['total'];
+    }
+
+    public function getDataDebtByPeriod($start_date, $end_date)
+    {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('deleted_at', null);
+        $this->db->where('is_cash', 0);
+        $this->db->where('status', 2);
+        $this->db->where('DATE(transaction_date) >=', $start_date);
+        $this->db->where('DATE(transaction_date) <=', $end_date);
+        $query = $this->db->get($this->table_purchase);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getDataClaimByPeriod($start_date, $end_date)
+    {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('deleted_at', null);
+        $this->db->where('is_cash', 0);
+        $this->db->where('status', 2);
+        $this->db->where('DATE(transaction_date) >=', $start_date);
+        $this->db->where('DATE(transaction_date) <=', $end_date);
+        $query = $this->db->get($this->table_sale);
         if ($query->num_rows() > 0) {
             return $query->result_array();
         }

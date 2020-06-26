@@ -136,6 +136,7 @@ class Purchasemodel extends CI_Model {
                         'is_cash'  => $data['is_cash'],
                         'status' => 2,
                         'note' => $data['note'],
+                        'user_id' => $this->session->userdata('id'),
                         'created_at' => date('Y-m-d H:i:s')
                         ); 
         $this->db->insert($this->table, $dataInsert);
@@ -192,6 +193,7 @@ class Purchasemodel extends CI_Model {
                         'is_cash'  => $data['is_cash'],
                         'status' => 2,
                         'note' => $data['note'],
+                        'user_id' => $this->session->userdata('id'),
                         'updated_at' => date('Y-m-d H:i:s')
                         ); 
         $this->db->where('id', $id);

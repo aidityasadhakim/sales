@@ -138,6 +138,7 @@ class Servicemodel extends CI_Model {
                         'status' => 2,
                         'type' => 'service',
                         'note' => $data['note'],
+                        'user_id' => $this->session->userdata('id'),
                         'created_at' => date('Y-m-d H:i:s')
                         ); 
         $this->db->insert($this->table,$dataInsert);
@@ -198,6 +199,7 @@ class Servicemodel extends CI_Model {
                         'status' => 2,
                         'type' => 'service',
                         'note' => $data['note'],
+                        'user_id' => $this->session->userdata('id'),
                         'updated_at' => date('Y-m-d H:i:s')
                         ); 
         $this->db->where('id', $id);

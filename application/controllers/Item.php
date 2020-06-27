@@ -30,7 +30,12 @@ class Item extends CI_Controller {
             $row[] = $no;
             $row[] = $field->name;
             $row[] = $field->stock;
+            if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) {    
             $row[] = '<strong>Harga Jual: </strong> Rp. '.number_format($field->salePrice).'<br><strong>Harga Beli: </strong> Rp. '.number_format($field->buyPrice);
+            }
+            else {
+                $row[] = '<strong>Harga Jual: </strong> Rp. '.number_format($field->salePrice);
+            }
             $row[] = ucfirst($field->type);
             $row[] = $field->note;
             if ($this->session->userdata('level') == 1) {

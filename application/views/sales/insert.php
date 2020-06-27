@@ -119,6 +119,7 @@
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-info btn-submit" name="submit" value="add">Submit</button>
+                  <button type="button" id="tes-click">Tes</button>
                   <a href="<?php echo base_url('sale') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
               </form>
@@ -135,6 +136,10 @@
 <?php $this->load->view('layouts/footer'); ?>
 <script type="text/javascript">
   $(function() {
+
+    $("#tes-click").click(function(event) {
+      console.log($('.item-id').val());
+    });
     $('.select-product').select2({
         allowClear: true,
         width: '100%'
@@ -146,18 +151,24 @@
         var clone = tr.clone();
         clone.find(':text').val('');
         tr.after(clone);
+        
         if (rowCount == 1) {
             $("table tbody tr:last td:last-child").append('<a href="#" class="remove_field btn btn-danger">X</a>');
         }
+
+        disabledOption();
+
         $('.select-product').select2({
             allowClear: true,
             width: '100%'
         })
+
     });
 
     $('table tbody').on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); 
          $(this).closest('tr').remove();
+         disabledOption();
     });
 
     $(document).keydown(function(e) {
@@ -215,10 +226,36 @@
       $('#total').val(sum);
     }
 
+    function disabledOption() {
+      var rowCount = $('table tbody tr').length;
+        if (rowCount > 0) {
+          $(".item-id option").removeAttr('disabled');
+          var  arr = $.map
+          (
+            $(".item-id option:selected"), function(n)
+             {
+                  return n.value;
+              }
+          );
+
+          $('.item-id option').filter(function()
+          {
+              return $.inArray($(this).val(),arr)>-1;
+          }).attr("disabled","disabled");
+        }
+
+        $(".item-id").each(function(index, listItem){
+          $(this).find("option[value='" + $(this).find('option[disabled]:selected').val() + "']").removeAttr('disabled');
+        });  
+
+    }
+
     $(document).on("change", ".item-id", function(){
       var obj = this;
       var id = $(this).val();
-      
+
+      disabledOption();
+
       $.ajax({
         url: base_url + 'sale/getDataProduct',
         type: 'POST',

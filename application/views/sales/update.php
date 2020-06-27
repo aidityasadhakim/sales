@@ -85,7 +85,7 @@
                             <select name="item_ids[]" class="form-control select-product item-id">
                               <option value="">--Pilih Barang--</option>
                               <?php foreach ($items as $keyItem => $valueItem): ?>
-                              <option value="<?php echo $value['id'] ?>"<?php echo ($valueItem['id'] == $value['item_id']) ? ' selected' : '' ?>><?php echo $valueItem['name'] ?></option>
+                              <option value="<?php echo $valueItem['id'] ?>"<?php echo ($valueItem['id'] == $value['item_id']) ? ' selected' : '' ?>><?php echo $valueItem['name'] ?></option>
                               <?php endforeach ?>
                             </select>
                           </td>
@@ -143,6 +143,9 @@
 <?php $this->load->view('layouts/footer'); ?>
 <script type="text/javascript">
   $(function() {
+
+    disabledOption();
+
     $('.select-product').select2({
         allowClear: true,
         width: '100%'
@@ -153,10 +156,14 @@
         var tr    = $('tbody tr:last').closest('.tr-input-field');
         var clone = tr.clone();
         clone.find(':text').val('');
+        clone.find('select').val('');
         tr.after(clone);
         if (rowCount == 1) {
             $("table tbody tr:last td:last-child").append('<a href="#" class="remove_field btn btn-danger">X</a>');
         }
+
+        disabledOption();
+
         $('.select-product').select2({
             allowClear: true,
             width: '100%'
@@ -165,7 +172,8 @@
 
     $('table tbody').on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); 
-         $(this).closest('tr').remove();
+        $(this).closest('tr').remove();
+        disabledOption();
     });
 
     $(document).keydown(function(e) {
@@ -200,6 +208,29 @@
       $('#total').val(sum);
     }
 
+    function disabledOption() {
+      var rowCount = $('table tbody tr').length;
+        if (rowCount > 0) {
+          $(".item-id option").removeAttr('disabled');
+          var  arr = $.map
+          (
+            $(".item-id option:selected"), function(n)
+             {
+                  return n.value;
+              }
+          );
+          $('.item-id option').filter(function()
+          {
+              return $.inArray($(this).val(),arr)>-1;
+
+          }).attr("disabled","disabled");
+        }
+
+        $(".item-id").each(function(index, listItem){
+          $(this).find("option[value='" + $(this).find('option[disabled]:selected').val() + "']").removeAttr('disabled');
+        });  
+    }
+
     function validateCash() {
       if($('#is_cash').prop('checked')) {
         $('.btn-submit').removeAttr('disabled');
@@ -222,7 +253,9 @@
     $(document).on("change", ".item-id", function(){
       var obj = this;
       var id = $(this).val();
-      
+
+      disabledOption();
+
       $.ajax({
         url: base_url + 'sale/getDataProduct',
         type: 'POST',

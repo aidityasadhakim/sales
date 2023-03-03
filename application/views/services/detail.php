@@ -122,4 +122,6 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+<?php $this->load->view('history/view'); ?>
 <?php $this->load->view('layouts/footer'); ?>

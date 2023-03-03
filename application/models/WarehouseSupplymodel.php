@@ -2,31 +2,25 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Servicemodel extends CI_Model {
+class WarehouseSupplymodel extends CI_Model {
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    var $table = 'sales';
-    var $table_detail = 'sale_details';
-    var $table_customer = 'customers';
+    var $table = 'warehouse_supply';
     var $table_item = 'items';
-    var $table_payment = 'payment_methods';
-    var $table_claim = 'claim_paids';
-    var $table_stock = 'stocks';
     
-    var $column_order = array(null, 'transaction_date', 'is_customer', 'customer_id', 'customer_name', 'code', 'total', 'cash', 'changes', 'method_id', 'is_cash', 'status', 'type', 'note');
-    var $column_search = array('s.code', 's.customer_name');
-    var $order = array('s.id' => 'desc');
+    var $column_order = array(null, 'updated_at', 'item_id', 'stockInside', 'customer_name');
+    var $column_search = array('i.name', 'i.note');
+    var $order = array('i.id' => 'desc');
 
     private function _getDatatablesQuery()
     {
-        $this->db->select('*');
-        $this->db->where('s.deleted_at', null);
-        $this->db->where('s.type', 'service');
-        $this->db->from('sales as s');
+        $this->db->select('w.updated_at,w.item_id, w.stockInside, i.name, i.stock, i.note, (i.stock - w.stockInside) as stockOutside');
+        $this->db->from('warehouse_supply as w');
+        $this->db->join('items as i','w.item_id = i.id');
  
         $i = 0;
      
@@ -80,7 +74,6 @@ class Servicemodel extends CI_Model {
  
     public function countAll()
     {
-        $this->db->where('deleted_at', null);
         $this->db->from($this->table);
         $query = $this->db->get();
         return $query->num_rows();
@@ -230,18 +223,26 @@ class Servicemodel extends CI_Model {
 
     public function decreaseStock($item_id = '', $qty)
     {
-        $this->db->set('stock', 'stock - '.$qty, FALSE);
+        $this->db->set('stockInside', 'stockInside - '.$qty, FALSE);
+        $this->db->set('updated_at', date('Y-m-d'), FALSE);
         $this->db->where('id', $item_id);
-        $this->db->where('stock >=', $qty);
-        $this->db->update($this->table_item);
+        $this->db->where('stockInside >=', $qty);
+        $this->db->update($this->table);
         return $this->db->affected_rows();
     }
 
     public function increaseStock($item_id = '', $qty)
     {
-        $this->db->set('stock', 'stock + '.$qty, FALSE);
-        $this->db->where('id', $item_id);
-        $this->db->update($this->table_item);
+        // $this->db->set('stockInside', 'stockInside + '.$qty, FALSE);
+        // $this->db->set('updated_at', date('Y-m-d H:i:s'), FALSE);
+        // $this->db->where('id', $item_id);
+        $date = date('Y-m-d H:i:s');
+        $query = "
+            UPDATE warehouse_supply
+            SET stockInside = stockInside + ".$qty.", updated_at = "."'".$date."'"."
+            WHERE item_id = ".$item_id."
+        ";
+        $this->db->query($query);
         return $this->db->affected_rows();
     }
 
@@ -368,6 +369,6 @@ class Servicemodel extends CI_Model {
 
 }
 
-/* End of file Salemodel.php */
-/* Location: ./application/models/Salemodel.php */
+/* End of file WarehouseSupplymodel.php */
+/* Location: ./application/models/WarehouseSupplymodel.php */
  ?>

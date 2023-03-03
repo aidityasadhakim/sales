@@ -1,5 +1,8 @@
 <?php 
 
+// The development of this code is discontinued
+// The newer version of supply management is in /controllers/stok
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Stock extends CI_Controller {

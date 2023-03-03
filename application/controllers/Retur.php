@@ -86,6 +86,46 @@ class Retur extends CI_Controller {
         }
     }
 
+    public function store($value='')
+    {
+        if ($this->input->post('submit')) {
+
+            $transaction_date = $this->input->post('transaction_date');
+
+            $sale_id = $this->input->post('sale_id');
+            $cash = $this->input->post('cash');
+
+            $sale_detail_id = $this->input->post('sale_detail_id');
+            $item_id = $this->input->post('item_id');
+            $item_price = $this->input->post('item_price');
+            $item_qty = $this->input->post('item_qty');
+            $retur_qty = $this->input->post('retur_qty');
+            $retur_note = $this->input->post('retur_note');
+
+            $dataInsert = array(
+                    'transaction_date'  => $transaction_date,
+                    'sale_id'  => $sale_id,
+                    'sale_detail_id'  => $sale_detail_id,
+                    'item_id'  => $item_id,
+                    'item_price'  => $item_price,
+                    'item_qty' => $item_qty,
+                    'retur_qty' => $retur_qty,
+                    'retur_note' => $retur_note,
+                    'cash' => $cash
+                    );
+
+            $result = $this->retur->insertData($dataInsert);
+            if ($result['msg'] == 'success') {
+                $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
+                redirect('retur');
+            }
+            else {
+                $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak sesuai.');
+                redirect('retur');   
+            }
+        }
+    }
+
     public function detail($id = '')
     {
         $data['title'] = 'Detil Nota Retur';

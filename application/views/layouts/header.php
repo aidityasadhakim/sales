@@ -78,6 +78,7 @@
               <li><a href="<?php echo base_url('pending') ?>" class="dropdown-item">Nota Jual Sementara</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('service') ?>" class="dropdown-item">Nota Servis</a></li>
+              <li><a href="<?php echo base_url('servicereceipts') ?>" class="dropdown-item">Nota Tanda Terima Servis</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('retur') ?>" class="dropdown-item">Retur</a></li>
             </ul>
@@ -122,6 +123,13 @@
               <?php endif ?>
               <li><a href="<?php echo base_url('report/claim') ?>" class="dropdown-item">Laporan Piutang</a></li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('stok') ?>">Stok</a>
+            <!-- <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Stok</a>
+            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+              <li><a href="<?php echo base_url('purchase') ?>" class="dropdown-item">Nota Beli </a></li>
+            </ul> -->
           </li>
         </ul>
       </div>

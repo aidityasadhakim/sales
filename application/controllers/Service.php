@@ -13,6 +13,8 @@ class Service extends CI_Controller {
         $this->load->model('PaymentMethodmodel', 'method');
         $this->load->model('Itemmodel', 'item');
         $this->load->model('Papermodel', 'paper');
+        $this->load->model('Service_receiptsmodel', 'service_receipts');
+        $this->load->model('ServiceHistorymodel', 'service_history');
     }
 
     // List all your items
@@ -39,12 +41,14 @@ class Service extends CI_Controller {
             $row[] = $field['note'];
             if ($field['is_cash'] == 0) {
                 $button_pay = '<a href="'.base_url('service/pay/'.$field['id']).'" class="btn btn-warning">Bayar</a>';
+                $tanda_terima = '<a href="'.base_url('servicereceipts/index/'.$field['id']).'" class="btn btn-primary">TandaTerima</a>';
             }
             else {
                 $button_pay = '';
+                $tanda_terima = '';
             }
             $row[] = '<div class="btn-group">
-                            '.$button_pay.'
+                            '.$button_pay.$tanda_terima.'
                             <a href="'.base_url('service/cetak/'.$field['id']).'" class="btn btn-default">Cetak</a>
                             <a href="'.base_url('service/update/'.$field['id']).'" class="btn btn-success">Ubah</a>
                             <a href="'.base_url('service/delete/'.$field['id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
@@ -219,6 +223,7 @@ class Service extends CI_Controller {
         $data['page']  = 'master';
         $data['row'] = $this->service->getDataById($id);
         $data['details'] = $this->service->getDataDetailByIdTrans($id);
+        $data['history'] = $this->service_history->getDataByReceiptId($id);
         if ($type == 'teknisi') {
             $this->load->view('services/detail-teknisi',$data);
         }
@@ -274,6 +279,8 @@ class Service extends CI_Controller {
                         );
 
             $this->service->insertDataPay($dataInsert);
+            $dataHistory = $this->service_receipts->getDataById($id);
+            $this->addHistory($dataHistory,'Lunas');
             
             $this->session->set_flashdata('msg', 'Pembayaran Berhasil!');
             redirect('service');
@@ -284,6 +291,24 @@ class Service extends CI_Controller {
             $data['methods'] = $this->method->getAllData();
             $this->load->view('services/pay',$data);
         }
+    }
+
+    public function addHistory($data = NULL, $status)
+    {
+        $dataInsert = array(
+            'receipt_id' => $data['receipt_id'],
+            'transaction_date' => date('Y-m-d H:i:s'),
+            'name'  => $data['name'],
+            'phone' => $data['phone'],
+            'tipe_hp' => $data['tipe_hp'],
+            'kerusakan' => $data['kerusakan'],
+            'kelengkapan' => $data['kelengkapan'],
+            'keterangan' => $data['keterangan'],
+            'penerima' => $data['penerima'],
+            'status' => $status
+        );
+
+        $this->service_history->insertData($dataInsert);
     }
 
     public function cetak($id = null)

@@ -78,6 +78,7 @@
               <li><a href="<?php echo base_url('pending') ?>" class="dropdown-item">Nota Jual Sementara</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('service') ?>" class="dropdown-item">Nota Servis</a></li>
+              <li><a href="<?php echo base_url('servicereceipts') ?>" class="dropdown-item">Nota Tanda Terima Servis</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('retur') ?>" class="dropdown-item">Retur</a></li>
             </ul>

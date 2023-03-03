@@ -316,7 +316,7 @@ class Stok extends CI_Controller {
     }
 }
 
-/* End of file Service.php */
-/* Location: ./application/controllers/Service.php */
+/* End of file Stok.php */
+/* Location: ./application/controllers/Stok.php */
 
  ?>

@@ -17,55 +17,103 @@ class ServiceReceipts extends CI_Controller {
 
     // List all your items
 
-    // Tanda terima
     public function index($id=NULL)
     {
-        $sale_details = $this->sale->getDataById($id);
+        $data['title'] = 'Nota Tanda Terima Servis';
+        $data['page'] = 'service_receipts';
+        $this->load->view('service_receipts/view', $data);
+    }
 
-        if ($this->service_receipts->getDataById($id)){
-            $data['title'] = 'Tanda Terima Servis';
-            $data['page']  = 'master';
-            $data['details'] = $this->service_receipts->getDataById($id);
-            $data['button'] = '<button type="submit" class="btn btn-info btn-success" name="submit" value="add">Update</button>';
-            $data['cetak'] = '<a href="'.base_url('servicereceipts/cetak/'.$data['details']['receipt_id']).'" class="btn btn-success ">Cetak</a>';
-            $data['history'] = $this->service_history->getDataByReceiptId($id);
-            $data['is_cash'] = $sale_details['is_cash'];
-            if($this->input->post('submit')){
-                $this->addUpdateHistory($_POST,$id);
-            }
-            if($this->input->post('submit')){
-                $this->update($data['details']['id'],$_POST, $id);
-            }
-            $this->load->view('services/tanda_terima',$data);
-        }
-        else {
+    // Tanda terima
+    // public function index($id=NULL)
+    // {
+    //     $sale_details = $this->sale->getDataById($id);
+
+    //     if ($this->service_receipts->getDataById($id)){
+    //         $data['title'] = 'Tanda Terima Servis';
+    //         $data['page']  = 'master';
+    //         $data['details'] = $this->service_receipts->getDataById($id);
+    //         $data['button'] = '<button type="submit" class="btn btn-info btn-success" name="submit" value="add">Update</button>';
+    //         $data['cetak'] = '<a href="'.base_url('servicereceipts/cetak/'.$data['details']['receipt_id']).'" class="btn btn-success ">Cetak</a>';
+    //         $data['history'] = $this->service_history->getDataByReceiptId($id);
+    //         $data['is_cash'] = $sale_details['is_cash'];
+    //         if($this->input->post('submit')){
+    //             $this->addUpdateHistory($_POST,$id);
+    //         }
+    //         if($this->input->post('submit')){
+    //             $this->update($data['details']['id'],$_POST, $id);
+    //         }
+    //         $this->load->view('services/tanda_terima',$data);
+    //     }
+    //     else {
             
-            if ($this->input->post('submit')){
-                $this->add($_POST, $id);
+    //         if ($this->input->post('submit')){
+    //             $this->add($_POST, $id);
+    //         }
+    //         $data['title'] = 'Tanda Terima Servis';
+    //         $data['page']  = 'master';
+    //         $data['details'] = array('receipt_id' => '',
+    //                                 'transaction_date' => '',
+    //                                 'name'  => $sale_details['customer_name'],
+    //                                 'phone' => '',
+    //                                 'tipe_hp' => '',
+    //                                 'kerusakan' => '',
+    //                                 'kelengkapan' => '',
+    //                                 'keterangan' => '',
+    //                                 'penerima' => ''
+    //                                 );
+    //         $data['button'] = '<button type="submit" class="btn btn-info btn-submit" name="submit" value="add">Submit</button>';
+    //         $data['cetak'] = '';
+    //         $data['history'] = $this->service_history->getDataById($id);
+    //         $data['is_cash'] = $sale_details['is_cash'];
+    //         $this->load->view('services/tanda_terima',$data);
+    //     }
+    // }
+
+    function getDataTable()
+    {
+        $list = $this->service_receipts->getDataTables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = date('d F Y', strtotime($field['transaction_date']));
+            $row[] = '<a href="'.base_url('service/detail/'.$field['id']).'" target="_blank">'.$field['customer_name'].'</a>';
+            $row[] = $field['phone'];
+            $row[] = $field['tipe_hp'];
+            $row[] = $field['kerusakan'];
+            $row[] = $field['keterangan'];
+            if ($field['is_cash'] == 0) {
+                $button_pay = '<a href="'.base_url('service/pay/'.$field['id']).'" class="btn btn-warning">Bayar</a>';
+                $tanda_terima = '<a href="'.base_url('servicereceipts/index/'.$field['id']).'" class="btn btn-primary">TandaTerima</a>';
             }
-            $data['title'] = 'Tanda Terima Servis';
-            $data['page']  = 'master';
-            $data['details'] = array('receipt_id' => '',
-                                    'transaction_date' => '',
-                                    'name'  => $sale_details['customer_name'],
-                                    'phone' => '',
-                                    'tipe_hp' => '',
-                                    'kerusakan' => '',
-                                    'kelengkapan' => '',
-                                    'keterangan' => '',
-                                    'penerima' => ''
-                                    );
-            $data['button'] = '<button type="submit" class="btn btn-info btn-submit" name="submit" value="add">Submit</button>';
-            $data['cetak'] = '';
-            $data['history'] = $this->service_history->getDataById($id);
-            $data['is_cash'] = $sale_details['is_cash'];
-            $this->load->view('services/tanda_terima',$data);
+            else {
+                $button_pay = '';
+                $tanda_terima = '';
+            }
+            $row[] = '<div class="btn-group">
+                            '.$button_pay.$tanda_terima.'
+                            <a href="'.base_url('service/cetak/'.$field['id']).'" class="btn btn-default">Cetak</a>
+                            <a href="'.base_url('service/update/'.$field['id']).'" class="btn btn-success">Ubah</a>
+                            <a href="'.base_url('service/delete/'.$field['id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
+                          </div>';
+ 
+            $data[] = $row;
         }
+ 
+        $output = array(
+            "draw" => $_POST['draw'],
+            "data" => $data,
+        );
+        echo json_encode($output);
     }
 
     // Add a new item
     public function add($data=NULL, $id)
     {
+        if ($_POST['submit']){
             $transaction_date = $this->input->post('transaction_date');
             $name = $this->input->post('name');
             $phone = $this->input->post('phone');
@@ -99,7 +147,17 @@ class ServiceReceipts extends CI_Controller {
                 $this->session->set_flashdata('error', 'Data gagal ditambah!');
                 redirect('servicereceipts/index/'.$id);   
             }
-        
+        }
+        else{
+            $data['title'] = 'Tanda Terima Servis';
+            $data['page']  = 'master';
+            $this->load->view('service_receipts/insert',$data);
+        }  
+    }   
+
+    public function insertData($data)
+    {
+        echo "hello";
     }
 
     // Add History when adding detail for the first time

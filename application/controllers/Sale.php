@@ -113,7 +113,8 @@ class Sale extends CI_Controller {
             $result = $this->sale->insertData($dataInsert);
             if ($result['msg'] == 'success') {
                 $this->sale->updateDataSalesById($result['trans_id'], array('code' => 'IHS'.$result['trans_id']));
-                $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
+                $this->session->set_flashdata('msg', 
+                    "Data berhasil ditambah!");
                 redirect('sale');
             }
             else {

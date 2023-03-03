@@ -21,10 +21,10 @@
 
             <div class="card card-primary card-outline">
               <div class="card-header">
-                <h5 class="card-title m-0"><?php echo $title; ?></h5>
+                <h5 class="card-title m-0"><?php echo $title; ?> - <?php echo date('Y-m-d H:i:s'); ?></h5>
               </div>
               <div class="card-body">
-                <h6 class="card-title">Halo, <?php echo $this->session->userdata('full_name'); ?></h6>
+                <h6 class="card-title">こんにちは(Konnichiwa), <?php echo $this->session->userdata('full_name'); ?>-Sama</h6>
               </div>
             </div>
           </div>

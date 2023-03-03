@@ -99,6 +99,9 @@
               <?php endif ?>
               <li><a href="<?php echo base_url('report/stock') ?>" class="dropdown-item">Laporan Mutasi Stok </a></li>
               <li><a href="<?php echo base_url('report/min_stock') ?>" class="dropdown-item">Laporan Stok Hampir habis</a></li>
+              <?php if ($this->session->userdata('level') == 1): ?>
+              <li><a href="<?php echo base_url('report/sold_stock') ?>" class="dropdown-item">Laporan Stok Terjual</a></li>
+              <?php endif ?>
               <li><a href="<?php echo base_url('report/cash_in') ?>" class="dropdown-item">Laporan Kas Masuk</a></li>
               <?php if ($this->session->userdata('level') == 1): ?>
               <li><a href="<?php echo base_url('report/cash_out') ?>" class="dropdown-item">Laporan Kas Keluar</a></li>

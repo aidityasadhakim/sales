@@ -37,6 +37,17 @@
                       <input type="date" name="end_date" class="form-control" id="end_date" value="<?php echo (isset($end_date)) ? $end_date : date('Y-m-d') ?>" required>
                     </div>
                   </div>
+                  <div class="form-group row">
+                    <label for="end_date" class="col-sm-2 col-form-label">Supplier</label>
+                    <div class="col-sm-3">
+                      <select name="supplier_id" class="form-control select2" id="supplier_id">
+                        <option value="">--Pilih Supplier--</option>
+                        <?php foreach ($suppliers as $key => $value): ?>
+                        <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
+                      <?php endforeach ?>
+                      </select>
+                    </div>
+                  </div>
                   <button type="submit" class="btn btn-info" name="submit" value="view">Submit</button>
                 </form>
                 <br><br>

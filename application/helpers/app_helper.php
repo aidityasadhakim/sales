@@ -168,25 +168,17 @@ function getLatestPrice($item_id) {
         $CI =& get_instance();
         $CI->db->select('buyPrice');
         $CI->db->where('item_id', $item_id);
-        $CI->db->where('sale_id IS NOT NULL', null, false);
+        $CI->db->where('sale_id IS NULL', null, false);
         $CI->db->where('deleted_at', null);
         $CI->db->order_by('id', 'desc');
         $CI->db->limit(1);
         $query = $CI->db->get('stocks');
         $data = $query->row_array();
-        if($data){
-            return $data['buyPrice'];
+	if ($data) {
+        	return $data['buyPrice'];
         }
-        else{
-            $CI =& get_instance();
-            $CI->db->select('buyPrice');
-            $CI->db->where('item_id', $item_id);
-            $CI->db->where('deleted_at', null);
-            $CI->db->order_by('id', 'desc');
-            $CI->db->limit(1);
-            $query = $CI->db->get('stocks');
-            $data = $query->row_array();
-            return $data['buyPrice'];
+        else {
+          return 0;
         }
     }
 }

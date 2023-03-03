@@ -50,11 +50,41 @@ class Report extends CI_Controller {
         }
     }
 
+    public function sold_stock()
+    {
+        $data['title'] = 'Laporan Stok Terjual';
+        $data['page'] = 'report';
+        if ($this->input->post('submit')) {
+            $data['start_date'] = $this->input->post('start_date');
+            $data['end_date'] = $this->input->post('end_date');
+            $data['transaction_type'] = $this->input->post('transaction_type');
+
+            $transactionType = $this->input->post('transaction_type');
+            if($transactionType == '') {
+                $data['stocks'] = $this->report->getDataStockSoldByPeriod($data['start_date'], $data['end_date']);
+                $this->load->view('reports/sold_stock_view', $data);
+            } else {
+                $data['stocks'] = $this->report->getDataStockSoldByPeriodAndTransactionType($data['start_date'], $data['end_date'], $transactionType);
+                $this->load->view('reports/sold_stock_view', $data);
+            }
+        }
+        else {
+            $this->load->view('reports/sold_stock_view', $data);
+        }
+    }
+
     public function min_stock()
     {
         $data['title'] = 'Laporan Stok Hampir Habis';
         $data['page'] = 'report';
-        $data['items'] = $this->report->getDataMinStock();
+        $data['categories'] = $this->report->getDataCategories();
+        if($this->input->post('category_id')) {
+            $category_id = $this->input->post('category_id');
+            $data['selected_type'] = $category_id;
+            $data['items'] = $this->report->getDataMinStockByCategory($category_id);
+        } else {
+            $data['items'] = $this->report->getDataMinStock();
+        }
         $this->load->view('reports/min_stock_view', $data);
     }
 
@@ -161,21 +191,23 @@ class Report extends CI_Controller {
     {
         if ($this->input->post('submit')) {
             $type = $this->input->post('submit');
+            $supplier_id = $this->input->post('supplier_id');
             if ($type == 'view') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
 
-                $data['purchases'] = $this->report->getDataPurchasesByPeriod($data['start_date'], $data['end_date']);
+                $data['purchases'] = $this->report->getDataPurchasesByPeriod($data['start_date'], $data['end_date'], $supplier_id);
 
                 $data['title'] = 'Laporan Pembelian';
                 $data['page'] = 'report';
+                $data['suppliers'] = $this->report->getAllSuppliers();
                 $this->load->view('reports/purchases_view', $data);
             }
             else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
 
-                $data['purchases'] = $this->report->getDataPurchasesByPeriod($data['start_date'], $data['end_date']);
+                $data['purchases'] = $this->report->getDataPurchasesByPeriod($data['start_date'], $data['end_date'], $supplier_id);
                 
                 $this->load->view('reports/purchases_download', $data);    
             }
@@ -183,6 +215,7 @@ class Report extends CI_Controller {
         else {
             $data['title'] = 'Laporan Pembelian';
             $data['page'] = 'report';
+            $data['suppliers'] = $this->report->getAllSuppliers();
             $this->load->view('reports/purchases_view', $data);
         }
     }

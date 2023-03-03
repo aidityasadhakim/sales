@@ -45,11 +45,15 @@ class Returmodel extends CI_Model {
         }
     }
 
-    public function getAllDataSales()
+    public function getAllDataSales($start_date, $end_date)
     {
         $this->db->select('s.id, s.code, s.transaction_date, s.customer_name as c_name');
         $this->db->from('sales as s');
         $this->db->order_by('s.id', 'desc');
+        $this->db->where('s.transaction_date BETWEEN "'. 
+            date($start_date).'" AND "'. 
+            date($end_date).'"');
+
         $this->db->where('s.deleted_at', null);
         $this->db->where('s.type', 'sale');
         $query = $this->db->get();

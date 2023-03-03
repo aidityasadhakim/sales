@@ -39,7 +39,7 @@
             margin-top: 5px;
         }
         hr {
-            border-top: 1px dashed #000;
+            border-top: 1px solid #000;
             margin: 5px 0;
         }
         tfoot tr td:first-child {
@@ -70,7 +70,9 @@
         <table border="0" width="100%">
             <tbody>
                 <?php foreach ($details as $key => $value): ?>
-                <tr>
+                <tr style="border-bottom-style: dashed;
+				border-bottom-width: 1px;
+				border-bottom-color: black;">
                     <td width="60%" class="item-name"><?php echo getDataColumn('items', 'id', $value['item_id'], 'name'); ?></td>
                     <td><?php echo $value['qty']; ?> x <?php echo number_format($value['price']); ?></td>
                     <td><?php echo number_format($value['qty']*$value['price']); ?></td>

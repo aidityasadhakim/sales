@@ -153,8 +153,7 @@
                 </div> -->
                 <div class="card-footer">
                   <?= $button ?>
-                  <?= $cetak ?>
-                  <a href="<?php echo base_url('service') ?>" class="btn btn-default float-right">Cancel</a>
+                  <a href="<?php echo base_url('servicereceipts') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
               </form>
             </div>

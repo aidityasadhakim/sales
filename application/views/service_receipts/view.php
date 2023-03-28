@@ -37,7 +37,7 @@
                   </div>
                 <?php endif; ?>
                 <p>
-                  <a href="<?php echo base_url('service/add') ?>" class="btn btn-primary">Tambah</a>
+                  <a href="<?php echo base_url('servicereceipts/add') ?>" class="btn btn-primary">Tambah</a>
                 </p>
                 <div class="table-responsive">
                   <table class="table table-bordered" id="data-table-sale">

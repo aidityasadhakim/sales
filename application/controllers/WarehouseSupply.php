@@ -17,7 +17,7 @@ class WarehouseSupply extends CI_Controller {
     public function index( $offset = 0 )
     {
         $data['title'] = 'Manajemen Stok';
-        $data['page'] = 'stok';
+        $data['page'] = 'warehousesupply';
         $this->load->view('warehouse_supply/view', $data);
     }
 
@@ -77,18 +77,18 @@ class WarehouseSupply extends CI_Controller {
                 $this->warehouse_supply->increaseStock($item_id,$amount);
                 $this->supply_history->insertData($dataHistoryInsert);
                 $this->session->set_flashdata('msg', 'Stok berhasil ditambah!');
-                redirect('stok');
+                redirect('warehousesupply');
             }
             else {
                 $result = $this->warehouse_supply->decreaseStock($item_id,$amount);
                 $this->supply_history->insertData($dataHistoryInsert);
                 if ($result['msg'] == 'fail') {
                     $this->session->set_flashdata('error', 'Stok gagal dikurangkan!');
-                    redirect('stok');
+                    redirect('warehousesupply');
                 }
                 else {
                     $this->session->set_flashdata('msg', 'Stok berhasil dikurangkan!');
-                    redirect('stok');
+                    redirect('warehousesupply');
                 }
             }
             

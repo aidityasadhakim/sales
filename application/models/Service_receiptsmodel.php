@@ -19,6 +19,7 @@ class Service_receiptsmodel extends CI_Model {
     private function _getDatatablesQuery()
     {
         $this->db->select('*');
+        $this->db->where('s.deleted_at', null);
         $this->db->from('service_receipts as s');
  
         $i = 0;
@@ -67,6 +68,7 @@ class Service_receiptsmodel extends CI_Model {
     public function getAllItems()
     {
         $this->db->order_by('name', 'asc');
+        $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
@@ -78,7 +80,8 @@ class Service_receiptsmodel extends CI_Model {
 
     public function getDataById($id)
     {
-        $this->db->where('receipt_id', $id);
+        $this->db->where('id', $id);
+        $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table_service_receipts);
         if ($query->num_rows() > 0) {
             return $query->row_array();
@@ -102,6 +105,7 @@ class Service_receiptsmodel extends CI_Model {
         $data['updated_at'] = date('Y-m-d H:i:s');
         $this->db->where('id',$id);
         $this->db->update($this->table_service_receipts,$data);
+        return array('msg' => 'success');
     }
 
     public function updateData($id, $data)
@@ -127,6 +131,13 @@ class Service_receiptsmodel extends CI_Model {
         $this->db->update($this->table, $dataUpdate);
         $this->db->trans_commit();
         return array('msg' => 'success');
+    }
+
+    public function deleteData($id)
+    {
+        $data = array('deleted_at' => date('Y-m-d H:i:s'));
+        $this->db->where('id',$id);
+        $this->db->update($this->table_service_receipts,$data);
     }
 
 }

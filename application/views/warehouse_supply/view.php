@@ -83,7 +83,7 @@
         "order": [], 
          
         "ajax": {
-            "url": "<?php echo base_url('stok/getDataTable')?>",
+            "url": "<?php echo base_url('warehousesupply/getDataTable')?>",
             "type": "POST"
         },
 

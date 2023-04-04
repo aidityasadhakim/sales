@@ -145,6 +145,7 @@ class Salemodel extends CI_Model {
 
     public function insertData($data)
     {
+        echo "start insertData " . time() . "<br/>";
         $this->db->trans_begin();
         $dataInsert = array('transaction_date' => $data['transaction_date'],
                         'is_customer'  => $data['is_customer'],
@@ -217,6 +218,7 @@ class Salemodel extends CI_Model {
         }
         $this->db->trans_commit();
         return array('msg' => 'success', 'trans_id' => $idx);
+        echo "end insertData " . time() . "<br/>";
     }
 
     public function decreaseStock($item_id = '', $qty)

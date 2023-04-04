@@ -13,6 +13,7 @@ class Reportmodel extends CI_Model {
     var $table_stock = 'stock_mutations';
     var $table_sale = 'sales';
     var $table_purchase = 'purchases';
+    var $table_suppliers = 'suppliers';
 
     public function getAllItems($value='')
     {
@@ -45,10 +46,96 @@ class Reportmodel extends CI_Model {
         }
     }
 
+    public function getDataStockSoldByPeriod($start_date, $end_date)
+    {
+        $sql = "SELECT 
+        items.name AS 'item_name', 
+        items.code AS 'item_code', 
+        SUM(sale_details.qty) AS 'quantity', 
+        sale_details.price AS 'item_price', 
+        sales.is_cash 'is_cash'
+                FROM sales 
+            INNER JOIN sale_details ON sales.id = sale_details.sale_id 
+            INNER JOIN items ON sale_details.item_id = items.id
+                WHERE 
+            DATE(sales.created_at) >= '$start_date' AND 
+            DATE(sales.created_at) <= '$end_date' AND 
+            sales.deleted_at IS NULL
+                GROUP BY 
+            sale_details.item_id, sales.is_cash
+                ORDER BY 
+            items.name;";
+        $result = $this->db->query($sql);
+        if ($result->row_array() > 0) {
+            return $result->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getDataStockSoldByPeriodAndTransactionType($start_date, $end_date, $is_cash)
+    {
+        $sql = "SELECT 
+        items.name AS 'item_name', 
+        items.code AS 'item_code', 
+        SUM(sale_details.qty) AS 'quantity', 
+        sale_details.price AS 'item_price', 
+        sales.is_cash 'is_cash'
+                FROM sales 
+            INNER JOIN sale_details ON sales.id = sale_details.sale_id 
+            INNER JOIN items ON sale_details.item_id = items.id
+                WHERE 
+            DATE(sales.created_at) >= '$start_date' AND 
+            DATE(sales.created_at) <= '$end_date' AND 
+            sales.deleted_at IS NULL AND 
+            sales.is_cash = $is_cash
+                GROUP BY 
+            sale_details.item_id, sales.is_cash
+                ORDER BY 
+            items.name;";
+        $result = $this->db->query($sql);
+        if ($result->row_array() > 0) {
+            return $result->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
     public function getDataMinStock()
     {
         $this->db->order_by('id', 'asc');
         $this->db->where('deleted_at', null);
+        $this->db->where('stock < stockMin', NULL);
+        $query = $this->db->get($this->table_item);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getDataCategories() {
+        $this->db->select('type');
+        $this->db->group_by('type');
+        $this->db->where('deleted_at', null);
+        $this->db->where('stock < stockMin', NULL);
+        $query = $this->db->get($this->table_item);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getDataMinStockByCategory($category_id)
+    {
+        $this->db->order_by('id', 'asc');
+        $this->db->where('deleted_at', null);
+        $this->db->where('type', $category_id);
         $this->db->where('stock < stockMin', NULL);
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
@@ -130,14 +217,27 @@ class Reportmodel extends CI_Model {
         }
     }
 
-    public function getDataPurchasesByPeriod($start_date, $end_date)
+    public function getDataPurchasesByPeriod($start_date, $end_date, $supplier_id)
     {
         $this->db->order_by('id', 'desc');
         $this->db->where('deleted_at', null);
         $this->db->where('status', 2);
+        if($supplier_id != '') {
+            $this->db->where('supplier_id', $supplier_id);
+        }
         $this->db->where('DATE(transaction_date) >=', $start_date);
         $this->db->where('DATE(transaction_date) <=', $end_date);
         $query = $this->db->get($this->table_purchase);
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        else {
+            return array();
+        }
+    }
+
+    public function getAllSuppliers() {
+        $query = $this->db->get($this->table_suppliers);
         if ($query->num_rows() > 0) {
             return $query->result_array();
         }

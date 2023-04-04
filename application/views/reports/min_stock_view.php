@@ -24,6 +24,31 @@
                 <h5 class="card-title m-0"><?php echo $title; ?></h5>
               </div>
               <div class="card-body">
+
+                <form class="form-horizontal" method="post">
+
+                  <div style="padding-bottom: 16px" class="row">
+                    <div class="col-lg-6">
+                      <select name="category_id" class="form-control select2" id="category_id">
+                        <option value="">--Pilih Tipe Barang--</option>
+                        <?php foreach ($categories as $key => $value): ?>
+                          <option value="<?php echo $value['type'] ?>"
+                            <?php if (isset($selected_type)): ?>
+                              <?php if($selected_type == $value['type']): ?> selected="selected"<?php endif; ?>
+                            <?php endif ?>>
+                            
+                            <?php echo $value['type'] ?>
+                          </option>
+                        <?php endforeach ?>
+                      </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-info" name="submit_filter" value="">Submit</button>
+                  </div>
+
+
+                </form>
+                
                 <div class="table-responsive">
                   <table class="table table-bordered" id="data-table">
                     <thead>

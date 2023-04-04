@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cetak Nota Penjualan</title>
+    <title>Cetak Nota Tanda Terima Servis</title>
     <link rel="stylesheet" href="<?php echo base_url('assets') ?>/dist/css/normalize.css">
     <style>
         body.receipt .sheet { width: <?php echo $info['width']; ?>mm; } /* sheet size */
@@ -46,6 +46,11 @@
             text-align: right;
             padding-right: 10px;
         }
+        .header {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
     <script type="text/javascript">
         window.print();
@@ -59,25 +64,41 @@
         <h3 class="title"><?php echo $info['title']; ?></h3>
         <h4 class="subtitle"><?php echo $info['address']; ?><br><?php echo $info['subtitle']; ?></h4>
         <hr>
-        <p>No Nota: <?php echo $row['code']; ?></p>
+        <p class="header">TANDA TERIMA SERVIS</p>
+        <p>No Nota: <?php echo 'IHSR'.$details['id']; ?></p>
         <div>
-            <p class="left"><?php echo $row['customer_name'] ?></p>
-            <p class="right"><?php echo date('d/m/Y', strtotime($row['transaction_date'])) ?></p>
-
+            <p class="left">Nama: <?= $details['name'] ?></p>
+            <br>
+            <p class="left">No Telp: <?= $details['phone'] ?></p>
+            <p class="right"><?php echo date('d/m/Y', strtotime($details['transaction_date'])) ?></p>
         </div>
         <div style="clear: both"></div>
         <hr>
         <table border="0" width="100%">
             <tbody>
-                <?php foreach ($details as $key => $value): ?>
-                <tr style="border-bottom-style: dashed;
-				border-bottom-width: 1px;
-				border-bottom-color: black;">
-                    <td width="60%" class="item-name"><?php echo getDataColumn('items', 'id', $value['item_id'], 'name'); ?></td>
-                    <td><?php echo $value['qty']; ?> x <?php echo number_format($value['price']); ?></td>
-                    <td><?php echo number_format($value['qty']*$value['price']); ?></td>
+                <tr>
+                    <td width="25%" class="item-name">Tipe Hp</td>
+                    <td width="5%">:</td>
+                    <td><?= $details['tipe_hp'] ?></td>
                 </tr>
-                <?php endforeach ?>
+                <tr>
+                    <td width="25%" class="item-name">Kerusakan</td>
+                    <td width="5%">:</td>
+                    <td><?= $details['kerusakan'] ?></td>
+                </tr>
+                <tr>
+                    <td width="25%" class="item-name">Kelengkapan</td>
+                    <td width="5%">:</td>
+                    <td><?= $details['kelengkapan'] ?></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><hr></td>
+                </tr>
+                <tr>
+                    <td width="25%" class="item-name">Keterangan</td>
+                    <td width="5%">:</td>
+                    <td><?= $details['keterangan'] ?></td>
+                </tr>
                 <tr>
                     <td colspan="3"><hr></td>
                 </tr>
@@ -85,16 +106,12 @@
         </table>
         <table width="100%">
             <tr>
-                <td style="text-align: right; padding-right: 10px" width="85%">Total </td>
-                <td> <?php echo number_format($row['total']); ?></td>
+                <td width="65%"><p style="font-size: 8px;line-height: 10px; width: 80%;">BARANG YANG TIDAK DIAMBIL LEWAT DARI 90 HARI DAN APABILA TERJADI KEHILANGAN BUKAN TANGGUNG JAWAB ISTANA HP</p></td>
+                <td text-align="right">Hormat Kami,</td>
             </tr>
             <tr>
-                <td style="text-align: right; padding-right: 10px">Bayar </td>
-                <td> <?php echo number_format($row['cash']); ?></td>
-            </tr>
-            <tr>
-                <td style="text-align: right; padding-right: 10px">Kembalian </td>
-                <td> <?php echo number_format($row['changes']); ?></td>
+                <td></td>
+                <td width="35%" text-align="right"><?= $details['penerima'] ?></td>
             </tr>
         </table>
         <p>

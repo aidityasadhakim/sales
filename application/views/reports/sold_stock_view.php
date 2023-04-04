@@ -26,23 +26,6 @@
               <div class="card-body">
                 <form class="form-horizontal" method="post">
                   <div class="form-group row">
-                    <label for="method_id" class="col-sm-2 col-form-label">Metode Pembayaran</label>
-                    <div class="col-sm-3">
-                      <select name="method_id" class="form-control select2" id="method_id" required>
-                        <option value="0">Semua</option>
-                      <?php 
-                      foreach ($methods as $key => $value): 
-                        $selected = '';
-                        if (isset($method_id)) {
-                          $selected = ($method_id == $value['id']) ? ' selected' : '';
-                        }
-                      ?>
-                        <option value="<?php echo $value['id'] ?>"<?php echo $selected; ?>><?php echo $value['name'] ?></option>
-                      <?php endforeach ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row">
                     <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal</label>
                     <div class="col-sm-3">
                       <input type="date" name="start_date" class="form-control" id="start_date" value="<?php echo (isset($start_date)) ? $start_date : date('Y-m-d') ?>" required>
@@ -54,44 +37,72 @@
                       <input type="date" name="end_date" class="form-control" id="end_date" value="<?php echo (isset($end_date)) ? $end_date : date('Y-m-d') ?>" required>
                     </div>
                   </div>
+                  <div class="form-group row">
+                    <label for="transaction_type" class="col-sm-2 col-form-label">Tunai/Utang</label>
+                    <div class="col-sm-3">
+	                    <select name="transaction_type" class="form-control select2" id="transaction_type">
+	                        <option value=""
+	                        	<?php if (isset($transaction_type)) echo ($transaction_type == '') ? ' selected="selected"' : '' ?>>
+	                        Semua</option>
+	                        <option value="1"
+	                        	<?php if (isset($transaction_type)) echo ($transaction_type == '1') ? ' selected="selected"' : '' ?>>
+	                        Tunai</option>
+	                        <option value="0"
+	                        	<?php if (isset($transaction_type)) echo ($transaction_type == '0') ? ' selected="selected"' : '' ?>>
+	                        Utang</option>
+	                  	</select>
+                  	</div>
+                  </div>
                   <button type="submit" class="btn btn-info" name="submit" value="view">Submit</button>
                 </form>
                 <br><br>
-                <?php if (isset($sales)): ?>
+                <?php if (isset($stocks)): ?>
                   <div class="table-responsive">
                     <table class="table table-bordered" id="data-table">
                       <thead>
                         <tr>
                           <th>No</th>
-                          <th>Tanggal Transaksi</th>
-                          <th>Kode Transaksi</th>
-                          <th>Nama Pelanggan</th>
-                          <th>Keterangan</th>
-                          <th>Pembayaran</th>
-                          <th>Tanggal Pembayaran</th>
-                          <th>Jumlah</th>
+                          <th>Nama</th>
+                          <th>Kode</th>
+                          <th>Terjual</th>
+                          <th>Harga</th>
+                          <th>Total Harga</th>
+                          <th>Status Pembayaran</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <?php $sumSale = 0; foreach ($sales as $key => $value): ?>
+                        <?php 
+	                        $totalSale = 0;
+	                        foreach ($stocks as $key => $value): 
+                        ?>
                           <tr>
                             <td><?php echo $key + 1; ?></td>
-                            <td><?php echo date('d F Y', strtotime($value['transaction_date'])) ?></td>
-                            <td><?php echo $value['code']; ?></td>
-                            <td><a href="<?php echo base_url('sale/detail/'.$value['id']) ?>" target="_blank"><?php echo $value['customer_name']; ?></a></td>
-                            <td><?php echo $value['note'] ?></td>
-                            <td><?php echo ($value['is_cash'] == 1) ? 'Lunas' : 'Utang' ?></td>
-                            <td><?php echo date('d F Y H:i:s', strtotime($value['payment_at'])) ?></td>
-                            <td>Rp. <?php echo number_format($value['total']) ?></td>
+                            <td><?php echo $value['item_name']; ?></td>
+                            <td><?php echo $value['item_code']; ?></td>
+                            <td><?php echo $value['quantity']; ?></td>
+                            <td>Rp. <?php echo number_format($value['item_price']) ?></td>
+                            <td>Rp. <?php echo number_format($value['quantity'] * $value['item_price']) ?></td>
+                            <td>
+                            	<p style="<?php if($value['is_cash']) echo 'color:green'; else echo 'color:red'?>">
+                            		<?php if($value['is_cash']) echo "LUNAS"; else echo "PIUTANG"; ?>
+                            	</p>
+                            </td>
                           </tr>
-                        <?php $sumSale += $value['total']; endforeach ?>
+                        <?php 
+	                        $totalSale += $value['quantity'] * $value['item_price'];
+                        	endforeach 
+                        ?>
                       </tbody>
-                      <tfoot>
+                    </table>
+                  </div>
+                  <div class="table-responsive mt-5">
+                    <table class="table table-bordered">
+                      <tbody>
                         <tr>
-                          <td colspan="7"><strong>Total Kas Masuk</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumSale) ?></strong></td>
+                          <td><strong>Total</strong></td>
+                          <td><strong>Rp. <?php echo number_format($totalSale) ?></strong></td>
                         </tr>
-                      </tfoot>
+                      </tbody>
                     </table>
                   </div>
                 <?php endif ?>

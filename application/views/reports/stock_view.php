@@ -94,7 +94,12 @@
                               }
                               elseif ($value['type'] == 'purchase') {
                                 $dataPurchase = $this->report->getDataPurchaseById($value['transaction_id']);
-                                $link = base_url('purchase/detail/'.$value['transaction_id']);
+                                if ($this->session->userdata('level') == 3) {
+                                  $link = '#';
+                                }
+                                else {
+                                  $link = base_url('purchase/detail/'.$value['transaction_id']);
+                                }
                                 $code = $dataPurchase['code'];
                                 $name = $dataPurchase['name'];
                               }
@@ -104,7 +109,7 @@
                                 $name = '-';
                               }
                               ?>
-                              <a href="<?php echo $link ?>" target="_blank"><?php echo $code; ?></a>
+                              <a href="<?php echo $link ?>" <?php echo ($link != '#') ? 'target="_blank"' : '' ?>><?php echo $code; ?></a>
                             </td>
                             <td><?php echo $name; ?></td>
                             <td><?php echo $value['amount']; ?></td>

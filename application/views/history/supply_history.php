@@ -42,7 +42,7 @@
                                     <td><?= $i ?></td>
                                     <td><?= date('d F Y', strtotime($history['transaction_date']))?></td>
                                     <td><?= $history['qty'] ?></td>
-                                    <td><?= $history['status'] == 'increase' ? 'Tambah' : 'Kurang' ?></td>
+                                    <td><?= $history['status'] == 'increase' ? 'Masuk' : 'Keluar' ?></td>
                                     <td><?= $history['keterangan'] ?></td>
                                 </tr>
                                 <?php $i++ ?>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                  <a href="<?php echo base_url('stok') ?>" class="btn btn-default float-right">Cancel</a>
+                  <a href="<?php echo base_url('warehousesupply') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
             </div>
           </div>

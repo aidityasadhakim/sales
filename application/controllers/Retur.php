@@ -24,23 +24,26 @@ class Retur extends CI_Controller {
     // Add a new item
     public function add()
     {
+        $start_date = date('Y-m-d');
+        $end_date = date('Y-m-d');
+        if ($this->input->post('start_date') && $this->input->post('end_date')) {
+            $start_date = $this->input->post('start_date');
+            $data['start_date'] = $this->input->post('start_date');
+
+            $end_date = $this->input->post('end_date');
+            $data['end_date'] = $this->input->post('end_date');
+        }
+
+        $data['title'] = 'Tambah Nota Retur';
+        $data['page']  = 'returns';
+        $data['sales'] = $this->retur->getAllDataSales($start_date, $end_date);
         if ($this->input->post('submit')) {
+            $sale_id = $this->input->post('submit');
 
-            $sale_id = $this->input->post('sale_id');
-
-            $data['title'] = 'Tambah Nota Retur';
-            $data['page']  = 'returns';
-            $data['sales'] = $this->retur->getAllDataSales();
             $data['rowSale'] = $this->retur->getDataSalesById($sale_id);
             $data['rowSaleDetails'] = $this->retur->getDataDetailSalesByIdTrans($sale_id);
-            $this->load->view('returns/insert',$data);
         }
-        else {
-            $data['title'] = 'Tambah Nota Retur';
-            $data['page']  = 'returns';
-            $data['sales'] = $this->retur->getAllDataSales();
-            $this->load->view('returns/insert',$data);
-        }
+        $this->load->view('returns/insert',$data);
     }
 
     public function store($value='')
@@ -82,6 +85,46 @@ class Retur extends CI_Controller {
             }
         }
     }
+
+    // public function store($value='')
+    // {
+    //     if ($this->input->post('submit')) {
+
+    //         $transaction_date = $this->input->post('transaction_date');
+
+    //         $sale_id = $this->input->post('sale_id');
+    //         $cash = $this->input->post('cash');
+
+    //         $sale_detail_id = $this->input->post('sale_detail_id');
+    //         $item_id = $this->input->post('item_id');
+    //         $item_price = $this->input->post('item_price');
+    //         $item_qty = $this->input->post('item_qty');
+    //         $retur_qty = $this->input->post('retur_qty');
+    //         $retur_note = $this->input->post('retur_note');
+
+    //         $dataInsert = array(
+    //                 'transaction_date'  => $transaction_date,
+    //                 'sale_id'  => $sale_id,
+    //                 'sale_detail_id'  => $sale_detail_id,
+    //                 'item_id'  => $item_id,
+    //                 'item_price'  => $item_price,
+    //                 'item_qty' => $item_qty,
+    //                 'retur_qty' => $retur_qty,
+    //                 'retur_note' => $retur_note,
+    //                 'cash' => $cash
+    //                 );
+
+    //         $result = $this->retur->insertData($dataInsert);
+    //         if ($result['msg'] == 'success') {
+    //             $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
+    //             redirect('retur');
+    //         }
+    //         else {
+    //             $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak sesuai.');
+    //             redirect('retur');   
+    //         }
+    //     }
+    // }
 
     public function detail($id = '')
     {

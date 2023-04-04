@@ -113,7 +113,8 @@ class Sale extends CI_Controller {
             $result = $this->sale->insertData($dataInsert);
             if ($result['msg'] == 'success') {
                 $this->sale->updateDataSalesById($result['trans_id'], array('code' => 'IHS'.$result['trans_id']));
-                $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
+                $this->session->set_flashdata('msg', 
+                    "Data berhasil ditambah!");
                 redirect('sale');
             }
             else {
@@ -300,7 +301,7 @@ class Sale extends CI_Controller {
         $data = [];
         foreach ($items as $key => $value) {
             $stock = $this->item->getAvailableStock($value['id']);
-            if ($stock > 0) {
+            if ($stock >= 0) {
                 $dataColumn['text'] = $value['name'];
                 $dataColumn['id'] = $value['id'];
                 $data[] = $dataColumn;

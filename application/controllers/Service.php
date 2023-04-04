@@ -41,14 +41,13 @@ class Service extends CI_Controller {
             $row[] = $field['note'];
             if ($field['is_cash'] == 0) {
                 $button_pay = '<a href="'.base_url('service/pay/'.$field['id']).'" class="btn btn-warning">Bayar</a>';
-                $tanda_terima = '<a href="'.base_url('servicereceipts/index/'.$field['id']).'" class="btn btn-primary">TandaTerima</a>';
             }
             else {
                 $button_pay = '';
                 $tanda_terima = '';
             }
             $row[] = '<div class="btn-group">
-                            '.$button_pay.$tanda_terima.'
+                            '.$button_pay.'
                             <a href="'.base_url('service/cetak/'.$field['id']).'" class="btn btn-default">Cetak</a>
                             <a href="'.base_url('service/update/'.$field['id']).'" class="btn btn-success">Ubah</a>
                             <a href="'.base_url('service/delete/'.$field['id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>

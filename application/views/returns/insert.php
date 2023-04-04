@@ -25,20 +25,47 @@
               </div>
               <form class="form-horizontal" method="post">
                 <div class="card-body">
-                  <div class="form-group row">
-                    <label for="sale_id" class="col-sm-2 col-form-label">Kode Transaksi</label>
-                    <div class="col-sm-3">
-                      <select name="sale_id" class="form-control select2" id="sale_id" required="">
-                        <option value="">--Pilih Nota Penjualan--</option>
-                        <?php foreach ($sales as $key => $value): ?>
-                          <option value="<?php echo $value['id'] ?>"><?php echo $value['code'] ?> - <?php echo $value['c_name'] ?> - <?php echo date('d-m-Y', strtotime($value['transaction_date'])) ?></option>
-                        <?php endforeach ?>
-                      </select>
+                  <div style="padding-bottom: 16px">
+                    <div class="form-group row">
+                      <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal</label>
+                      <div class="col-sm-3">
+                        <input type="date" name="start_date" class="form-control" id="start_date" value="<?php echo (isset($start_date)) ? $start_date : date('Y-m-d') ?>">
+                      </div>
                     </div>
+                    <div class="form-group row">
+                      <label for="end_date" class="col-sm-2 col-form-label">Tanggal Akhir</label>
+                      <div class="col-sm-3">
+                        <input type="date" name="end_date" class="form-control" id="end_date" value="<?php echo (isset($end_date)) ? $end_date : date('Y-m-d') ?>">
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-info" name="submit_date" value="view">Submit</button>
                   </div>
-                </div>
+
+                  <div class="table-responsive">
+                    <table class="table table-bordered" id="data-table-return">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Nama Customer</th>
+                          <th>Tanggal Transaksi</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php foreach ($sales as $key => $value): ?>
+                          <tr>
+                            <td><?php echo $value['code'] ?></td>
+                            <td><?php echo $value['c_name'] ?></td>
+                            <td><?php echo date('d F Y', strtotime($value['transaction_date'])) ?></td>
+                            <td>
+                              <button type="submit" class="btn btn-info" name="submit" value="<?php echo $value['id'] ?>">Select</button>
+                            </td>
+                          </tr>
+                        <?php endforeach ?>
+                      </tbody>
+                    </table>
+                  </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-info" name="submit" value="add">Submit</button>
                   <a href="<?php echo base_url('retur') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
               </form>

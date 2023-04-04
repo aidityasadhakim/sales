@@ -58,7 +58,7 @@
 <body class="receipt">
     <section class="sheet padding-5">
         <h3 class="title">Istana HP</h3>
-        <h4 class="subtitle">Jalan Hidayatullah No 7 Samarinda<br>No Telp: 085319383333 / 0541-200618</h4>
+        <h4 class="subtitle">Jalan Hidayatullah No 7 Samarinda<br>No Telp: 085319383333</h4>
         <hr>
         <p class="header">NOTA SERVIS</p>
         <p>No Nota: <?php echo $row['code']; ?></p>

@@ -78,7 +78,7 @@
               <li><a href="<?php echo base_url('pending') ?>" class="dropdown-item">Nota Jual Sementara</a></li>
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('service') ?>" class="dropdown-item">Nota Servis</a></li>
-              <li><a href="<?php echo base_url('servicereceipts') ?>" class="dropdown-item">Nota Tanda Terima Servis</a></li>
+              <!-- <li><a href="<?php echo base_url('servicereceipts') ?>" class="dropdown-item">Nota Tanda Terima Servis</a></li> -->
               <li class="dropdown-divider"></li>
               <li><a href="<?php echo base_url('retur') ?>" class="dropdown-item">Retur</a></li>
             </ul>
@@ -99,6 +99,9 @@
               <?php endif ?>
               <li><a href="<?php echo base_url('report/stock') ?>" class="dropdown-item">Laporan Mutasi Stok </a></li>
               <li><a href="<?php echo base_url('report/min_stock') ?>" class="dropdown-item">Laporan Stok Hampir habis</a></li>
+              <?php if ($this->session->userdata('level') == 1): ?>
+              <li><a href="<?php echo base_url('report/sold_stock') ?>" class="dropdown-item">Laporan Stok Terjual</a></li>
+              <?php endif ?>
               <li><a href="<?php echo base_url('report/cash_in') ?>" class="dropdown-item">Laporan Kas Masuk</a></li>
               <?php if ($this->session->userdata('level') == 1): ?>
               <li><a href="<?php echo base_url('report/cash_out') ?>" class="dropdown-item">Laporan Kas Keluar</a></li>
@@ -122,7 +125,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('stok') ?>">Stok</a>
+            <a class="nav-link" href="<?= base_url('warehousesupply') ?>">Stok</a>
             <!-- <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Stok</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
               <li><a href="<?php echo base_url('purchase') ?>" class="dropdown-item">Nota Beli </a></li>

@@ -24,6 +24,9 @@
                 <h5 class="card-title m-0"><?php echo $title; ?></h5>
               </div>
               <div class="card-body">
+                <p>
+                    <a href="<?php echo base_url('warehousesupply/additem') ?>" class="btn btn-primary">Tambah</a>
+                </p>
                 <?php if($this->session->flashdata('msg')): ?>
                   <div class="alert alert-success">
                       <button type="button" class="close" data-dismiss="alert">X</button>

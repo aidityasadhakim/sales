@@ -23,7 +23,7 @@ class SupplyHistorymodel extends CI_Model {
     public function getDataByItemId($id)
     {
         $this->db->order_by('transaction_date','desc');
-        $this->db->where('item_id', $id);
+        $this->db->where('warehouse_id', $id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->result_array();

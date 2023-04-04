@@ -301,7 +301,7 @@ class Sale extends CI_Controller {
         $data = [];
         foreach ($items as $key => $value) {
             $stock = $this->item->getAvailableStock($value['id']);
-            if ($stock > 0) {
+            if ($stock >= 0) {
                 $dataColumn['text'] = $value['name'];
                 $dataColumn['id'] = $value['id'];
                 $data[] = $dataColumn;

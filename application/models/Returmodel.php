@@ -176,7 +176,7 @@ class Returmodel extends CI_Model {
         $this->updateDataSale($data['sale_id'], $dataUpdateSale);
 
         $this->db->trans_commit();
-        return array('msg' => 'success');
+        return array('msg' => 'success', 'idx' => $idx);
     }
 
     public function updateData($id, $data)
@@ -342,4 +342,3 @@ class Returmodel extends CI_Model {
 
 /* End of file Returmodel.php */
 /* Location: ./application/models/Returmodel.php */
- ?>

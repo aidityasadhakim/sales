@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Report extends CI_Controller {
+class Report extends CI_Controller
+{
 
     public function __construct()
     {
@@ -31,18 +32,16 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['items'] = $this->report->getAllItems();
                 $this->load->view('reports/stock_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['item_id'] = $this->input->post('item_id');
 
                 $data['stocks'] = $this->report->getDataStockByPeriod($data['start_date'], $data['end_date'], $data['item_id']);
-                
-                $this->load->view('reports/stock_download', $data);    
+
+                $this->load->view('reports/stock_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Mutasi Stok Barang';
             $data['page'] = 'report';
             $data['items'] = $this->report->getAllItems();
@@ -60,15 +59,14 @@ class Report extends CI_Controller {
             $data['transaction_type'] = $this->input->post('transaction_type');
 
             $transactionType = $this->input->post('transaction_type');
-            if($transactionType == '') {
+            if ($transactionType == '') {
                 $data['stocks'] = $this->report->getDataStockSoldByPeriod($data['start_date'], $data['end_date']);
                 $this->load->view('reports/sold_stock_view', $data);
             } else {
                 $data['stocks'] = $this->report->getDataStockSoldByPeriodAndTransactionType($data['start_date'], $data['end_date'], $transactionType);
                 $this->load->view('reports/sold_stock_view', $data);
             }
-        }
-        else {
+        } else {
             $this->load->view('reports/sold_stock_view', $data);
         }
     }
@@ -78,7 +76,7 @@ class Report extends CI_Controller {
         $data['title'] = 'Laporan Stok Hampir Habis';
         $data['page'] = 'report';
         $data['categories'] = $this->report->getDataCategories();
-        if($this->input->post('category_id')) {
+        if ($this->input->post('category_id')) {
             $category_id = $this->input->post('category_id');
             $data['selected_type'] = $category_id;
             $data['items'] = $this->report->getDataMinStockByCategory($category_id);
@@ -103,18 +101,16 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['methods'] = $this->method->getAllData();
                 $this->load->view('reports/cashin_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['method_id'] = $this->input->post('method_id');
 
                 $data['sales'] = $this->report->getDataCashSaleByPeriod($data['start_date'], $data['end_date'], $data['method_id']);
-                
-                $this->load->view('reports/cashin_download', $data);    
+
+                $this->load->view('reports/cashin_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Kas Masuk';
             $data['page'] = 'report';
             $data['methods'] = $this->method->getAllData();
@@ -137,18 +133,16 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['methods'] = $this->method->getAllData();
                 $this->load->view('reports/cashout_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['method_id'] = $this->input->post('method_id');
 
                 $data['purchases'] = $this->report->getDataCashPurchaseByPeriod($data['start_date'], $data['end_date'], $data['method_id']);
-                
-                $this->load->view('reports/cashout_download', $data);    
+
+                $this->load->view('reports/cashout_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Kas Keluar';
             $data['page'] = 'report';
             $data['methods'] = $this->method->getAllData();
@@ -163,24 +157,27 @@ class Report extends CI_Controller {
             if ($type == 'view') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
+                if ($this->input->post('is_ecommerce') != null) {
+                    $data['ecommerce'] = $this->input->post('ecommerce');
+                } else {
+                    $data['ecommerce'] = '';
+                }
 
-                $data['sales'] = $this->report->getDataSalesByPeriod($data['start_date'], $data['end_date']);
+                $data['sales'] = $this->report->getDataSalesByPeriod($data['start_date'], $data['end_date'], '', '', '', '', '', $data['ecommerce']);
 
                 $data['title'] = 'Laporan Penjualan';
                 $data['page'] = 'report';
                 $this->load->view('reports/sales_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['method_id'] = $this->input->post('method_id');
 
                 $data['sales'] = $this->report->getDataSalesByPeriod($data['start_date'], $data['end_date']);
-                
-                $this->load->view('reports/sales_download', $data);    
+
+                $this->load->view('reports/sales_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Penjualan';
             $data['page'] = 'report';
             $this->load->view('reports/sales_view', $data);
@@ -202,17 +199,15 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['suppliers'] = $this->report->getAllSuppliers();
                 $this->load->view('reports/purchases_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
 
                 $data['purchases'] = $this->report->getDataPurchasesByPeriod($data['start_date'], $data['end_date'], $supplier_id);
-                
-                $this->load->view('reports/purchases_download', $data);    
+
+                $this->load->view('reports/purchases_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Pembelian';
             $data['page'] = 'report';
             $data['suppliers'] = $this->report->getAllSuppliers();
@@ -239,18 +234,16 @@ class Report extends CI_Controller {
                 $data['methods'] = $this->method->getAllData();
                 $data['customers'] = $this->customer->getAllData();
                 $this->load->view('reports/profit_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['type'] = $this->input->post('type');
 
                 $data['sales'] = $this->report->getDataSalesByPeriod($data['start_date'], $data['end_date'], $data['type']);
-                
-                $this->load->view('reports/profit_view', $data);    
+
+                $this->load->view('reports/profit_view', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Laba/Rugi';
             $data['page'] = 'report';
             $data['methods'] = $this->method->getAllData();
@@ -272,17 +265,15 @@ class Report extends CI_Controller {
                 $data['title'] = 'Laporan Utang';
                 $data['page'] = 'report';
                 $this->load->view('reports/debt_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
 
                 $data['debts'] = $this->report->getDataDebtByPeriod($data['start_date'], $data['end_date']);
-                
-                $this->load->view('reports/debt_download', $data);   
+
+                $this->load->view('reports/debt_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Utang';
             $data['page'] = 'report';
             $this->load->view('reports/debt_view', $data);
@@ -305,18 +296,16 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['customers'] = $this->customer->getAllData();
                 $this->load->view('reports/claim_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['customer_id'] = $this->input->post('customer_id');
 
                 $data['claims'] = $this->report->getDataClaimByPeriod($data['start_date'], $data['end_date'], $data['customer_id']);
-                
-                $this->load->view('reports/claim_download', $data);   
+
+                $this->load->view('reports/claim_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Piutang';
             $data['page'] = 'report';
             $data['customers'] = $this->customer->getAllData();
@@ -324,7 +313,7 @@ class Report extends CI_Controller {
         }
     }
 
-    public function customers($value='')
+    public function customers($value = '')
     {
         if ($this->input->post('submit')) {
             $type = $this->input->post('submit');
@@ -339,18 +328,16 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['customers'] = $this->customer->getAllData();
                 $this->load->view('reports/customer_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['customer_id'] = $this->input->post('customer_id');
 
                 $data['sales'] = $this->report->getDataSalesCustomerByPeriod($data['start_date'], $data['end_date'], $data['customer_id']);
-                
-                $this->load->view('reports/customer_download', $data);    
+
+                $this->load->view('reports/customer_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Penjualan Per Pelanggan';
             $data['page'] = 'report';
             $data['customers'] = $this->customer->getAllData();
@@ -370,16 +357,14 @@ class Report extends CI_Controller {
                 $data['title'] = 'Laporan Stok Barang';
                 $data['page'] = 'report';
                 $this->load->view('reports/item_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['keyword'] = $this->input->post('keyword');
 
                 $data['items'] = $this->report->getAllAvailableItems($data['keyword']);
-                
-                $this->load->view('reports/item_download', $data);    
+
+                $this->load->view('reports/item_download', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Stok Barang';
             $data['page'] = 'report';
             $data['items'] = $this->report->getAllAvailableItems();
@@ -405,18 +390,16 @@ class Report extends CI_Controller {
                 $data['methods'] = $this->method->getAllData();
                 $data['customers'] = $this->customer->getAllData();
                 $this->load->view('reports/profit_technician_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['type'] = $this->input->post('type');
 
                 $data['sales'] = $this->report->getDataSalesByPeriod($data['start_date'], $data['end_date'], $data['type']);
-                
-                $this->load->view('reports/profit_view', $data);    
+
+                $this->load->view('reports/profit_view', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Setor Teknisi';
             $data['page'] = 'report';
             $data['methods'] = $this->method->getAllData();
@@ -444,18 +427,16 @@ class Report extends CI_Controller {
                 $data['methods'] = $this->method->getAllData();
                 $data['customers'] = $this->customer->getAllData();
                 $this->load->view('reports/profit_service_view', $data);
-            }
-            else if ($type == 'download') {
+            } else if ($type == 'download') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['type'] = $this->input->post('type');
 
                 $data['sales'] = $this->report->getDataSalesByPeriod($data['start_date'], $data['end_date'], $data['type']);
-                
-                $this->load->view('reports/profit_view', $data);    
+
+                $this->load->view('reports/profit_view', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Laba/Rugi Servis';
             $data['page'] = 'report';
             $data['methods'] = $this->method->getAllData();
@@ -481,12 +462,9 @@ class Report extends CI_Controller {
                 $data['page'] = 'report';
                 $data['customers'] = $this->customer->getAllData();
                 $this->load->view('reports/retur_view', $data);
+            } else if ($type == 'download') {
             }
-            else if ($type == 'download') {
-                
-            }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Retur';
             $data['page'] = 'report';
             $data['customers'] = $this->customer->getAllData();
@@ -494,7 +472,7 @@ class Report extends CI_Controller {
         }
     }
 
-    public function omzet_customers($value='')
+    public function omzet_customers($value = '')
     {
         if ($this->input->post('submit')) {
             $type = $this->input->post('submit');
@@ -507,32 +485,29 @@ class Report extends CI_Controller {
                 $data['title'] = 'Laporan Omzet Penjualan Pelanggan';
                 $data['page'] = 'report';
                 $this->load->view('reports/customer_omzet_view', $data);
-            }
-            else if ($type == 'cetak') {
+            } else if ($type == 'cetak') {
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['start_page'] = $this->input->post('start_page');
                 $data['end_page'] = $this->input->post('end_page');
                 $data['sales'] = $this->report->getDataSalesPeriodCustomer($data['start_date'], $data['end_date'], $data['start_page'], $data['end_page']);
-                
-                $this->load->view('reports/customer_omzet_print', $data);    
+
+                $this->load->view('reports/customer_omzet_print', $data);
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Laporan Omzet Penjualan Pelanggan';
             $data['page'] = 'report';
             $this->load->view('reports/customer_omzet_view', $data);
         }
     }
 
-    public function omzet_customer_detail($customer_id='', $start_date = null, $end_date = null)
+    public function omzet_customer_detail($customer_id = '', $start_date = null, $end_date = null)
     {
         $data['customer'] = $this->customer->getDataById($customer_id);
         if ($start_date != null && $end_date != null) {
-            $data['title'] = 'Laporan Detail Omzet Penjualan Pelanggan '.$data['customer']['name'].' Periode '.date('d F Y', strtotime($start_date)).' - '.date('d F Y', strtotime($end_date));
-        }
-        else {
-            $data['title'] = 'Laporan Detail Omzet Penjualan Keseluruhan Pelanggan '.$data['customer']['name'];   
+            $data['title'] = 'Laporan Detail Omzet Penjualan Pelanggan ' . $data['customer']['name'] . ' Periode ' . date('d F Y', strtotime($start_date)) . ' - ' . date('d F Y', strtotime($end_date));
+        } else {
+            $data['title'] = 'Laporan Detail Omzet Penjualan Keseluruhan Pelanggan ' . $data['customer']['name'];
         }
         $data['page'] = 'report';
         $data['sales'] = $this->report->getDataSalesCustomerByPeriod($start_date, $end_date, $customer_id);
@@ -557,25 +532,23 @@ class Report extends CI_Controller {
             $row = array();
             $row[] = $no;
             $row[] = date('d F Y', strtotime($field['transaction_date']));
-            $row[] = 'IHS'.$field['id'];
+            $row[] = 'IHS' . $field['id'];
             if ($field['type'] == 'sale') {
-                $row[] = '<a href="'.base_url('sale/detail/'.$field['id']).'" target="_blank">'.$field['customer_name'].'</a>';
+                $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
+            } else {
+                $row[] = '<a href="' . base_url('service/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
             }
-            else {
-                $row[] = '<a href="'.base_url('service/detail/'.$field['id']).'" target="_blank">'.$field['customer_name'].'</a>';
-            }
-            $row[] = 'Rp. '.number_format($field['total']);
-            $row[] = 'Rp. '.number_format(getTotalBuyPrice($field['id']));
+            $row[] = 'Rp. ' . number_format($field['total']);
+            $row[] = 'Rp. ' . number_format(getTotalBuyPrice($field['id']));
             if ($total_profit < 0) {
-                $row[] = 'Rp. ('.number_format($total_profit).')';
-            }
-            else {
-                $row[] = 'Rp. '.number_format($total_profit);
+                $row[] = 'Rp. (' . number_format($total_profit) . ')';
+            } else {
+                $row[] = 'Rp. ' . number_format($total_profit);
             }
 
             $data[] = $row;
         }
- 
+
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->report->countAll($start_date, $end_date, $type, $is_cash, $method_id, $customer_id),
@@ -606,12 +579,11 @@ class Report extends CI_Controller {
 
         $total_profit = $total_sale - $total_modal;
 
-        $data['totalSale'] = 'Rp. '.number_format($total_sale);
-        $data['totalModal'] = 'Rp. '.number_format($total_modal);
-        $data['totalProfit'] = 'Rp. '.number_format($total_profit);
+        $data['totalSale'] = 'Rp. ' . number_format($total_sale);
+        $data['totalModal'] = 'Rp. ' . number_format($total_modal);
+        $data['totalProfit'] = 'Rp. ' . number_format($total_profit);
 
         echo json_encode($data);
-
     }
 
     public function getAllReturnedItems()
@@ -655,13 +627,13 @@ class Report extends CI_Controller {
             $row[] = $field->phone;
             $row[] = $field->address;
             $row[] = getDataSalesPeriodCustomer($sales, $field->id, 'total');
-            $row[] = 'Rp. '.number_format($totalNomSales);
-            $row[] = 'Rp. '.number_format($totalModalSales);
-            $row[] = 'Rp. '.number_format($totalNomSales - $totalModalSales);
+            $row[] = 'Rp. ' . number_format($totalNomSales);
+            $row[] = 'Rp. ' . number_format($totalModalSales);
+            $row[] = 'Rp. ' . number_format($totalNomSales - $totalModalSales);
 
             $data[] = $row;
         }
- 
+
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->report->countAllCustomer(),
@@ -670,9 +642,6 @@ class Report extends CI_Controller {
         );
         echo json_encode($output);
     }
-
 }
 /* End of file Report.php */
 /* Location: ./application/controllers/Report.php */
-
- ?>

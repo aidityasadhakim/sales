@@ -18,7 +18,7 @@ class WarehouseSupply extends CI_Controller {
     // List all your items
     public function index( $offset = 0 )
     {
-        $data['title'] = 'Manajemen Stok';
+        $data['title'] = 'Manajemen Stok Dalam';
         $data['page'] = 'warehousesupply';
         $this->load->view('warehouse_supply/view', $data);
     }
@@ -182,5 +182,3 @@ class WarehouseSupply extends CI_Controller {
 
 /* End of file WarehouseSupply.php */
 /* Location: ./application/controllers/WarehouseSupply.php */
-
- ?>

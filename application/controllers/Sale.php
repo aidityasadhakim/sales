@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Sale extends CI_Controller {
+class Sale extends CI_Controller
+{
 
     public function __construct()
     {
@@ -16,7 +17,7 @@ class Sale extends CI_Controller {
     }
 
     // List all your items
-    public function index( $offset = 0 )
+    public function index($offset = 0)
     {
         $data['title'] = 'Nota Penjualan';
         $data['page'] = 'sales';
@@ -33,27 +34,26 @@ class Sale extends CI_Controller {
             $row = array();
             $row[] = $no;
             $row[] = date('d F Y', strtotime($field['transaction_date']));
-            $row[] = '<a href="'.base_url('sale/detail/'.$field['id']).'" target="_blank">'.$field['customer_name'].'</a>';
-            $row[] = 'Rp. '.number_format($field['total']);
+            $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
+            $row[] = 'Rp. ' . number_format($field['total']);
             $row[] = ($field['is_cash'] == 1) ? 'Lunas' : 'Utang';
             $row[] = getDataColumn('payment_methods', 'id', $field['method_id'], 'name');
             $row[] = $field['note'];
             if ($field['is_cash'] == 0) {
-                $button_pay = '<a href="'.base_url('sale/pay/'.$field['id']).'" class="btn btn-warning">Bayar</a>';
-            }
-            else {
+                $button_pay = '<a href="' . base_url('sale/pay/' . $field['id']) . '" class="btn btn-warning">Bayar</a>';
+            } else {
                 $button_pay = '';
             }
             $row[] = '<div class="btn-group">
-                            '.$button_pay.'
-                            <a href="'.base_url('sale/cetak/'.$field['id']).'" class="btn btn-default">Cetak</a>
-                            <a href="'.base_url('sale/update/'.$field['id']).'" class="btn btn-success">Ubah</a>
-                            <a href="'.base_url('sale/delete/'.$field['id']).'" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
+                            ' . $button_pay . '
+                            <a href="' . base_url('sale/cetak/' . $field['id']) . '" class="btn btn-default">Cetak</a>
+                            <a href="' . base_url('sale/update/' . $field['id']) . '" class="btn btn-success">Ubah</a>
+                            <a href="' . base_url('sale/delete/' . $field['id']) . '" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
                           </div>';
- 
+
             $data[] = $row;
         }
- 
+
         $output = array(
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->sale->countAll(),
@@ -73,12 +73,18 @@ class Sale extends CI_Controller {
                 $customer_id = $this->input->post('customer_id');
                 $customer_name = getDataColumn('customers', 'id', $customer_id, 'name');
                 $is_customer = 1;
-            }
-            else {
+            } else {
                 $customer_id = null;
                 $customer_name = $this->input->post('customer_name');
                 $is_customer = 0;
             }
+
+            if ($this->input->post('is_ecommerce') != null) {
+                $ecommerce = $this->input->post('ecommerce');
+            } else {
+                $ecommerce = null;
+            }
+
             $note = $this->input->post('note');
             $method_id = $this->input->post('method_id');
 
@@ -92,48 +98,54 @@ class Sale extends CI_Controller {
             $changes = $this->input->post('changes');
 
 
-            $dataInsert = array('transaction_date' => $transaction_date,
-                        'is_customer'  => $is_customer,
-                        'customer_id'  => $customer_id,
-                        'customer_name'  => $customer_name,
-                        'code'  => '-',
-                        'total'  => $total,
-                        'cash'  => $cash,
-                        'changes' => $changes,
-                        'method_id' => $method_id,
-                        'is_cash'  => $is_cash,
-                        'item_ids'  => $item_ids,
-                        'price'  => $price,
-                        'status' => 2,
-                        'type' => 'sale',
-                        'note' => $note,
-                        'qty'  => $qty
-                        );            
+            $dataInsert = array(
+                'transaction_date' => $transaction_date,
+                'is_customer'  => $is_customer,
+                'customer_id'  => $customer_id,
+                'customer_name'  => $customer_name,
+                'code'  => '-',
+                'total'  => $total,
+                'cash'  => $cash,
+                'changes' => $changes,
+                'method_id' => $method_id,
+                'is_cash'  => $is_cash,
+                'item_ids'  => $item_ids,
+                'price'  => $price,
+                'status' => 2,
+                'type' => 'sale',
+                'note' => $note,
+                'qty'  => $qty,
+                'ecommerce' => $ecommerce
+            );
 
             $result = $this->sale->insertData($dataInsert);
             if ($result['msg'] == 'success') {
-                $this->sale->updateDataSalesById($result['trans_id'], array('code' => 'IHS'.$result['trans_id']));
-                $this->session->set_flashdata('msg', 
-                    "Data berhasil ditambah!");
+                if ($this->input->post('is_ecommerce') != null) {
+                    $this->sale->updateDataSalesById($result['trans_id'], array('code' => 'ECOM' . $result['trans_id']));
+                } else {
+                    $this->sale->updateDataSalesById($result['trans_id'], array('code' => 'IHS' . $result['trans_id']));
+                }
+                $this->session->set_flashdata(
+                    'msg',
+                    "Data berhasil ditambah!"
+                );
+                redirect('sale');
+            } else {
+                $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak cukup.');
                 redirect('sale');
             }
-            else {
-                $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak cukup.');
-                redirect('sale');   
-            }
-        }
-        else {
+        } else {
             $data['title'] = 'Tambah Data Penjualan';
             $data['page']  = 'master';
             $data['customers'] = $this->customer->getAllData();
             $data['methods'] = $this->method->getAllData();
             // $data['items'] = $this->sale->getAllItems();
-            $this->load->view('sales/insert',$data);
+            $this->load->view('sales/insert', $data);
         }
     }
 
     //Update one item
-    public function update( $id = NULL )
+    public function update($id = NULL)
     {
         $data['row'] = $this->sale->getDataById($id);
         $data['details'] = $this->sale->getDataDetailByIdTrans($id);
@@ -144,8 +156,7 @@ class Sale extends CI_Controller {
                 $customer_id = $this->input->post('customer_id');
                 $customer_name = getDataColumn('customers', 'id', $customer_id, 'name');
                 $is_customer = 1;
-            }
-            else {
+            } else {
                 $customer_id = null;
                 $customer_name = $this->input->post('customer_name');
                 $is_customer = 0;
@@ -163,45 +174,44 @@ class Sale extends CI_Controller {
             $changes = $this->input->post('changes');
 
 
-            $dataUpdate = array('transaction_date' => $transaction_date,
-                        'is_customer'  => $is_customer,
-                        'customer_id'  => $customer_id,
-                        'customer_name'  => $customer_name,
-                        'total'  => $total,
-                        'cash'  => $cash,
-                        'changes' => $changes,
-                        'method_id' => $method_id,
-                        'is_cash'  => $is_cash,
-                        'item_ids'  => $item_ids,
-                        'price'  => $price,
-                        'status' => 2,
-                        'type' => 'sale',
-                        'note' => $note,
-                        'qty'  => $qty
-                        );            
+            $dataUpdate = array(
+                'transaction_date' => $transaction_date,
+                'is_customer'  => $is_customer,
+                'customer_id'  => $customer_id,
+                'customer_name'  => $customer_name,
+                'total'  => $total,
+                'cash'  => $cash,
+                'changes' => $changes,
+                'method_id' => $method_id,
+                'is_cash'  => $is_cash,
+                'item_ids'  => $item_ids,
+                'price'  => $price,
+                'status' => 2,
+                'type' => 'sale',
+                'note' => $note,
+                'qty'  => $qty
+            );
 
             $result = $this->sale->updateData($id, $dataUpdate);
             if ($result['msg'] == 'success') {
                 $this->session->set_flashdata('msg', 'Data berhasil diubah!');
                 redirect('sale');
-            }
-            else {
+            } else {
                 $this->session->set_flashdata('error', 'Data gagal diubah! Stok tidak cukup.');
-                redirect('sale');   
+                redirect('sale');
             }
-        }
-        else {
+        } else {
             $data['title'] = 'Ubah Data Penjualan';
             $data['page']  = 'master';
             $data['customers'] = $this->customer->getAllData();
             $data['methods'] = $this->method->getAllData();
             // $data['items'] = $this->sale->getAllItems();
-            $this->load->view('sales/update',$data);
+            $this->load->view('sales/update', $data);
         }
     }
 
     //Delete one item
-    public function delete( $id = NULL )
+    public function delete($id = NULL)
     {
         $this->sale->deleteData($id);
         $this->session->set_flashdata('msg', 'Data berhasil dihapus!');
@@ -214,7 +224,7 @@ class Sale extends CI_Controller {
         $data['page']  = 'master';
         $data['row'] = $this->sale->getDataById($id);
         $data['details'] = $this->sale->getDataDetailByIdTrans($id);
-        $this->load->view('sales/detail',$data);
+        $this->load->view('sales/detail', $data);
     }
 
     public function getDataProduct()
@@ -227,8 +237,7 @@ class Sale extends CI_Controller {
             // $percentage = getDataColumn('percentages', 'label', 'harga-umum', 'amount');
             // $price = $row['salePrice'] + (($row['salePrice']*$percentage)/100);
             $price = $row['salePriceNon'];
-        }
-        else {
+        } else {
             $price = $row['salePrice'];
         }
         $data = array('price' => $price, 'stock' => $stock);
@@ -248,31 +257,31 @@ class Sale extends CI_Controller {
 
 
             $dataUpdate = array(
-                        'cash'  => $cash,
-                        'changes' => $changes,
-                        'method_id' => $method_id,
-                        'payment_at' => date('Y-m-d H:i:s'),
-                        'is_cash'  => 1
-                        );            
+                'cash'  => $cash,
+                'changes' => $changes,
+                'method_id' => $method_id,
+                'payment_at' => date('Y-m-d H:i:s'),
+                'is_cash'  => 1
+            );
 
             $this->sale->updateDataSalesById($id, $dataUpdate);
 
-            $dataInsert = array('transaction_date' => $transaction_date, 
-                        'sale_id' => $id,
-                        'amount' => $cash,
-                        'paid_by' => $this->session->userdata('id')
-                        );
+            $dataInsert = array(
+                'transaction_date' => $transaction_date,
+                'sale_id' => $id,
+                'amount' => $cash,
+                'paid_by' => $this->session->userdata('id')
+            );
 
             $this->sale->insertDataPay($dataInsert);
-            
+
             $this->session->set_flashdata('msg', 'Pembayaran Berhasil!');
             redirect('sale');
-        }
-        else {
-            $data['title'] = 'Pembayaran Piutang '.$data['row']['code'];
+        } else {
+            $data['title'] = 'Pembayaran Piutang ' . $data['row']['code'];
             $data['page']  = 'master';
             $data['methods'] = $this->method->getAllData();
-            $this->load->view('sales/pay',$data);
+            $this->load->view('sales/pay', $data);
         }
     }
 
@@ -281,7 +290,11 @@ class Sale extends CI_Controller {
         $data['info'] = $this->paper->getDataDefault();
         $data['row'] = $this->sale->getDataById($id);
         $data['details'] = $this->sale->getDataDetailByIdTrans($id);
-        $this->load->view('sales/print', $data);
+        if ($data['row']['ecommerce'] != null) {
+            $this->load->view('sales/print_ecommerce', $data);
+        } else {
+            $this->load->view('sales/print_ecommerce', $data);
+        }
     }
 
     public function getAllItems()
@@ -309,10 +322,7 @@ class Sale extends CI_Controller {
         }
         echo json_encode(['results' => $data, 'pagination' => array('more' => $morePages)]);
     }
-
 }
 
 /* End of file Sale.php */
 /* Location: ./application/controllers/Sale.php */
-
- ?>

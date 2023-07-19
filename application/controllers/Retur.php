@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Retur extends CI_Controller {
+class Retur extends CI_Controller
+{
 
     public function __construct()
     {
@@ -13,7 +14,7 @@ class Retur extends CI_Controller {
     }
 
     // List all your items
-    public function index( $offset = 0 )
+    public function index($offset = 0)
     {
         $data['title'] = 'Nota Retur';
         $data['page'] = 'returns';
@@ -43,10 +44,10 @@ class Retur extends CI_Controller {
             $data['rowSale'] = $this->retur->getDataSalesById($sale_id);
             $data['rowSaleDetails'] = $this->retur->getDataDetailSalesByIdTrans($sale_id);
         }
-        $this->load->view('returns/insert',$data);
+        $this->load->view('returns/insert', $data);
     }
 
-    public function store($value='')
+    public function store($value = '')
     {
         if ($this->input->post('submit')) {
 
@@ -63,25 +64,26 @@ class Retur extends CI_Controller {
             $retur_note = $this->input->post('retur_note');
 
             $dataInsert = array(
-                    'transaction_date'  => $transaction_date,
-                    'sale_id'  => $sale_id,
-                    'sale_detail_id'  => $sale_detail_id,
-                    'item_id'  => $item_id,
-                    'item_price'  => $item_price,
-                    'item_qty' => $item_qty,
-                    'retur_qty' => $retur_qty,
-                    'retur_note' => $retur_note,
-                    'cash' => $cash
-                    );
+                'transaction_date'  => $transaction_date,
+                'sale_id'  => $sale_id,
+                'sale_detail_id'  => $sale_detail_id,
+                'item_id'  => $item_id,
+                'item_price'  => $item_price,
+                'item_qty' => $item_qty,
+                'retur_qty' => $retur_qty,
+                'retur_note' => $retur_note,
+                'cash' => $cash
+            );
 
             $result = $this->retur->insertData($dataInsert);
-            if ($result['msg'] == 'success') {
+            $row = $this->retur->getDataById($result['idx']);
+            $result_stock = $this->retur->addToStock($row);
+            if ($result_stock['msg'] == 'success') {
                 $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
                 redirect('retur');
-            }
-            else {
+            } else {
                 $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak sesuai.');
-                redirect('retur');   
+                redirect('retur');
             }
         }
     }
@@ -133,11 +135,11 @@ class Retur extends CI_Controller {
         $data['rowRetur'] = $this->retur->getDataById($id);
         $data['rowNota'] = $this->retur->getDataSalesById($data['rowRetur']['sale_id']);
         $data['resDetailNota'] = $this->retur->getDataDetailSalesByIdTrans($data['rowRetur']['sale_id']);
-        $this->load->view('returns/detail',$data);
+        $this->load->view('returns/detail', $data);
     }
 
     //Update one item
-    public function update( $id = NULL )
+    public function update($id = NULL)
     {
         if ($this->input->post('submit')) {
 
@@ -153,14 +155,14 @@ class Retur extends CI_Controller {
             $qtyDetail = $rowDetail['qty'] - $qty;
 
             $dataUpdateDetailSale = array(
-                    'qty'  => $qtyDetail
-                    ); 
+                'qty'  => $qtyDetail
+            );
 
             $dataUpdate = array(
-                    'qty' => $qty,
-                    'note' => $note,
-                    'user_id' => $this->session->userdata('id')
-                    );
+                'qty' => $qty,
+                'note' => $note,
+                'user_id' => $this->session->userdata('id')
+            );
 
             if ($qty != 0) {
                 $this->retur->updateDataSaleDetail($sale_detail_id, $dataUpdateDetailSale);
@@ -169,29 +171,27 @@ class Retur extends CI_Controller {
             $this->updateDataSaleOnReturn($sale_id);
             $this->session->set_flashdata('msg', 'Data berhasil diubah!');
             redirect('retur');
-        }
-        else {
+        } else {
             $data['title'] = 'Ubah Nota Retur';
             $data['page']  = 'returns';
             $data['row'] = $this->retur->getDataById($id);
-            $this->load->view('returns/update',$data);
+            $this->load->view('returns/update', $data);
         }
     }
 
     //Delete one item
-    public function delete( $id = NULL )
+    public function delete($id = NULL)
     {
-        
+
         $result = $this->retur->deleteData($id);
 
         if ($result['msg'] == 'success') {
             $this->updateDataSaleOnReturn($result['sale_id']);
             $this->session->set_flashdata('msg', 'Data berhasil dihapus!');
             redirect('retur');
-        }
-        else {
+        } else {
             $this->session->set_flashdata('error', 'Data gagal dihapus! Stok tidak cukup untuk dikembalikan.');
-            redirect('retur');   
+            redirect('retur');
         }
     }
 
@@ -227,15 +227,12 @@ class Retur extends CI_Controller {
         if ($result['msg'] == 'success') {
             $this->session->set_flashdata('msg', 'Stok berhasil dikembalikan!');
             redirect('retur');
-        }
-        else {
+        } else {
             $this->session->set_flashdata('error', 'Data gagal dikembalikan! Stok tidak cukup untuk dikembalikan.');
-            redirect('retur');   
+            redirect('retur');
         }
     }
 }
 
 /* End of file Retur.php */
 /* Location: ./application/controllers/Retur.php */
-
- ?>

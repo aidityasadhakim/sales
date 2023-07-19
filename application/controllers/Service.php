@@ -222,7 +222,7 @@ class Service extends CI_Controller {
         $data['page']  = 'master';
         $data['row'] = $this->service->getDataById($id);
         $data['details'] = $this->service->getDataDetailByIdTrans($id);
-        $data['history'] = $this->service_history->getDataByReceiptId($id);
+        // $data['history'] = $this->service_history->getDataByReceiptId($id);
         if ($type == 'teknisi') {
             $this->load->view('services/detail-teknisi',$data);
         }
@@ -347,5 +347,3 @@ class Service extends CI_Controller {
 
 /* End of file Service.php */
 /* Location: ./application/controllers/Service.php */
-
- ?>

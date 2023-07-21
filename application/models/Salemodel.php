@@ -162,7 +162,6 @@ class Salemodel extends CI_Model {
                         'type' => 'sale',
                         'note' => $data['note'],
                         'user_id' => $this->session->userdata('id'),
-                        'ecommerce' => $data['ecommerce'],
                         'created_at' => date('Y-m-d H:i:s')
                         ); 
         $this->db->insert($this->table,$dataInsert);
@@ -356,3 +355,4 @@ class Salemodel extends CI_Model {
 
 /* End of file Salemodel.php */
 /* Location: ./application/models/Salemodel.php */
+ ?>

@@ -38,7 +38,7 @@ class Papermodel extends CI_Model
     public function getDataDefault()
     {
         $this->db->where('deleted_at', null);
-        $this->db->where('is_default', 0);
+        $this->db->where('is_default', 1);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();

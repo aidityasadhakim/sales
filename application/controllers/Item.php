@@ -9,6 +9,7 @@ class Item extends CI_Controller {
         parent::__construct();
         isLogin();
         $this->load->model('Itemmodel', 'item');
+        $this->load->model('WarehouseSupplymodel', 'warehouse_supply');
     }
 
     // List all your items

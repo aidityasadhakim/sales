@@ -25,6 +25,8 @@
               </div>
               <div class="card-body">
                 <h6 class="card-title">こんにちは(Konnichiwa), <?php echo $this->session->userdata('full_name'); ?>-Sama</h6>
+                <br>
+                <h6 class="card-title">Jangan lupa senyum <?php echo $this->session->userdata('full_name'); ?></h6>
               </div>
             </div>
           </div>

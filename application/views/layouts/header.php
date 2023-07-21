@@ -123,6 +123,9 @@
               <li><a href="<?php echo base_url('report/claim') ?>" class="dropdown-item">Laporan Piutang</a></li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="<?php echo base_url('warehousesupply') ?>" class="nav-link">Stok</a>
+          </li>
         </ul>
       </div>
 

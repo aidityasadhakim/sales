@@ -9,7 +9,7 @@
         @media print { body.receipt { width: <?php echo $info['width']; ?>mm } .btn-hide { display: none !important; } } /* fix for Chrome */
 
         * {
-            font-size: 12px;
+            font-size: 15px;
             padding: 0;
             margin: 0;
             font-family: 'Times New Roman';

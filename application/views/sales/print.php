@@ -8,7 +8,7 @@
         @media print { body.receipt { width: <?php echo $info['width']; ?>mm } .btn-hide { display: none !important; } } /* fix for Chrome */
 
         * {
-            font-size: 12px;
+            font-size: 15px;
             padding: 0;
             margin: 0;
             font-family: 'Calibri';
@@ -71,8 +71,8 @@
             <tbody>
                 <?php foreach ($details as $key => $value): ?>
                 <tr style="border-bottom-style: dashed;
-				border-bottom-width: 1px;
-				border-bottom-color: black;">
+                border-bottom-width: 1px;
+                border-bottom-color: black;">
                     <td width="60%" class="item-name"><?php echo getDataColumn('items', 'id', $value['item_id'], 'name'); ?></td>
                     <td><?php echo $value['qty']; ?> x <?php echo number_format($value['price']); ?></td>
                     <td><?php echo number_format($value['qty']*$value['price']); ?></td>

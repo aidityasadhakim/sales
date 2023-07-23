@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Reportmodel extends CI_Model {
+class Reportmodel extends CI_Model
+{
 
     public function __construct()
     {
@@ -15,15 +16,14 @@ class Reportmodel extends CI_Model {
     var $table_purchase = 'purchases';
     var $table_suppliers = 'suppliers';
 
-    public function getAllItems($value='')
+    public function getAllItems($value = '')
     {
         $this->db->order_by('name', 'asc');
         $this->db->where('deleted_at', null);
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -40,8 +40,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_stock);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -68,8 +67,7 @@ class Reportmodel extends CI_Model {
         $result = $this->db->query($sql);
         if ($result->row_array() > 0) {
             return $result->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -97,8 +95,7 @@ class Reportmodel extends CI_Model {
         $result = $this->db->query($sql);
         if ($result->row_array() > 0) {
             return $result->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -111,13 +108,13 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getDataCategories() {
+    public function getDataCategories()
+    {
         $this->db->select('type');
         $this->db->group_by('type');
         $this->db->where('deleted_at', null);
@@ -125,8 +122,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -140,8 +136,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -160,8 +155,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_sale);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -180,13 +174,12 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_purchase);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getDataSalesByPeriod($start_date, $end_date, $type = '', $is_cash = '', $method = '', $customer = '', $type_service = '')
+    public function getDataSalesByPeriod($start_date, $end_date, $type = '', $is_cash = '', $method = '', $customer = '', $type_service = '', $ecommerce = '')
     {
         $this->db->order_by('id', 'desc');
         $this->db->where('deleted_at', null);
@@ -208,11 +201,17 @@ class Reportmodel extends CI_Model {
         if ($type_service != '') {
             $this->db->where('type_service', $type_service);
         }
+        if ($ecommerce != '') {
+            if ($ecommerce == "all") {
+                $this->db->where('ecommerce is NOT NULL', null, false);
+            } else {
+                $this->db->where('ecommerce', $ecommerce);
+            }
+        }
         $query = $this->db->get($this->table_sale);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -222,7 +221,7 @@ class Reportmodel extends CI_Model {
         $this->db->order_by('id', 'desc');
         $this->db->where('deleted_at', null);
         $this->db->where('status', 2);
-        if($supplier_id != '') {
+        if ($supplier_id != '') {
             $this->db->where('supplier_id', $supplier_id);
         }
         $this->db->where('DATE(transaction_date) >=', $start_date);
@@ -230,18 +229,17 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_purchase);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getAllSuppliers() {
+    public function getAllSuppliers()
+    {
         $query = $this->db->get($this->table_suppliers);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -281,8 +279,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_purchase);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -304,8 +301,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_sale);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -323,8 +319,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get($this->table_sale);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -336,8 +331,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get('sales');
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -352,27 +346,24 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getAllAvailableItems($search='')
+    public function getAllAvailableItems($search = '')
     {
         if ($search == '') {
             $sql = "SELECT i.id, i.code, i.name, COALESCE(sum(s.qty),0) as qty, s.buyPrice FROM 
                     `items` as i LEFT JOIN `stocks` as s ON i.id=s.item_id WHERE qty > 0 AND s.sale_id IS NULL GROUP BY i.id";
-        }
-        else {
+        } else {
             $sql = "SELECT i.id, i.code, i.name, COALESCE(sum(s.qty),0) as qty, s.buyPrice FROM 
                     `items` as i LEFT JOIN `stocks` as s ON i.id=s.item_id WHERE i.name LIKE '%$search%' AND qty > 0 AND s.sale_id IS NULL GROUP BY i.id";
         }
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -397,8 +388,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -431,57 +421,49 @@ class Reportmodel extends CI_Model {
             $this->db->where('s.type_service', $type_service);
         }
         $this->db->from('sales as s');
- 
+
         $i = 0;
-     
-        foreach ($this->column_search as $item)
-        {
-            if($_POST['search']['value'])
-            {
-                 
-                if($i===0)
-                {
-                    $this->db->group_start(); 
+
+        foreach ($this->column_search as $item) {
+            if ($_POST['search']['value']) {
+
+                if ($i === 0) {
+                    $this->db->group_start();
                     $this->db->like($item, $_POST['search']['value']);
-                }
-                else
-                {
+                } else {
                     $this->db->or_like($item, $_POST['search']['value']);
                 }
- 
-                if(count($this->column_search) - 1 == $i) 
-                    $this->db->group_end(); 
+
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
             }
             $i++;
         }
-         
-        if(isset($_POST['order'])) 
-        {
+
+        if (isset($_POST['order'])) {
             $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } 
-        else if(isset($this->order))
-        {
+        } else if (isset($this->order)) {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
- 
+
     function getDataSalesByPeriodPage($start_date = '', $end_date = '', $type = '', $is_cash = '', $method_id = '', $customer_id = '', $type_service = '')
     {
         $this->_getDatatablesQuery($start_date, $end_date, $type, $is_cash, $method_id, $customer_id, $type_service);
-        if($_POST['length'] != -1)
-        $this->db->limit($_POST['length'], $_POST['start']);
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result_array();
     }
- 
+
     function countFiltered($start_date = '', $end_date = '', $type = '', $is_cash = '', $method_id = '', $customer_id = '', $type_service = '')
     {
         $this->_getDatatablesQuery($start_date, $end_date, $type, $is_cash, $method_id, $customer_id, $type_service);
         $query = $this->db->get();
         return $query->num_rows();
     }
- 
+
     public function countAll($start_date = '', $end_date = '', $type = '', $is_cash = '', $method = '', $customer = '', $type_service = '')
     {
         $this->db->where('DATE(transaction_date) >=', $start_date);
@@ -568,8 +550,7 @@ class Reportmodel extends CI_Model {
     {
         if ($start_date != null && $end_date != null) {
             $sql = "SELECT DISTINCT customers.id, customers.name, customers.phone, customers.address, (SELECT COUNT(*) FROM sales WHERE sales.customer_id = customers.id AND sales.status = 2 AND deleted_at IS NULL AND (transaction_date BETWEEN '$start_date' AND '$end_date')) AS transactionCount, COALESCE((SELECT SUM(total) FROM sales WHERE sales.customer_id = customers.id AND sales.status = 2 AND deleted_at IS NULL AND (transaction_date BETWEEN '$start_date' AND '$end_date')),0) AS transactionNominalCount, (SELECT SUM(stocks.buyPrice) FROM stocks WHERE sale_id IN (SELECT sales.id FROM sales WHERE sales.customer_id = customers.id AND sales.status = 2 AND deleted_at IS NULL AND (transaction_date BETWEEN '$start_date' AND '$end_date'))) AS modalCount FROM customers USE INDEX(PRIMARY) Order BY transactionNominalCount DESC";
-        }
-        else {
+        } else {
             $sql = "SELECT DISTINCT customers.id, customers.name, customers.phone, customers.address, (SELECT COUNT(*) FROM sales WHERE sales.customer_id = customers.id AND sales.status = 2 AND deleted_at IS NULL) AS transactionCount, COALESCE((SELECT SUM(total) FROM sales WHERE sales.customer_id = customers.id AND sales.status = 2 AND deleted_at IS NULL),0) AS transactionNominalCount, (SELECT SUM(stocks.buyPrice) FROM stocks WHERE sale_id IN (SELECT sales.id FROM sales WHERE sales.customer_id = customers.id AND sales.status = 2 AND deleted_at IS NULL)) AS modalCount FROM customers USE INDEX(PRIMARY) Order BY transactionNominalCount DESC";
         }
         if ($offset != null && $limit != null) {
@@ -586,57 +567,49 @@ class Reportmodel extends CI_Model {
     {
         $this->db->where('deleted_at', null);
         $this->db->from('customers');
- 
+
         $i = 0;
-     
-        foreach ($this->column_search_customer as $item)
-        {
-            if($_POST['search']['value'])
-            {
-                 
-                if($i===0)
-                {
-                    $this->db->group_start(); 
+
+        foreach ($this->column_search_customer as $item) {
+            if ($_POST['search']['value']) {
+
+                if ($i === 0) {
+                    $this->db->group_start();
                     $this->db->like($item, $_POST['search']['value']);
-                }
-                else
-                {
+                } else {
                     $this->db->or_like($item, $_POST['search']['value']);
                 }
- 
-                if(count($this->column_search_customer) - 1 == $i) 
-                    $this->db->group_end(); 
+
+                if (count($this->column_search_customer) - 1 == $i)
+                    $this->db->group_end();
             }
             $i++;
         }
-         
-        if(isset($_POST['order'])) 
-        {
+
+        if (isset($_POST['order'])) {
             $this->db->order_by($this->column_order_customer[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } 
-        else if(isset($this->order_customer))
-        {
+        } else if (isset($this->order_customer)) {
             $order = $this->order_customer;
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
- 
+
     function getDataTablesCustomer()
     {
         $this->_getDatatablesQueryCustomer();
-        if($_POST['length'] != -1)
-        $this->db->limit($_POST['length'], $_POST['start']);
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result();
     }
- 
+
     function countFilteredCustomer()
     {
         $this->_getDatatablesQueryCustomer();
         $query = $this->db->get();
         return $query->num_rows();
     }
- 
+
     public function countAllCustomer()
     {
         $this->db->where('deleted_at', null);
@@ -644,9 +617,7 @@ class Reportmodel extends CI_Model {
         $query = $this->db->get();
         return $query->num_rows();
     }
-
 }
 
 /* End of file Reportmodel.php */
 /* Location: ./application/models/Reportmodel.php */
- ?>

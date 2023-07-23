@@ -1,155 +1,188 @@
 <?php $this->load->view('layouts/header'); ?>
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark"> <?php echo $title; ?> </h1>
-          </div>
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark"> <?php echo $title; ?> </h1>
+        </div>
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <div class="content">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
+  <!-- Main content -->
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
 
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h5 class="card-title m-0"><?php echo $title; ?></h5>
-              </div>
-              <div class="card-body">
-                <form class="form-horizontal" method="post">
-                  <div class="form-group row">
-                    <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal</label>
-                    <div class="col-sm-3">
-                      <input type="date" name="start_date" class="form-control" id="start_date" value="<?php echo (isset($start_date)) ? $start_date : date('Y-m-d') ?>" required>
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h5 class="card-title m-0"><?php echo $title; ?></h5>
+            </div>
+            <div class="card-body">
+              <form class="form-horizontal" method="post">
+                <div class="form-group row">
+                  <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal</label>
+                  <div class="col-sm-3">
+                    <input type="date" name="start_date" class="form-control" id="start_date" value="<?php echo (isset($start_date)) ? $start_date : date('Y-m-d') ?>" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="end_date" class="col-sm-2 col-form-label">Tanggal Akhir</label>
+                  <div class="col-sm-3">
+                    <input type="date" name="end_date" class="form-control" id="end_date" value="<?php echo (isset($end_date)) ? $end_date : date('Y-m-d') ?>" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="offset-sm-2 col-sm-10">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="is_ecommerce" name="is_ecommerce" value="1">
+                      <label class="form-check-label" for="is_ecommerce">E-Commerce</label>
                     </div>
                   </div>
-                  <div class="form-group row">
-                    <label for="end_date" class="col-sm-2 col-form-label">Tanggal Akhir</label>
-                    <div class="col-sm-3">
-                      <input type="date" name="end_date" class="form-control" id="end_date" value="<?php echo (isset($end_date)) ? $end_date : date('Y-m-d') ?>" required>
-                    </div>
+                </div>
+                <div class="form-group row" id="ecommerce" style="display: none;">
+                  <label for="ecommerce" class="col-sm-2 col-form-label">E-Commerce</label>
+                  <div class="col-sm-4">
+                    <select name="ecommerce" class="form-control select-ecommerce" style="display: none">
+                      <option value="all">--Semua E-Commerce--</option>
+                      <option value="tokopedia">Tokopedia</option>
+                      <option value="shopee">Shopee</option>
+                    </select>
                   </div>
-                  <button type="submit" class="btn btn-info" name="submit" value="view">Submit</button>
-                </form>
-                <br><br>
-                <?php if (isset($sales)): ?>
-                  <div class="table-responsive">
-                    <table class="table table-bordered" id="data-table">
-                      <thead>
+                </div>
+                <button type="submit" class="btn btn-info" name="submit" value="view">Submit</button>
+              </form>
+              <br><br>
+              <?php if (isset($sales)) : ?>
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="data-table">
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Kode Transaksi</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Keterangan</th>
+                        <th class="filter">Metode Pembayaran</th>
+                        <th class="filter">Status Pembayaran</th>
+                        <th class="filter">Tipe Transaksi</th>
+                        <th>Jumlah</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      $sumCashSale = 0;
+                      $sumCashService = 0;
+                      $sumDebtSale = 0;
+                      $sumDebtService = 0;
+                      foreach ($sales as $key => $value) :
+                      ?>
                         <tr>
-                          <th>No</th>
-                          <th>Tanggal Transaksi</th>
-                          <th>Kode Transaksi</th>
-                          <th>Nama Pelanggan</th>
-                          <th>Keterangan</th>
-                          <th class="filter">Metode Pembayaran</th>
-                          <th class="filter">Status Pembayaran</th>
-                          <th class="filter">Tipe Transaksi</th>
-                          <th>Jumlah</th>
+                          <td><?php echo $key + 1; ?></td>
+                          <td><?php echo date('d F Y', strtotime($value['transaction_date'])) ?></td>
+                          <td><?php echo $value['code']; ?></td>
+                          <td><a href="<?php echo base_url('sale/detail/' . $value['id']) ?>" target="_blank"><?php echo $value['customer_name']; ?></a></td>
+                          <td><?php echo $value['note'] ?></td>
+                          <td><?php echo getDataColumn('payment_methods', 'id', $value['method_id'], 'name'); ?></td>
+                          <td><?php echo ($value['is_cash'] == 1) ? 'Lunas' : 'Utang' ?></td>
+                          <td><?php echo ($value['type'] == 'sale') ? 'Penjualan' : 'Servis' ?></td>
+                          <td>Rp. <?php echo number_format($value['total']) ?></td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        <?php 
-                        $sumCashSale = 0; 
-                        $sumCashService = 0; 
-                        $sumDebtSale = 0; 
-                        $sumDebtService = 0; 
-                        foreach ($sales as $key => $value): 
-                        ?>
-                          <tr>
-                            <td><?php echo $key + 1; ?></td>
-                            <td><?php echo date('d F Y', strtotime($value['transaction_date'])) ?></td>
-                            <td><?php echo $value['code']; ?></td>
-                            <td><a href="<?php echo base_url('sale/detail/'.$value['id']) ?>" target="_blank"><?php echo $value['customer_name']; ?></a></td>
-                            <td><?php echo $value['note'] ?></td>
-                            <td><?php echo getDataColumn('payment_methods', 'id', $value['method_id'], 'name'); ?></td>
-                            <td><?php echo ($value['is_cash'] == 1) ? 'Lunas' : 'Utang' ?></td>
-                            <td><?php echo ($value['type'] == 'sale') ? 'Penjualan' : 'Servis' ?></td>
-                            <td>Rp. <?php echo number_format($value['total']) ?></td>
-                          </tr>
-                        <?php 
+                      <?php
                         if ($value['is_cash'] == 1) {
                           if ($value['type'] == 'sale') {
-                            $sumCashSale += $value['total']; 
+                            $sumCashSale += $value['total'];
+                          } else {
+                            $sumCashService += $value['total'];
                           }
-                          else {
-                            $sumCashService += $value['total']; 
-                          }
-                        }
-                        else {
+                        } else {
                           if ($value['type'] == 'sale') {
-                            $sumDebtSale += $value['total']; 
-                          }
-                          else {
-                            $sumDebtService += $value['total']; 
+                            $sumDebtSale += $value['total'];
+                          } else {
+                            $sumDebtService += $value['total'];
                           }
                         }
-                        endforeach 
-                        ?>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td>&nbsp;</td>
-                          <td class="filter">Metode Pembayaran</td>
-                          <td class="filter">Status Pembayaran</td>
-                          <td class="filter">Tipe Transaksi</td>
-                          <td>&nbsp;</td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                  <div class="table-responsive mt-5">
-                    <table class="table table-bordered">
-                      <tbody>
-                        <tr>
-                          <td><strong>Total Penjualan Lunas</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumCashSale) ?></strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>Total Servis Lunas</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumCashService) ?></strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>Total Pembayaran Lunas</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumCashSale + $sumCashService) ?></strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>Total Piutang Penjualan</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumDebtSale) ?></strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>Total Piutang Servis</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumDebtService) ?></strong></td>
-                        </tr>
-                        <tr>
-                          <td><strong>Total Piutang</strong></td>
-                          <td><strong>Rp. <?php echo number_format($sumDebtService + $sumDebtSale) ?></strong></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                <?php endif ?>
-              </div>
+                      endforeach
+                      ?>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td class="filter">Metode Pembayaran</td>
+                        <td class="filter">Status Pembayaran</td>
+                        <td class="filter">Tipe Transaksi</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="table-responsive mt-5">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td><strong>Total Penjualan Lunas</strong></td>
+                        <td><strong>Rp. <?php echo number_format($sumCashSale) ?></strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Servis Lunas</strong></td>
+                        <td><strong>Rp. <?php echo number_format($sumCashService) ?></strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Pembayaran Lunas</strong></td>
+                        <td><strong>Rp. <?php echo number_format($sumCashSale + $sumCashService) ?></strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Piutang Penjualan</strong></td>
+                        <td><strong>Rp. <?php echo number_format($sumDebtSale) ?></strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Piutang Servis</strong></td>
+                        <td><strong>Rp. <?php echo number_format($sumDebtService) ?></strong></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Piutang</strong></td>
+                        <td><strong>Rp. <?php echo number_format($sumDebtService + $sumDebtSale) ?></strong></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              <?php endif ?>
             </div>
           </div>
-          <!-- /.col-md-6 -->
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
+        <!-- /.col-md-6 -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
   </div>
-  <!-- /.content-wrapper -->
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 <?php $this->load->view('layouts/footer'); ?>
+<script type="text/javascript">
+  $(function() {
+    $('#is_ecommerce').click(function(event) {
+      if ($(this).prop('checked')) {
+        $('#ecommerce').show();
+        $('#ecommerce').prop('required', 'required');
+        $('.select-ecommerce').select2({
+          allowClear: true,
+          width: '100%'
+        })
+      } else {
+        $('#ecommerce').hide();
+        $('#ecommerce').removeAttr('required')
+        $('.select-ecommerce').select2('destroy');
+      }
+    });
+  });
+</script>

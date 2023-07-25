@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Salemodel extends CI_Model {
+class Salemodel extends CI_Model
+{
 
     public function __construct()
     {
@@ -27,57 +28,92 @@ class Salemodel extends CI_Model {
         $this->db->where('s.deleted_at', null);
         $this->db->where('s.type', 'sale');
         $this->db->from('sales as s');
- 
+
         $i = 0;
-     
-        foreach ($this->column_search as $item)
-        {
-            if($_POST['search']['value'])
-            {
-                 
-                if($i===0)
-                {
-                    $this->db->group_start(); 
+
+        foreach ($this->column_search as $item) {
+            if ($_POST['search']['value']) {
+
+                if ($i === 0) {
+                    $this->db->group_start();
                     $this->db->like($item, $_POST['search']['value']);
-                }
-                else
-                {
+                } else {
                     $this->db->or_like($item, $_POST['search']['value']);
                 }
- 
-                if(count($this->column_search) - 1 == $i) 
-                    $this->db->group_end(); 
+
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
             }
             $i++;
         }
-         
-        if(isset($_POST['order'])) 
-        {
+
+        if (isset($_POST['order'])) {
             $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } 
-        else if(isset($this->order))
-        {
+        } else if (isset($this->order)) {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
- 
+
+    private function _getDatatablesReturToSupplierQuery()
+    {
+        $this->db->select('*');
+        $this->db->where('s.deleted_at', null);
+        $this->db->where('s.type', 'sale');
+        $this->db->where('s.customer_id', '185');
+        $this->db->from('sales as s');
+
+        $i = 0;
+
+        foreach ($this->column_search as $item) {
+            if ($_POST['search']['value']) {
+
+                if ($i === 0) {
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
+            }
+            $i++;
+        }
+
+        if (isset($_POST['order'])) {
+            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order)) {
+            $order = $this->order;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+
     function getDataTables()
     {
         $this->_getDatatablesQuery();
-        if($_POST['length'] != -1)
-        $this->db->limit($_POST['length'], $_POST['start']);
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result_array();
     }
- 
+
+    function getDataTablesReturToSupplier()
+    {
+        $this->_getDatatablesReturToSupplierQuery();
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     function countFiltered()
     {
         $this->_getDatatablesQuery();
         $query = $this->db->get();
         return $query->num_rows();
     }
- 
+
     public function countAll()
     {
         $this->db->where('deleted_at', null);
@@ -94,8 +130,7 @@ class Salemodel extends CI_Model {
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -110,8 +145,7 @@ class Salemodel extends CI_Model {
         $query = $this->db->get($this->table_item, $limit, $offset);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -123,8 +157,7 @@ class Salemodel extends CI_Model {
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -137,8 +170,7 @@ class Salemodel extends CI_Model {
         $query = $this->db->get($this->table_detail);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -147,41 +179,44 @@ class Salemodel extends CI_Model {
     {
         echo "start insertData " . time() . "<br/>";
         $this->db->trans_begin();
-        $dataInsert = array('transaction_date' => $data['transaction_date'],
-                        'is_customer'  => $data['is_customer'],
-                        'customer_id'  => $data['customer_id'],
-                        'customer_name'  => $data['customer_name'],
-                        'code'  => '-',
-                        'total'  => $data['total'],
-                        'cash'  => $data['cash'],
-                        'changes' => $data['changes'],
-                        'method_id' => $data['method_id'],
-                        'is_cash'  => $data['is_cash'],
-                        'payment_at' => ($data['is_cash'] == 0) ? null : date('Y-m-d H:i:s'),
-                        'status' => 2,
-                        'type' => 'sale',
-                        'note' => $data['note'],
-                        'user_id' => $this->session->userdata('id'),
-                        'ecommerce' => $data['ecommerce'],
-                        'created_at' => date('Y-m-d H:i:s')
-                        ); 
-        $this->db->insert($this->table,$dataInsert);
+        $dataInsert = array(
+            'transaction_date' => $data['transaction_date'],
+            'is_customer'  => $data['is_customer'],
+            'customer_id'  => $data['customer_id'],
+            'customer_name'  => $data['customer_name'],
+            'code'  => '-',
+            'total'  => $data['total'],
+            'cash'  => $data['cash'],
+            'changes' => $data['changes'],
+            'method_id' => $data['method_id'],
+            'is_cash'  => $data['is_cash'],
+            'payment_at' => ($data['is_cash'] == 0) ? null : date('Y-m-d H:i:s'),
+            'status' => 2,
+            'type' => 'sale',
+            'note' => $data['note'],
+            'user_id' => $this->session->userdata('id'),
+            'ecommerce' => $data['ecommerce'],
+            'created_at' => date('Y-m-d H:i:s')
+        );
+        $this->db->insert($this->table, $dataInsert);
         $idx = $this->db->insert_id();
 
         foreach ($data['item_ids'] as $key => $value) {
-            $dataInsertDetail = array('sale_id' => $idx,
-                                    'item_id' => $value,
-                                    'qty' => $data['qty'][$key],
-                                    'price' => $data['price'][$key]
-                                    );
+            $dataInsertDetail = array(
+                'sale_id' => $idx,
+                'item_id' => $value,
+                'qty' => $data['qty'][$key],
+                'price' => $data['price'][$key]
+            );
             $this->db->insert($this->table_detail, $dataInsertDetail);
 
-            $dataInsertMutation = array('transaction_id' => $idx,
-                                    'item_id' => $value,
-                                    'amount' => '-'.$data['qty'][$key],
-                                    'type' => 'sale',
-                                    'created_at' => date('Y-m-d H:i:s')
-                                    );
+            $dataInsertMutation = array(
+                'transaction_id' => $idx,
+                'item_id' => $value,
+                'amount' => '-' . $data['qty'][$key],
+                'type' => 'sale',
+                'created_at' => date('Y-m-d H:i:s')
+            );
             $this->db->insert('stock_mutations', $dataInsertMutation);
 
             $this->db->where('deleted_at', null);
@@ -191,8 +226,7 @@ class Salemodel extends CI_Model {
             if ($row < $data['qty'][$key]) {
                 $this->db->trans_rollback();
                 return array('msg' => 'fail');
-            }
-            else {
+            } else {
                 $limit = $data['qty'][$key];
                 $query = "UPDATE stocks SET sale_id='$idx'
                             WHERE id IN (
@@ -224,7 +258,7 @@ class Salemodel extends CI_Model {
 
     public function decreaseStock($item_id = '', $qty)
     {
-        $this->db->set('stock', 'stock - '.$qty, FALSE);
+        $this->db->set('stock', 'stock - ' . $qty, FALSE);
         $this->db->where('id', $item_id);
         $this->db->where('stock >=', $qty);
         $this->db->update($this->table_item);
@@ -233,7 +267,7 @@ class Salemodel extends CI_Model {
 
     public function increaseStock($item_id = '', $qty)
     {
-        $this->db->set('stock', 'stock + '.$qty, FALSE);
+        $this->db->set('stock', 'stock + ' . $qty, FALSE);
         $this->db->where('id', $item_id);
         $this->db->update($this->table_item);
     }
@@ -241,21 +275,22 @@ class Salemodel extends CI_Model {
     public function updateData($id, $data)
     {
         $this->db->trans_begin();
-        $dataUpdate = array('transaction_date' => $data['transaction_date'],
-                        'is_customer'  => $data['is_customer'],
-                        'customer_id'  => $data['customer_id'],
-                        'customer_name'  => $data['customer_name'],
-                        'total'  => $data['total'],
-                        'cash'  => $data['cash'],
-                        'changes' => $data['changes'],
-                        'method_id' => $data['method_id'],
-                        'is_cash'  => $data['is_cash'],
-                        'status' => 2,
-                        'type' => 'sale',
-                        'note' => $data['note'],
-                        'user_id' => $this->session->userdata('id'),
-                        'updated_at' => date('Y-m-d H:i:s')
-                        ); 
+        $dataUpdate = array(
+            'transaction_date' => $data['transaction_date'],
+            'is_customer'  => $data['is_customer'],
+            'customer_id'  => $data['customer_id'],
+            'customer_name'  => $data['customer_name'],
+            'total'  => $data['total'],
+            'cash'  => $data['cash'],
+            'changes' => $data['changes'],
+            'method_id' => $data['method_id'],
+            'is_cash'  => $data['is_cash'],
+            'status' => 2,
+            'type' => 'sale',
+            'note' => $data['note'],
+            'user_id' => $this->session->userdata('id'),
+            'updated_at' => date('Y-m-d H:i:s')
+        );
         $this->db->where('id', $id);
         $this->db->update($this->table, $dataUpdate);
 
@@ -270,19 +305,21 @@ class Salemodel extends CI_Model {
         $this->db->delete('stock_mutations');
 
         foreach ($data['item_ids'] as $key => $value) {
-            $dataInsertDetail = array('sale_id' => $id,
-                                    'item_id' => $value,
-                                    'qty' => $data['qty'][$key],
-                                    'price' => $data['price'][$key]
-                                    );
+            $dataInsertDetail = array(
+                'sale_id' => $id,
+                'item_id' => $value,
+                'qty' => $data['qty'][$key],
+                'price' => $data['price'][$key]
+            );
             $this->db->insert($this->table_detail, $dataInsertDetail);
 
-            $dataInsertMutation = array('transaction_id' => $id,
-                                    'item_id' => $value,
-                                    'amount' => '-'.$data['qty'][$key],
-                                    'type' => 'sale',
-                                    'created_at' => date('Y-m-d H:i:s')
-                                    );
+            $dataInsertMutation = array(
+                'transaction_id' => $id,
+                'item_id' => $value,
+                'amount' => '-' . $data['qty'][$key],
+                'type' => 'sale',
+                'created_at' => date('Y-m-d H:i:s')
+            );
             $this->db->insert('stock_mutations', $dataInsertMutation);
 
             $this->db->where('deleted_at', null);
@@ -292,8 +329,7 @@ class Salemodel extends CI_Model {
             if ($row < $data['qty'][$key]) {
                 $this->db->trans_rollback();
                 return array('msg' => 'fail');
-            }
-            else {
+            } else {
                 $limit = $data['qty'][$key];
                 $query = "UPDATE stocks SET sale_id='$id'
                             WHERE id IN (
@@ -325,22 +361,22 @@ class Salemodel extends CI_Model {
     public function updateDataSalesById($id, $data)
     {
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id',$id);
-        $this->db->update($this->table,$data);
+        $this->db->where('id', $id);
+        $this->db->update($this->table, $data);
     }
 
     public function deleteData($id)
     {
         $data = array('deleted_at' => date('Y-m-d H:i:s'));
-        $this->db->where('id',$id);
-        $this->db->update($this->table,$data);
+        $this->db->where('id', $id);
+        $this->db->update($this->table, $data);
 
         $this->db->where('sale_id', $id);
         $this->db->delete($this->table_detail);
 
         $this->db->where('sale_id', $id);
         $this->db->update($this->table_stock, array('sale_id' => null));
-        
+
         $this->db->where('transaction_id', $id);
         $this->db->where('type', 'sale');
         $this->db->delete('stock_mutations');
@@ -351,7 +387,6 @@ class Salemodel extends CI_Model {
         $data['created_at'] = date('Y-m-d H:i:s');
         $this->db->insert($this->table_claim, $data);
     }
-
 }
 
 /* End of file Salemodel.php */

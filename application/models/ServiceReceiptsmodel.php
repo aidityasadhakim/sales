@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Service_receiptsmodel extends CI_Model {
+class ServiceReceiptsmodel extends CI_Model
+{
 
     public function __construct()
     {
@@ -20,46 +21,38 @@ class Service_receiptsmodel extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('service_receipts as s');
- 
+
         $i = 0;
-     
-        foreach ($this->column_search as $item)
-        {
-            if($_POST['search']['value'])
-            {
-                 
-                if($i===0)
-                {
-                    $this->db->group_start(); 
+
+        foreach ($this->column_search as $item) {
+            if ($_POST['search']['value']) {
+
+                if ($i === 0) {
+                    $this->db->group_start();
                     $this->db->like($item, $_POST['search']['value']);
-                }
-                else
-                {
+                } else {
                     $this->db->or_like($item, $_POST['search']['value']);
                 }
- 
-                if(count($this->column_search) - 1 == $i) 
-                    $this->db->group_end(); 
+
+                if (count($this->column_search) - 1 == $i)
+                    $this->db->group_end();
             }
             $i++;
         }
-         
-        if(isset($_POST['order'])) 
-        {
+
+        if (isset($_POST['order'])) {
             $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } 
-        else if(isset($this->order))
-        {
+        } else if (isset($this->order)) {
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
- 
+
     function getDataTables()
     {
         $this->_getDatatablesQuery();
-        if($_POST['length'] != -1)
-        $this->db->limit($_POST['length'], $_POST['start']);
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
         return $query->result_array();
     }
@@ -70,8 +63,7 @@ class Service_receiptsmodel extends CI_Model {
         $query = $this->db->get($this->table_item);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -82,8 +74,7 @@ class Service_receiptsmodel extends CI_Model {
         $query = $this->db->get($this->table_service_receipts);
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -91,7 +82,7 @@ class Service_receiptsmodel extends CI_Model {
     public function insertData($data)
     {
         $this->db->trans_begin();
-        $this->db->insert($this->table_service_receipts,$data);
+        $this->db->insert($this->table_service_receipts, $data);
         $idx = $this->db->insert_id();
         $this->db->trans_commit();
         return array('msg' => 'success', 'trans_id' => $idx);
@@ -100,35 +91,35 @@ class Service_receiptsmodel extends CI_Model {
     public function updateDataServiceReceiptsById($id, $data)
     {
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id',$id);
-        $this->db->update($this->table_service_receipts,$data);
+        $this->db->where('id', $id);
+        $this->db->update($this->table_service_receipts, $data);
     }
 
     public function updateData($id, $data)
     {
         $this->db->trans_begin();
-        $dataUpdate = array('transaction_date' => $data['transaction_date'],
-                        'is_customer'  => $data['is_customer'],
-                        'customer_id'  => $data['customer_id'],
-                        'customer_name'  => $data['customer_name'],
-                        'total'  => $data['total'],
-                        'cash'  => $data['cash'],
-                        'changes' => $data['changes'],
-                        'method_id' => $data['method_id'],
-                        'type_service' => $data['type_service'],
-                        'is_cash'  => $data['is_cash'],
-                        'status' => 2,
-                        'type' => 'service',
-                        'note' => $data['note'],
-                        'user_id' => $this->session->userdata('id'),
-                        'updated_at' => date('Y-m-d H:i:s')
-                        ); 
+        $dataUpdate = array(
+            'transaction_date' => $data['transaction_date'],
+            'is_customer'  => $data['is_customer'],
+            'customer_id'  => $data['customer_id'],
+            'customer_name'  => $data['customer_name'],
+            'total'  => $data['total'],
+            'cash'  => $data['cash'],
+            'changes' => $data['changes'],
+            'method_id' => $data['method_id'],
+            'type_service' => $data['type_service'],
+            'is_cash'  => $data['is_cash'],
+            'status' => 2,
+            'type' => 'service',
+            'note' => $data['note'],
+            'user_id' => $this->session->userdata('id'),
+            'updated_at' => date('Y-m-d H:i:s')
+        );
         $this->db->where('id', $id);
         $this->db->update($this->table, $dataUpdate);
         $this->db->trans_commit();
         return array('msg' => 'success');
     }
-
 }
 
 /* End of file Service_receiptsmodel.php */

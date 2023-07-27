@@ -369,4 +369,3 @@ class Servicemodel extends CI_Model {
 
 /* End of file Salemodel.php */
 /* Location: ./application/models/Salemodel.php */
- ?>

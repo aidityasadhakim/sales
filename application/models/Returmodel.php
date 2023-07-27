@@ -1,8 +1,9 @@
-<?php 
+<?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Returmodel extends CI_Model {
+class Returmodel extends CI_Model
+{
 
     public function __construct()
     {
@@ -26,8 +27,7 @@ class Returmodel extends CI_Model {
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -39,8 +39,7 @@ class Returmodel extends CI_Model {
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -50,22 +49,21 @@ class Returmodel extends CI_Model {
         $this->db->select('s.id, s.code, s.transaction_date, s.customer_name as c_name');
         $this->db->from('sales as s');
         $this->db->order_by('s.id', 'desc');
-        $this->db->where('s.transaction_date BETWEEN "'. 
-            date($start_date).'" AND "'. 
-            date($end_date).'"');
+        $this->db->where('s.transaction_date BETWEEN "' .
+            date($start_date) . '" AND "' .
+            date($end_date) . '"');
 
         $this->db->where('s.deleted_at', null);
         $this->db->where('s.type', 'sale');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
 
-    public function getDataSalesById($id='')
+    public function getDataSalesById($id = '')
     {
         $this->db->select('*, s.id as s_id, s.customer_name as c_name');
         $this->db->where('s.deleted_at', null);
@@ -75,8 +73,7 @@ class Returmodel extends CI_Model {
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -89,8 +86,7 @@ class Returmodel extends CI_Model {
         $query = $this->db->get($this->table_detail_sale);
         if ($query->num_rows() > 0) {
             return $query->result_array();
-        }
-        else {
+        } else {
             return array();
         }
     }
@@ -108,20 +104,20 @@ class Returmodel extends CI_Model {
             $grand_total += $subtotalDetail;
 
             $dataUpdateDetailSale = array(
-                    'qty'  => $qtyDetail
-                    ); 
+                'qty'  => $qtyDetail
+            );
 
             $dataInsert = array(
-                    'transaction_date'  => $data['transaction_date'],
-                    'sale_id'  => $data['sale_id'],
-                    'sale_detail_id'  => $value,
-                    'item_id'  => $data['item_id'][$key],
-                    'qty' => $data['retur_qty'][$key],
-                    'note' => $data['retur_note'][$key],
-                    'user_id' => $this->session->userdata('id'),
-                    'created_at' => date('Y-m-d H:i:s')
-                    );
-            
+                'transaction_date'  => $data['transaction_date'],
+                'sale_id'  => $data['sale_id'],
+                'sale_detail_id'  => $value,
+                'item_id'  => $data['item_id'][$key],
+                'qty' => $data['retur_qty'][$key],
+                'note' => $data['retur_note'][$key],
+                'user_id' => $this->session->userdata('id'),
+                'created_at' => date('Y-m-d H:i:s')
+            );
+
 
             if ($data['retur_qty'][$key] != 0) {
                 $this->db->insert($this->table, $dataInsert);
@@ -168,7 +164,6 @@ class Returmodel extends CI_Model {
 
                 $this->updateDataSaleDetail($value, $dataUpdateDetailSale);
             }
-
         }
 
         $changes = $data['cash'] - $grand_total;
@@ -176,27 +171,27 @@ class Returmodel extends CI_Model {
         $this->updateDataSale($data['sale_id'], $dataUpdateSale);
 
         $this->db->trans_commit();
-        return array('msg' => 'success');
+        return array('msg' => 'success', 'idx' => $idx);
     }
 
     public function updateData($id, $data)
     {
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id',$id);
-        $this->db->update($this->table,$data);
+        $this->db->where('id', $id);
+        $this->db->update($this->table, $data);
     }
 
     public function updateDataSale($id, $data)
     {
         $data['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id',$id);
-        $this->db->update($this->table_sale,$data);
+        $this->db->where('id', $id);
+        $this->db->update($this->table_sale, $data);
     }
 
     public function updateDataSaleDetail($id, $data)
     {
-        $this->db->where('id',$id);
-        $this->db->update($this->table_detail_sale,$data);
+        $this->db->where('id', $id);
+        $this->db->update($this->table_detail_sale, $data);
     }
 
     public function deleteData($id)
@@ -208,17 +203,16 @@ class Returmodel extends CI_Model {
 
         if ($row['is_stock'] == 1) {
 
-        $this->db->where('deleted_at', null);
-        $this->db->where('item_id', $item_id);
-        $this->db->where('sale_id IS NULL', null, false);
-        $rowStock = $this->db->get('stocks')->num_rows();
-        if ($rowStock < $row['qty']) {
-            $this->db->trans_rollback();
-            return array('msg' => 'fail');
-        }
-        else {
-            $limit = $row['qty'];
-            $query = "UPDATE stocks SET sale_id='$sale_id'
+            $this->db->where('deleted_at', null);
+            $this->db->where('item_id', $item_id);
+            $this->db->where('sale_id IS NULL', null, false);
+            $rowStock = $this->db->get('stocks')->num_rows();
+            if ($rowStock < $row['qty']) {
+                $this->db->trans_rollback();
+                return array('msg' => 'fail');
+            } else {
+                $limit = $row['qty'];
+                $query = "UPDATE stocks SET sale_id='$sale_id'
                         WHERE id IN (
                             SELECT id FROM (
                                 SELECT id FROM stocks
@@ -231,52 +225,49 @@ class Returmodel extends CI_Model {
                                 LIMIT 0, $limit
                             ) tmp
                         )";
-            $this->db->query($query);
-        }
+                $this->db->query($query);
+            }
 
-        $res = $this->decreaseStock($item_id, $row['qty']);
+            $res = $this->decreaseStock($item_id, $row['qty']);
 
-        if ($res == 0) {
-            $this->db->trans_rollback();
-            return array('msg' => 'fail');
-        }
+            if ($res == 0) {
+                $this->db->trans_rollback();
+                return array('msg' => 'fail');
+            }
 
-        $this->db->where('transaction_id', $id);
-        $this->db->where('type', 'retur');
-        $this->db->delete('stock_mutations');
-
+            $this->db->where('transaction_id', $id);
+            $this->db->where('type', 'retur');
+            $this->db->delete('stock_mutations');
         }
 
         $data = array('deleted_at' => date('Y-m-d H:i:s'));
-        $this->db->where('id',$id);
-        $this->db->update($this->table,$data);
-        
+        $this->db->where('id', $id);
+        $this->db->update($this->table, $data);
+
         $this->resetDataQtySaleDetail($row['sale_detail_id'], $row['qty']);
 
         $this->db->trans_commit();
         return array('msg' => 'success', 'sale_id' => $row['sale_id']);
-
     }
 
     public function resetDataQtySaleDetail($id, $qty)
     {
-        $this->db->where('id',$id);
-        $this->db->set('qty', 'qty + '.$qty, FALSE);
+        $this->db->where('id', $id);
+        $this->db->set('qty', 'qty + ' . $qty, FALSE);
         $this->db->update($this->table_detail_sale);
 
         $this->db->where('id', $id);
         $query = $this->db->get($this->table_detail_sale);
         if ($query->num_rows() > 0) {
             return $query->row_array();
-        }
-        else {
+        } else {
             return array();
-        }        
+        }
     }
 
     public function decreaseStock($item_id = '', $qty)
     {
-        $this->db->set('stock', 'stock - '.$qty, FALSE);
+        $this->db->set('stock', 'stock - ' . $qty, FALSE);
         $this->db->where('id', $item_id);
         $this->db->where('stock >=', $qty);
         $this->db->update($this->table_item);
@@ -285,7 +276,7 @@ class Returmodel extends CI_Model {
 
     public function increaseStock($item_id = '', $qty)
     {
-        $this->db->set('stock', 'stock + '.$qty, FALSE);
+        $this->db->set('stock', 'stock + ' . $qty, FALSE);
         $this->db->where('id', $item_id);
         $this->db->update($this->table_item);
     }
@@ -304,14 +295,14 @@ class Returmodel extends CI_Model {
         if ($jumlah < $row['qty']) {
             $this->db->trans_rollback();
             return array('msg' => 'fail');
-        }
-        else {
-            $dataInsertMutation = array('transaction_id' => $row['id'],
-                            'item_id' => $item_id,
-                            'amount' => $row['qty'],
-                            'type' => 'retur',
-                            'created_at' => date('Y-m-d H:i:s')
-                            );
+        } else {
+            $dataInsertMutation = array(
+                'transaction_id' => $row['id'],
+                'item_id' => $item_id,
+                'amount' => $row['qty'],
+                'type' => 'retur',
+                'created_at' => date('Y-m-d H:i:s')
+            );
             $this->db->insert('stock_mutations', $dataInsertMutation);
 
             $this->increaseStock($item_id, $row['qty']);
@@ -337,9 +328,7 @@ class Returmodel extends CI_Model {
         $this->db->trans_commit();
         return array('msg' => 'success');
     }
-
 }
 
 /* End of file Returmodel.php */
 /* Location: ./application/models/Returmodel.php */
- ?>

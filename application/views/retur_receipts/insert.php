@@ -89,26 +89,44 @@
                                                 </td>
                                                 <?php if ($this->session->userdata('level') == 1) : ?>
                                                     <td><input type="text" name="price[]" class="form-control number price" <?php echo ($this->session->userdata('level') != 1) ? ' readonly' : '' ?> required></td>
+                                                    <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required></td>
                                                 <?php else : ?>
-                                                    <td><input type="text" name="price[]" class="form-control number" <?php echo ($this->session->userdata('level') != 1) ? ' readonly' : '' ?> required>---</td>
+                                                    <td><input type="hidden" name="price[]" class="form-control number price" <?php echo ($this->session->userdata('level') != 1) ? ' readonly' : '' ?> placeholder="Nan" required></td>
+                                                    <td><input type="hidden" name="subtotal[]" class="form-control subtotal" readonly required></td>
                                                 <?php endif; ?>
-                                                <td><input type="text" name="subtotal[]" class="form-control subtotal" readonly required></td>
                                                 <td>&nbsp;</td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
-                                            <tr>
-                                                <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
-                                                <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required></td>
-                                            </tr>
-                                            <tr id="tr-cash">
-                                                <td colspan="3" class="text-right"><strong>Bayar</strong></td>
-                                                <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="0"></td>
-                                            </tr>
-                                            <tr id="tr-changes">
-                                                <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
-                                                <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required></td>
-                                            </tr>
+                                            <?php if ($this->session->userdata('level') == 1) : ?>
+
+                                                <tr>
+                                                    <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
+                                                    <td colspan="2"><input type="text" name="total" class="form-control" id="total" readonly required></td>
+                                                </tr>
+                                                <tr id="tr-cash">
+                                                    <td colspan="3" class="text-right"><strong>Bayar</strong></td>
+                                                    <td colspan="2"><input type="text" name="cash" class="form-control number" id="cash" required value="0"></td>
+                                                </tr>
+                                                <tr id="tr-changes">
+                                                    <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
+                                                    <td colspan="2"><input type="text" name="changes" class="form-control" id="changes" readonly required></td>
+                                                </tr>
+                                            <?php else : ?>
+                                                <tr>
+                                                    <td colspan="3" class="text-right"><strong>Total Seluruh</strong></td>
+                                                    <td colspan="2"><input type="hidden" name="total" class="form-control" id="total" readonly required></td>
+                                                </tr>
+                                                <tr id="tr-cash">
+                                                    <td colspan="3" class="text-right"><strong>Bayar</strong></td>
+                                                    <td colspan="2"><input type="hidden" name="cash" class="form-control number" id="cash" required value="0"></td>
+                                                </tr>
+                                                <tr id="tr-changes">
+                                                    <td colspan="3" class="text-right"><strong>Kembalian</strong></td>
+                                                    <td colspan="2"><input type="hidden" name="changes" class="form-control" id="changes" readonly required></td>
+                                                </tr>
+
+                                            <?php endif; ?>
                                         </tfoot>
                                     </table>
                                 </div>

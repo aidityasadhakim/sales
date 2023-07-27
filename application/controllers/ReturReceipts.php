@@ -43,8 +43,18 @@ class ReturReceipts extends CI_Controller
             $row = array();
             $row[] = $no;
             $row[] = date('d F Y', strtotime($field['transaction_date']));
-            $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
-            $row[] = 'Rp. ' . number_format($field['total']);
+            if ($field['customer_id'] == '185') {
+                if ($this->session->userdata('level') == 1) {
+                    $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
+                    $row[] = 'Rp. ' . number_format($field['total']);
+                } else {
+                    $row[] = '<p>' . $field['customer_name'] . '</p>';
+                    $row[] = 'Rp. -';
+                }
+            } else {
+                $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
+                $row[] = 'Rp. ' . number_format($field['total']);
+            }
             $row[] = ($field['is_cash'] == 1) ? 'Lunas' : 'Utang';
             $row[] = getDataColumn('payment_methods', 'id', $field['method_id'], 'name');
             $row[] = $field['note'];

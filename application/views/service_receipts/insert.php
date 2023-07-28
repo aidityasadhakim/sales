@@ -53,25 +53,25 @@
                 <div class="form-group row">
                   <label for="phone_number" class="col-sm-2 col-form-label">Nomor Telepon</label>
                   <div class="col-sm-5">
-                    <input type="number" name="phone_number" class="form-control" id="phone_number">
+                    <input type="number" name="phone_number" class="form-control" id="phone_number" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="phone_type" class="col-sm-2 col-form-label">Tipe HP</label>
                   <div class="col-sm-5">
-                    <input type="text" name="phone_type" class="form-control" id="phone_type">
+                    <input type="text" name="phone_type" class="form-control" id="phone_type" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="damage" class="col-sm-2 col-form-label">Kerusakan</label>
                   <div class="col-sm-5">
-                    <input type="text" name="damage" class="form-control" id="damage">
+                    <input type="text" name="damage" class="form-control" id="damage" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="attribute" class="col-sm-2 col-form-label">Kelengkapan</label>
                   <div class="col-sm-5">
-                    <input type="text" name="attribute" class="form-control" id="attribute">
+                    <input type="text" name="attribute" class="form-control" id="attribute" required>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -83,7 +83,7 @@
                 <div class="form-group row">
                   <label for="recipient" class="col-sm-2 col-form-label">Penerima</label>
                   <div class="col-sm-5">
-                    <input type="text" name="recipient" class="form-control" id="recipient">
+                    <input type="text" name="recipient" class="form-control" id="recipient" required>
                   </div>
                 </div>
                 <!-- <div class="form-group row">

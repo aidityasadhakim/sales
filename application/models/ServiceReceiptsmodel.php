@@ -71,7 +71,7 @@ class ServiceReceiptsmodel extends CI_Model
 
     public function getDataById($id)
     {
-        $this->db->where('receipt_id', $id);
+        $this->db->where('id', $id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();

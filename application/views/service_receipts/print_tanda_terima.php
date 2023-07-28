@@ -55,9 +55,14 @@
         }
 
         .regards {
-            text-align: center;
-            font-size: 12px;
-            margin-top: 5px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .regards-text {
+            display: flex;
+            flex-direction: column;
         }
 
         hr {
@@ -89,13 +94,14 @@
         <h3 class="title"><?php echo $info['title']; ?></h3>
         <h4 class="subtitle"><?php echo $info['address']; ?><br><?php echo $info['subtitle']; ?></h4>
         <hr>
-        <p class="header">TANDA TERIMA SERVIS</p>
-        <p>No Nota: <?php echo 'IHSR' . $details['id']; ?></p>
-        <div>
-            <p class="left">Nama: <?= $details['name'] ?></p>
-            <br>
-            <p class="left">No Telp: <?= $details['phone'] ?></p>
-            <p class="right"><?php echo date('d/m/Y', strtotime($details['transaction_date'])) ?></p>
+        <div class="d-flex flex-column">
+            <p class="header">TANDA TERIMA SERVIS</p>
+            <p>No Nota: <?php echo 'IHSR' . $details['id']; ?></p>
+            <div>
+                <p class="left">Nama: <?= $details['customer_name'] ?></p>
+                <p class="left">No Telp: <?= $details['phone_number'] ?></p>
+                <p class="right"><?php echo date('d/m/Y', strtotime($details['transaction_date'])) ?></p>
+            </div>
         </div>
         <div style="clear: both"></div>
         <hr>
@@ -104,17 +110,17 @@
                 <tr>
                     <td width="25%" class="item-name">Tipe Hp</td>
                     <td width="5%">:</td>
-                    <td><?= $details['tipe_hp'] ?></td>
+                    <td><?= $details['phone_type'] ?></td>
                 </tr>
                 <tr>
                     <td width="25%" class="item-name">Kerusakan</td>
                     <td width="5%">:</td>
-                    <td><?= $details['kerusakan'] ?></td>
+                    <td><?= $details['damage'] ?></td>
                 </tr>
                 <tr>
                     <td width="25%" class="item-name">Kelengkapan</td>
                     <td width="5%">:</td>
-                    <td><?= $details['kelengkapan'] ?></td>
+                    <td><?= $details['attribute'] ?></td>
                 </tr>
                 <tr>
                     <td colspan="3">
@@ -124,7 +130,7 @@
                 <tr>
                     <td width="25%" class="item-name">Keterangan</td>
                     <td width="5%">:</td>
-                    <td><?= $details['keterangan'] ?></td>
+                    <td><?= $details['note'] ?></td>
                 </tr>
                 <tr>
                     <td colspan="3">
@@ -133,18 +139,13 @@
                 </tr>
             </tbody>
         </table>
-        <table width="100%">
-            <tr>
-                <td width="65%">
-                    <p style="font-size: 8px;line-height: 10px; width: 80%;">BARANG YANG TIDAK DIAMBIL LEWAT DARI 90 HARI DAN APABILA TERJADI KEHILANGAN BUKAN TANGGUNG JAWAB ISTANA HP</p>
-                </td>
-                <td text-align="right">Hormat Kami,</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td width="35%" text-align="right"><?= $details['penerima'] ?></td>
-            </tr>
-        </table>
+        <div class="regards">
+            <p style="font-size: 8px;line-height: 10px; width: 60%;">BARANG YANG TIDAK DIAMBIL LEWAT DARI 90 HARI DAN APABILA TERJADI KEHILANGAN BUKAN TANGGUNG JAWAB ISTANA HP</p>
+            <div class="regards-text">
+                <p>Hormat Kami,</p>
+                <p><?= $details['recipient'] ?></p>
+            </div>
+        </div>
         <p>
             <button type="button" class="btn-hide" onclick="window.print()">Cetak</button>
         </p>

@@ -260,10 +260,8 @@ class ServiceReceipts extends CI_Controller
     public function cetak($id = null)
     {
         $data['info'] = $this->paper->getDataDefault();
-        $data['row'] = $this->service->getDataById($id);
         $data['details'] = $this->service_receipts->getDataById($id);
-        $this->addHistory($data['details'], 'Cetak');
-        $this->load->view('services/print_tanda_terima', $data);
+        $this->load->view('service_receipts/print_tanda_terima', $data);
     }
 
     public function getDataDetailById($id = NULL)

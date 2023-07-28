@@ -104,7 +104,7 @@ class ServiceReceipts extends CI_Controller
     }
 
     // Add a new item
-    public function add($data = NULL, $id)
+    public function add()
     {
         if ($_POST['submit']) {
             $transaction_date = $this->input->post('transaction_date');
@@ -117,7 +117,6 @@ class ServiceReceipts extends CI_Controller
             $penerima = $this->input->post('penerima');
 
             $data = array(
-                'receipt_id' => $id,
                 'transaction_date' => $transaction_date,
                 'name'  => $name,
                 'phone' => $phone,

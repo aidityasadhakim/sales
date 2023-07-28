@@ -157,9 +157,12 @@ class ServiceReceipts extends CI_Controller
         }
     }
 
-    public function insertData($data)
+    public function detail($id)
     {
-        echo "hello";
+        $data['title'] = 'Detail Data Servis';
+        $data['page']  = 'master';
+        $data['row'] = $this->service_receipts->getDataById($id);
+        $this->load->view('service_receipts/detail', $data);
     }
 
     // Add History when adding detail for the first time

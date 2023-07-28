@@ -137,7 +137,8 @@ class ServiceReceipts extends CI_Controller
                 'attribute' => $attribute,
                 'note' => $note,
                 'recipient' => $recipient,
-                'transaction_date' => $transaction_date
+                'transaction_date' => $transaction_date,
+                'updated_at' => $transaction_date,
             );
             $result = $this->service_receipts->insertData($data);
 

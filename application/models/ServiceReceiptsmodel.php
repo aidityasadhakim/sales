@@ -14,7 +14,7 @@ class ServiceReceiptsmodel extends CI_Model
     var $table_service = 'service';
 
     var $column_order = array(null, 'receipt_id', 'is_customer', 'customer_id', 'customer_name', 'code', 'total', 'cash', 'changes', 'method_id', 'is_cash', 'status', 'type', 'note');
-    var $column_search = array('s.name');
+    var $column_search = array('s.customer_name', 's.phone_number', 's.phone_type');
     var $order = array('s.id' => 'desc');
 
     private function _getDatatablesQuery()

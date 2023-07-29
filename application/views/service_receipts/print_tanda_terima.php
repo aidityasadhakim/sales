@@ -96,9 +96,10 @@
         <hr>
         <div class="d-flex flex-column">
             <p class="header">TANDA TERIMA SERVIS</p>
-            <p>No Nota: <?php echo 'IHSR' . $details['id']; ?></p>
+            <p class="left">No Nota: <?php echo 'IHSR' . $details['id']; ?></p>
+            <p class="right">Nama: <?= $details['customer_name'] ?></p>
             <div>
-                <p class="left">Nama: <?= $details['customer_name'] ?></p>
+                <br>
                 <p class="left">No Telp: <?= $details['phone_number'] ?></p>
                 <p class="right"><?php echo date('d/m/Y', strtotime($details['transaction_date'])) ?></p>
             </div>

@@ -47,8 +47,6 @@
                                             <th>Tanggal Transaksi</th>
                                             <th>Nama Pelanggan</th>
                                             <th>Nomor HP</th>
-                                            <th>Tipe HP</th>
-                                            </th>
                                             <th>Kerusakan</th>
                                             <th>Keterangan</th>
                                             <th>#</th>
@@ -59,7 +57,6 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>

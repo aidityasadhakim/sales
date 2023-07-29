@@ -144,6 +144,18 @@ class ServiceReceiptsmodel extends CI_Model
             return array('msg' => 'fail');
         }
     }
+
+    public function updateServiceId($id, $service_id)
+    {
+        try {
+            $data = array("service_id" => $service_id);
+            $this->db->where('id', $id);
+            $this->db->update($this->table, $data);
+            return array('msg' => 'success');
+        } catch (\Throwable $e) {
+            return array('error' => 'fail');
+        }
+    }
 }
 
 /* End of file Service_receiptsmodel.php */

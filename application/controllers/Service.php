@@ -114,12 +114,14 @@ class Service extends CI_Controller
             );
 
             $result = $this->service->insertData($dataInsert);
-            if ($result['msg'] == 'success') {
+            $service_receipts_update = $this->service_receipts->updateServiceId($id, $result['trans_id']);
+
+            if ($service_receipts_update['msg'] == 'success') {
                 $this->service->updateDataServicesById($result['trans_id'], array('code' => 'IHS' . $result['trans_id']));
                 $this->session->set_flashdata('msg', 'Data berhasil ditambah!');
                 redirect('service');
             } else {
-                $this->session->set_flashdata('error', 'Data gagal ditambah! Stok tidak cukup.');
+                $this->session->set_flashdata('error', 'Data gagal ditambah!');
                 redirect('service');
             }
         } else {

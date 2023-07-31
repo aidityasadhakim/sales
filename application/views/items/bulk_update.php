@@ -35,7 +35,7 @@
                                     <label for="price" class="col-sm-2 col-form-label">Harga Jual</label>
                                     <div class="col-sm-2">
                                         <div class="input-group mb-2">
-                                            <input type="text" name="price" class="form-control" id="price" required>
+                                            <input type="text" name="price" class="form-control" id="price" value="0" required>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">%</div>
                                             </div>
@@ -43,10 +43,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="price-non" class="col-sm-2 col-form-label">Harga Jual</label>
+                                    <label for="price_non" class="col-sm-2 col-form-label">Harga Jual Non Pelanggan</label>
                                     <div class="col-sm-2">
                                         <div class="input-group mb-2">
-                                            <input type="text" name="price-non" class="form-control" id="price-non" required>
+                                            <input type="text" name="price_non" class="form-control" id="price_non" value="0" required>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">%</div>
                                             </div>
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="status" class="col-sm-2 col-form-label">Metode Pembayaran</label>
+                                    <label for="status" class="col-sm-2 col-form-label">Naik/Turun</label>
                                     <div class="col-sm-3">
                                         <select name="status" class="form-control" id="status" required>
                                             <option value="up">Naik</option>
@@ -311,50 +311,6 @@
 
         });
 
-        $(document).on("keyup", ".qty", function(e) {
-            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
-                var obj = this;
-                var qty = $(this).val();
-                var qtyAvailable = $(this).closest('tr').find('.qty-available').val();
-                var price = $(obj).closest('tr').find('.price').val();
-                if (parseInt(qty) > parseInt(qtyAvailable)) {
-                    alert('Stok Kurang');
-                    $('.btn-submit').prop('disabled', 'disabled');
-                } else {
-                    var subtotal = parseInt(price) * parseInt(qty);
-                    $(obj).closest('tr').find('.subtotal').val(subtotal);
-                    sumGrandTotal();
-                    validateCash();
-                }
-            }
-        });
-
-        $(document).on("keyup", ".price", function(e) {
-            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
-                var obj = this;
-                var price = $(this).val();
-                var qty = $(obj).closest('tr').find('.qty').val();
-                var subtotal = parseInt(price) * parseInt(qty);
-                $(obj).closest('tr').find('.subtotal').val(subtotal);
-                sumGrandTotal();
-                validateCash();
-            }
-        });
-
-        $(document).on("keyup", "#cash", function(e) {
-            var s;
-            if ($(this).val().trim().length === 0) {
-                $(this).val(0);
-                s = 0;
-            } else {
-                var s = trimLeadZero($(this).val());
-                $(this).val(s);
-            }
-            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || (e.keyCode >= 8 && $(this).val() != '')) {
-                validateCash();
-            }
-        });
-
         $('#is_all').click(function(event) {
             if ($(this).prop('checked')) {
                 $('#item_table').hide();
@@ -365,16 +321,11 @@
                 $('.item-id').prop('required', 'required');
                 $('#item-add').show();
             }
-            validateCash();
         });
 
         function resetItem() {
             $('.item-id').val('').trigger('change');
         }
-
-        $(".status").select2({
-            minimumResultsForSearch: -1
-        });
 
         $('form').submit(function() {
             $('button[type=submit]', this).hide();

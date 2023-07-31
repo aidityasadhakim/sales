@@ -173,9 +173,36 @@ class Item extends CI_Controller
         echo json_encode($row);
     }
 
-
     public function bulkUpdate()
     {
+        if ($this->input->post('submit')) {
+            $transaction_date = $this->input->post('transaction_date');
+            $price = $this->input->post('price');
+            $price_non = $this->input->post('price_non');
+            $status = $this->input->post('status');
+            $data = array(
+                "transaction_date" => $transaction_date,
+                "price" => $price,
+                "price_non" => $price_non,
+                "status" => $status
+            );
+
+            if ($this->input->post('is_all') != null) {
+                $result = $this->item->changeBulkData($data);
+            } else {
+                $item_ids = $this->input->post('item_ids');
+                $data['item_ids'] = $item_ids;
+                $result = $this->item->changeBulkData($data);
+            }
+
+            if (isset($result['msg'])) {
+                $this->session->set_flashdata('msg', 'Data berhasil diubah!');
+                redirect('item');
+            } else {
+                $this->session->set_flashdata('error', $result['error']);
+                redirect('item');
+            }
+        }
         $data['title'] = 'Ubah Data Item';
         $data['page']  = 'master';
         $this->load->view('items/bulk_update', $data);

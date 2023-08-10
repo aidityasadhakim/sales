@@ -150,7 +150,6 @@ class Sale extends CI_Controller
             $data['page']  = 'master';
             $data['customers'] = $this->customer->getAllData();
             $data['methods'] = $this->method->getAllData();
-            // $data['items'] = $this->sale->getAllItems();
             $this->load->view('sales/insert', $data);
         }
     }

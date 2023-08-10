@@ -88,7 +88,7 @@
 
 <body class="receipt">
     <p>
-        <a href="<?php echo base_url('sale') ?>" class="btn-hide">Kembali</a>
+        <a href="<?php echo base_url('servicereceipts') ?>" class="btn-hide">Kembali</a>
     </p>
     <section class="sheet padding-5">
         <h3 class="title"><?php echo $info['title']; ?></h3>

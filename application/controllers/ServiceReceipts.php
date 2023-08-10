@@ -92,14 +92,16 @@ class ServiceReceipts extends CI_Controller
                                 <a href="' . base_url('servicereceipts/cetak/' . $field['id']) . '" class="btn btn-default">Cetak</a>
                                 <a href="' . base_url('service/detail/' . $field['service_id']) . '" class="btn btn-default text-sm" target="_blank">Cek Nota Servis</a>
                                 <a href="' . base_url('servicereceipts/update/' . $field['id']) . '" class="btn btn-success">Ubah</a>
-                                <a href="' . base_url('servicereceipts/delete/' . $field['id']) . '" class="btn btn-danger  " onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
+                                <a href="' . base_url('servicereceipts/delete/' . $field['id']) . '" class="btn btn-danger  " onclick="return confirm(\'Yakin Batal?\')">Batal</a>
                               </div>';
+            } else if ($field['deleted_at'] != null) {
+                $row[] = "<div> <p=>Dibatalkan</p> </div>";
             } else {
                 $row[] = '<div class="btn-group">
                                 <a href="' . base_url('servicereceipts/cetak/' . $field['id']) . '" class="btn btn-default">Cetak</a>
                                 <a href="' . base_url('service/add/' . $field['id']) . '" class="btn btn-warning text-sm">Buat Nota Servis</a>
                                 <a href="' . base_url('servicereceipts/update/' . $field['id']) . '" class="btn btn-success">Ubah</a>
-                                <a href="' . base_url('servicereceipts/delete/' . $field['id']) . '" class="btn btn-danger  " onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
+                                <a href="' . base_url('servicereceipts/delete/' . $field['id']) . '" class="btn btn-danger  " onclick="return confirm(\'Yakin Batal?\')">Batal</a>
                               </div>';
             }
 
@@ -261,10 +263,10 @@ class ServiceReceipts extends CI_Controller
     {
         $result = $this->service_receipts->deleteDataById($id);
         if ($result['msg'] == 'success') {
-            $this->session->set_flashdata('msg', 'Data berhasil dihapus!');
+            $this->session->set_flashdata('msg', 'Data berhasil Dibatalkan!');
             redirect('servicereceipts');
         } else {
-            $this->session->set_flashdata('error', 'Data Gagal Dihapus!');
+            $this->session->set_flashdata('error', 'Data Gagal Dibatalkan!');
             redirect('servicereceipts');
         }
     }

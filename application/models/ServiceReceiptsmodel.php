@@ -20,7 +20,6 @@ class ServiceReceiptsmodel extends CI_Model
     private function _getDatatablesQuery()
     {
         $this->db->select('*');
-        $this->db->where('s.deleted_at', null);
         $this->db->from('service_receipts as s');
 
         $i = 0;

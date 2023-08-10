@@ -355,7 +355,7 @@ class Reportmodel extends CI_Model
     {
         if ($search == '') {
             $sql = "SELECT i.id, i.code, i.name, COALESCE(sum(s.qty),0) as qty, s.buyPrice FROM 
-                    `items` as i LEFT JOIN `stocks` as s ON i.id=s.item_id WHERE qty > 0 AND s.sale_id IS NULL GROUP BY i.id";
+                    `items` as i LEFT JOIN `stocks` as s ON i.id=s.item_id WHERE i.deleted_at is null AND qty > 0 AND s.sale_id IS NULL GROUP BY i.id";
         } else {
             $sql = "SELECT i.id, i.code, i.name, COALESCE(sum(s.qty),0) as qty, s.buyPrice FROM 
                     `items` as i LEFT JOIN `stocks` as s ON i.id=s.item_id WHERE i.name LIKE '%$search%' AND qty > 0 AND s.sale_id IS NULL GROUP BY i.id";

@@ -382,21 +382,27 @@
       $('#changes').val('');
     }
 
-    if (<?= $service_receipts['is_customer'] ?>) {
-      $('#is_customer').prop('checked', true);
-      $('#customer_id').show();
-      $('#customer_id').prop('required', 'required');
-      $('#customer_name').hide();
-      $('#customer_name').removeAttr('required');
-      $('.select-customer').select2({
-        allowClear: true,
-        width: '100%'
-      })
-      var $customer_id = "<?= $service_receipts['customer_id'] ?>";
-      $(".select-customer").val($customer_id).trigger('change');
-    } else {
-      $('#customer_name').val('<?= $service_receipts['customer_name'] ?>')
-    }
-
   });
 </script>
+
+<?php if (isset($service_receipts)) : ?>
+  <script type="text/javascript">
+    $(function() {
+      if ("<?= $service_receipts['is_customer'] ?>") {
+        $('#customer_id').show();
+        $('#customer_id').prop('required', 'required');
+        $('#customer_name').hide();
+        $('#customer_name').removeAttr('required');
+        $('#is_customer').prop('checked', true);
+        $('.select-customer').select2({
+          allowClear: true,
+          width: '100%'
+        })
+        var $customer_id = "<?= $service_receipts['customer_id'] ?>";
+        $(".select-customer").val($customer_id).trigger('change');
+      } else {
+        $('#customer_name').val('<?= $service_receipts['customer_name'] ?>')
+      }
+    })
+  </script>
+<?php endif; ?>

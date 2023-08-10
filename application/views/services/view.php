@@ -36,9 +36,9 @@
                   <?php echo $this->session->flashdata('error'); ?>
                 </div>
               <?php endif; ?>
-              <!-- <p>
-                  <a href="<?php echo base_url('service/add') ?>" class="btn btn-primary">Tambah</a>
-                </p> -->
+              <p>
+                <a href="<?php echo base_url('service/add') ?>" class="btn btn-primary">Tambah</a>
+              </p>
               <div class="table-responsive">
                 <table class="table table-bordered" id="data-table-sale">
                   <thead>

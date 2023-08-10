@@ -64,7 +64,7 @@ class Service extends CI_Controller
     }
 
     // Add a new item
-    public function add($id)
+    public function add($id = null)
     {
         if ($this->input->post('submit')) {
             $transaction_date = $this->input->post('transaction_date');
@@ -114,7 +114,11 @@ class Service extends CI_Controller
             );
 
             $result = $this->service->insertData($dataInsert);
-            $service_receipts_update = $this->service_receipts->updateServiceId($id, $result['trans_id']);
+            if ($id != null) {
+                $service_receipts_update = array("msg" => "success");
+            } else {
+                $service_receipts_update = $this->service_receipts->updateServiceId($id, $result['trans_id']);
+            }
 
             if ($service_receipts_update['msg'] == 'success') {
                 $this->service->updateDataServicesById($result['trans_id'], array('code' => 'IHS' . $result['trans_id']));
@@ -130,7 +134,9 @@ class Service extends CI_Controller
             $data['customers'] = $this->customer->getAllData();
             $data['methods'] = $this->method->getAllData();
             $data['items'] = $this->service->getAllItems();
-            $data['service_receipts'] = $this->service_receipts->getDataById($id);
+            if ($id != null) {
+                $data['service_receipts'] = $this->service_receipts->getDataById($id);
+            }
             $this->load->view('services/insert', $data);
         }
     }

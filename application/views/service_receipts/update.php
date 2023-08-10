@@ -30,54 +30,60 @@
                     <input type="date" name="transaction_date" class="form-control" id="transaction_date" required readonly value="<?php echo date('Y-m-d') ?>">
                   </div>
                 </div>
-                <!-- <div class="form-group row">
-                    <div class="offset-sm-2 col-sm-10">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="is_customer" name="is_customer" value="1">
-                        <label class="form-check-label" for="is_customer">Pelanggan</label>
-                      </div>
+                <div class="form-group row">
+                  <div class="offset-sm-2 col-sm-10">
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="is_customer" name="is_customer" value="1">
+                      <label class="form-check-label" for="is_customer">Pelanggan</label>
                     </div>
-                  </div> -->
+                  </div>
+                </div>
                 <div class="form-group row">
                   <label for="customer_id" class="col-sm-2 col-form-label">Nama Pelanggan</label>
                   <div class="col-sm-4">
-                    <input type="text" name="name" class="form-control" id="name" required value="<?= $details['name'] ?>">
+                    <select name="customer_id" class="form-control select-customer" id="customer_id" style="display: none">
+                      <option value="">--Pilih Pelanggan--</option>
+                      <?php foreach ($customers as $key => $value) : ?>
+                        <option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>
+                      <?php endforeach ?>
+                    </select>
+                    <input type="text" name="customer_name" class="form-control" id="customer_name" required>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="phone" class="col-sm-2 col-form-label">Nomor Telepon</label>
+                  <label for="phone_number" class="col-sm-2 col-form-label">Nomor Telepon</label>
                   <div class="col-sm-5">
-                    <input type="number" name="phone" class="form-control" id="phone" value="<?= $details['phone'] ?>">
+                    <input type="number" name="phone_number" class="form-control" id="phone_number" value="<?= $row['phone_number'] ?>" required>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="tipe_hp" class="col-sm-2 col-form-label">Tipe HP</label>
+                  <label for="phone_type" class="col-sm-2 col-form-label">Tipe HP</label>
                   <div class="col-sm-5">
-                    <input type="text" name="tipe_hp" class="form-control" id="tipe_hp" value="<?= $details['tipe_hp'] ?>">
+                    <input type="text" name="phone_type" class="form-control" id="phone_type" value="<?= $row['phone_type'] ?>" required>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="kerusakan" class="col-sm-2 col-form-label">Kerusakan</label>
+                  <label for="damage" class="col-sm-2 col-form-label">Kerusakan</label>
                   <div class="col-sm-5">
-                    <input type="text" name="kerusakan" class="form-control" id="kerusakan" value="<?= $details['kerusakan'] ?>">
+                    <input type="text" name="damage" class="form-control" id="damage" value="<?= $row['damage'] ?>" required>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="kelengkapan" class="col-sm-2 col-form-label">Kelengkapan</label>
+                  <label for="attribute" class="col-sm-2 col-form-label">Kelengkapan</label>
                   <div class="col-sm-5">
-                    <input type="text" name="kelengkapan" class="form-control" id="kelengkapan" value="<?= $details['kelengkapan'] ?>">
+                    <input type="text" name="attribute" class="form-control" id="attribute" value="<?= $row['attribute'] ?>" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="note" class="col-sm-2 col-form-label">Keterangan</label>
                   <div class="col-sm-5">
-                    <input type="text" name="note" class="form-control" id="note" value="<?= $details['keterangan'] ?>">
+                    <input type="text" name="note" class="form-control" value="<?= $row['note'] ?>" id="note">
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="penerima" class="col-sm-2 col-form-label">Penerima</label>
+                  <label for="recipient" class="col-sm-2 col-form-label">Penerima</label>
                   <div class="col-sm-5">
-                    <input type="text" name="penerima" class="form-control" id="penerima" value="<?= $details['penerima'] ?>">
+                    <input type="text" name="recipient" class="form-control" id="recipient" value="<?= $row['recipient'] ?>" required>
                   </div>
                 </div>
                 <!-- <div class="form-group row">
@@ -152,9 +158,8 @@
                   </p>
                 </div> -->
                 <div class="card-footer">
-                  <?= $button ?>
-                  <?= $cetak ?>
-                  <a href="<?php echo base_url('service') ?>" class="btn btn-default float-right">Cancel</a>
+                  <button type="submit" class="btn btn-info btn-submit" name="submit" value="add">Submit</button>
+                  <a href="<?php echo base_url('servicereceipts') ?>" class="btn btn-default float-right">Cancel</a>
                 </div>
             </form>
           </div>
@@ -167,6 +172,65 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-<?php $this->load->view('history/view', $history) ?>
+
 
 <?php $this->load->view('layouts/footer'); ?>
+
+<script type="text/javascript">
+  $(function() {
+    var base_url = '<?php echo base_url(); ?>';
+
+    $('#is_customer').click(function(event) {
+      if ($(this).prop('checked')) {
+        $('#customer_id').show();
+        $('#customer_id').prop('required', 'required');
+        $('#customer_name').hide();
+        $('#customer_name').removeAttr('required');
+        $('.select-customer').select2({
+          allowClear: true,
+          width: '100%'
+        })
+      } else {
+        $('#customer_name').show();
+        $('#customer_name').prop('required', 'required');
+        $('#customer_id').hide();
+        $('#customer_id').removeAttr('required');
+        $('.select-customer').select2('destroy');
+      }
+      resetItem();
+    });
+
+    if (<?= $row['is_customer'] ?>) {
+      $('#customer_id').show();
+      $('#customer_id').prop('required', 'required');
+      $('#customer_name').hide();
+      $('#customer_name').removeAttr('required');
+      $('#is_customer').prop('checked', true);
+      $('.select-customer').select2({
+        allowClear: true,
+        width: '100%'
+      })
+      var $customer_id = "<?= $row['customer_id'] ?>";
+      $(".select-customer").val($customer_id).trigger('change');
+    } else {
+      $('#customer_name').val('<?= $row['customer_name'] ?>')
+    }
+
+    function resetItem() {
+      $('.item-id').val('').trigger('change');
+      $('.price').val('');
+      $('.qty').val('');
+      $('.subtotal').val('');
+      $('#total').val('');
+      $('#cash').val(0);
+      $('#changes').val('');
+    }
+
+  })
+</script>
+
+<script type="text/javascript">
+  $(function() {
+
+  })
+</script>

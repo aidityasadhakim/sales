@@ -196,37 +196,55 @@ class ServiceReceipts extends CI_Controller
     }
 
     //Update one item
-    public function update($id = NULL, $data, $receipt_id)
+    public function update($id = NULL)
     {
-        $receipt_id = $receipt_id;
-        $transaction_date = $this->input->post('transaction_date');
-        $name = $this->input->post('name');
-        $phone = $this->input->post('phone');
-        $tipe_hp = $this->input->post('tipe_hp');
-        $kerusakan = $this->input->post('kerusakan');
-        $kelengkapan = $this->input->post('kelengkapan');
-        $keterangan = $this->input->post('note');
-        $penerima = $this->input->post('penerima');
+        $data['row'] = $this->service_receipts->getDataById($id);
+        if ($this->input->post('submit')) {
+            $transaction_date = $this->input->post('transaction_date');
+            if ($this->input->post('is_customer') != null) {
+                $customer_id = $this->input->post('customer_id');
+                $customer_name = getDataColumn('customers', 'id', $customer_id, 'name');
+                $is_customer = 1;
+            } else {
+                $customer_id = null;
+                $customer_name = $this->input->post('customer_name');
+                $is_customer = 0;
+            }
 
-        $data = array(
-            'receipt_id' => $receipt_id,
-            'transaction_date' => $transaction_date,
-            'name'  => $name,
-            'phone' => $phone,
-            'tipe_hp' => $tipe_hp,
-            'kerusakan' => $kerusakan,
-            'kelengkapan' => $kelengkapan,
-            'keterangan' => $keterangan,
-            'penerima' => $penerima,
-        );
+            $phone_number = $this->input->post('phone_number');
+            $phone_type = $this->input->post('phone_type');
+            $damage = $this->input->post('damage');
+            $attribute = $this->input->post('attribute');
+            $note = $this->input->post('note');
+            $recipient = $this->input->post('recipient');
 
-        $result = $this->service_receipts->updateDataServiceReceiptsById($id, $data);
-        if ($result['msg'] == 'success') {
-            $this->session->set_flashdata('msg', 'Data berhasil diubah!');
-            redirect('servicereceipts/index/' . $receipt_id);
+            $data = array(
+                'is_customer' => $is_customer,
+                'customer_id' => $customer_id,
+                'customer_name' => $customer_name,
+                'phone_number' => $phone_number,
+                'phone_type' => $phone_type,
+                'damage' => $damage,
+                'attribute' => $attribute,
+                'note' => $note,
+                'recipient' => $recipient,
+                'transaction_date' => $transaction_date,
+                'updated_at' => $transaction_date,
+            );
+            $result = $this->service_receipts->updateDataServiceById($id, $data);
+            if ($result['msg'] == 'success') {
+                $this->session->set_flashdata('msg', 'Data berhasil diubah!');
+                redirect('servicereceipts/index/' . $receipt_id);
+            } else {
+                $this->session->set_flashdata('error', 'Data gagal diubah!');
+                redirect('servicereceipts/index/' . $receipt_id);
+            }
         } else {
-            $this->session->set_flashdata('error', 'Data gagal diubah! Stok tidak cukup.');
-            redirect('servicereceipts/index/' . $receipt_id);
+            $data['title'] = 'Ubah Tanda Terima Servis';
+            $data['page'] = 'master';
+            $data['customers'] = $this->customer->getAllData();
+
+            $this->load->view('service_receipts/update', $data);
         }
     }
 

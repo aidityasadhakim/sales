@@ -95,11 +95,16 @@ class ServiceReceiptsmodel extends CI_Model
         }
     }
 
-    public function updateDataServiceReceiptsById($id, $data)
+    public function updateDataServiceById($id, $data)
     {
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        $this->db->where('id', $id);
-        $this->db->update($this->table, $data);
+        try {
+            $data['updated_at'] = date('Y-m-d H:i:s');
+            $this->db->where('id', $id);
+            $this->db->update($this->table, $data);
+            return array('msg' => "success");
+        } catch (\Throwable $e) {
+            return array('msg' => "fail");
+        }
     }
 
     public function updateData($id, $data)

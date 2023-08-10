@@ -388,7 +388,7 @@
 <?php if (isset($service_receipts)) : ?>
   <script type="text/javascript">
     $(function() {
-      if ("<?= $service_receipts['is_customer'] ?>") {
+      if (<?= $service_receipts['is_customer'] ?>) {
         $('#customer_id').show();
         $('#customer_id').prop('required', 'required');
         $('#customer_name').hide();

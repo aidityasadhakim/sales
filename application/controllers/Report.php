@@ -94,8 +94,9 @@ class Report extends CI_Controller
                 $data['start_date'] = $this->input->post('start_date');
                 $data['end_date'] = $this->input->post('end_date');
                 $data['method_id'] = $this->input->post('method_id');
+                $data['menu_id'] = $this->input->post('menu_id');
 
-                $data['sales'] = $this->report->getDataCashSaleByPeriod($data['start_date'], $data['end_date'], $data['method_id']);
+                $data['sales'] = $this->report->getDataCashSaleByPeriod($data['start_date'], $data['end_date'], $data['method_id'], $data['menu_id']);
 
                 $data['title'] = 'Laporan Kas Masuk';
                 $data['page'] = 'report';

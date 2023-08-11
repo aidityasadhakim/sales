@@ -141,12 +141,19 @@ class Reportmodel extends CI_Model
         }
     }
 
-    public function getDataCashSaleByPeriod($start_date, $end_date, $method)
+    public function getDataCashSaleByPeriod($start_date, $end_date, $method, $menu_id)
     {
         $this->db->order_by('payment_at', 'desc');
         $this->db->where('deleted_at', null);
         $this->db->where('is_cash', 1);
         $this->db->where('status', 2);
+        if ($menu_id == 'all') {
+            // $this->db->where('ecommerce is not null');
+        } else if ($menu_id == 'ecommerce') {
+            $this->db->where('ecommerce is not null');
+        } else {
+            $this->db->where('ecommerce is null');
+        }
         if ($method != 0) {
             $this->db->where('method_id', $method);
         }

@@ -115,9 +115,9 @@ class Service extends CI_Controller
 
             $result = $this->service->insertData($dataInsert);
             if ($id != null) {
-                $service_receipts_update = array("msg" => "success");
-            } else {
                 $service_receipts_update = $this->service_receipts->updateServiceId($id, $result['trans_id']);
+            } else {
+                $service_receipts_update = array("msg" => "success");
             }
 
             if ($service_receipts_update['msg'] == 'success') {

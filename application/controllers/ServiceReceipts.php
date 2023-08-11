@@ -86,7 +86,7 @@ class ServiceReceipts extends CI_Controller
             // $row[] = $field['phone_number'];
             $row[] = $field['phone_type'];
             $row[] = $field['damage'];
-            $row[] = $field['price'];
+            $row[] = 'Rp. ' . number_format($field['price']);
             $row[] = $field['note'];
             if ($field['service_id'] != null) {
                 $row[] = '<div class="btn-group">

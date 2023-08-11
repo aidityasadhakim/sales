@@ -46,8 +46,10 @@
                                             <th>No</th>
                                             <th>Tanggal Transaksi</th>
                                             <th>Nama Pelanggan</th>
-                                            <th>Nomor HP</th>
+                                            <!-- <th>Nomor HP</th> -->
+                                            <th>Tipe HP</th>
                                             <th>Kerusakan</th>
+                                            <th>Biaya</th>
                                             <th>Keterangan</th>
                                             <th>#</th>
                                         </tr>
@@ -59,6 +61,8 @@
                                         <tr>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <!-- <td>&nbsp;</td>     -->
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>

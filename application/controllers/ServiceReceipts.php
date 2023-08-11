@@ -83,9 +83,10 @@ class ServiceReceipts extends CI_Controller
             $row[] = $no;
             $row[] = date('d F Y', strtotime($field['transaction_date']));
             $row[] = '<a href="' . base_url('servicereceipts/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
-            $row[] = $field['phone_number'];
-            // $row[] = $field['phone_type'];
+            // $row[] = $field['phone_number'];
+            $row[] = $field['phone_type'];
             $row[] = $field['damage'];
+            $row[] = $field['price'];
             $row[] = $field['note'];
             if ($field['service_id'] != null) {
                 $row[] = '<div class="btn-group">

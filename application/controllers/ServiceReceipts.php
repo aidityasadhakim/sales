@@ -130,6 +130,7 @@ class ServiceReceipts extends CI_Controller
                 $is_customer = 0;
             }
 
+            $price = $this->input->post('price');
             $phone_number = $this->input->post('phone_number');
             $phone_type = $this->input->post('phone_type');
             $damage = $this->input->post('damage');
@@ -142,6 +143,7 @@ class ServiceReceipts extends CI_Controller
                 'is_customer' => $is_customer,
                 'customer_id' => $customer_id,
                 'customer_name' => $customer_name,
+                'price' => $price,
                 'phone_number' => $phone_number,
                 'phone_type' => $phone_type,
                 'damage' => $damage,
@@ -211,6 +213,7 @@ class ServiceReceipts extends CI_Controller
                 $is_customer = 0;
             }
 
+            $price = $this->input->post('price');
             $phone_number = $this->input->post('phone_number');
             $phone_type = $this->input->post('phone_type');
             $damage = $this->input->post('damage');
@@ -222,6 +225,7 @@ class ServiceReceipts extends CI_Controller
                 'is_customer' => $is_customer,
                 'customer_id' => $customer_id,
                 'customer_name' => $customer_name,
+                'price' => $price,
                 'phone_number' => $phone_number,
                 'phone_type' => $phone_type,
                 'damage' => $damage,

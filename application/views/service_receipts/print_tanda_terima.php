@@ -129,9 +129,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%" class="item-name">Keterangan</td>
+                    <td width="25%" class="item-name">Biaya</td>
                     <td width="5%">:</td>
-                    <td><?= $details['note'] ?></td>
+                    <td><?= $details['price'] ?></td>
                 </tr>
                 <tr>
                     <td colspan="3">

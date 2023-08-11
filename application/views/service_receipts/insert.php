@@ -75,6 +75,12 @@
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label for="price" class="col-sm-2 col-form-label">Biaya</label>
+                  <div class="col-sm-5">
+                    <input type="text" name="price" class="form-control" id="price" required>
+                  </div>
+                </div>
+                <div class="form-group row">
                   <label for="note" class="col-sm-2 col-form-label">Keterangan</label>
                   <div class="col-sm-5">
                     <input type="text" name="note" class="form-control" id="note">

@@ -24,9 +24,66 @@ class Sale extends CI_Controller
         $this->load->view('sales/view', $data);
     }
 
+    function shopee()
+    {
+        $data['title'] = 'Nota Penjualan Shopee';
+        $data['page'] = 'sales';
+        $this->load->view('sales/view_shopee', $data);
+    }
+
     function getDataTable()
     {
         $list = $this->sale->getDataTables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = date('d F Y', strtotime($field['transaction_date']));
+            if ($field['customer_id'] == '185') {
+                if ($this->session->userdata('level') == 1) {
+                    $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
+                    $row[] = 'Rp. ' . number_format($field['total']);
+                } else {
+                    $row[] = '<p>' . $field['customer_name'] . '</p>';
+                    $row[] = 'Rp. -';
+                }
+            } else {
+                $row[] = '<a href="' . base_url('sale/detail/' . $field['id']) . '" target="_blank">' . $field['customer_name'] . '</a>';
+                $row[] = 'Rp. ' . number_format($field['total']);
+            }
+            // $row[] = 'Rp. ' . number_format($field['total']);
+            $row[] = ($field['is_cash'] == 1) ? 'Lunas' : 'Utang';
+            $row[] = getDataColumn('payment_methods', 'id', $field['method_id'], 'name');
+            $row[] = $field['note'];
+            if ($field['is_cash'] == 0) {
+                $button_pay = '<a href="' . base_url('sale/pay/' . $field['id']) . '" class="btn btn-warning">Bayar</a>';
+            } else {
+                $button_pay = '';
+            }
+            $row[] = '<div class="btn-group">
+                            ' . $button_pay . '
+                            <a href="' . base_url('sale/cetak/' . $field['id']) . '" class="btn btn-default">Cetak</a>
+                            <a href="' . base_url('sale/update/' . $field['id']) . '" class="btn btn-success">Ubah</a>
+                            <a href="' . base_url('sale/delete/' . $field['id']) . '" class="btn btn-danger" onclick="return confirm(\'Yakin hapus?\')">Hapus</a>
+                          </div>';
+
+            $data[] = $row;
+        }
+
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->sale->countAll(),
+            "recordsFiltered" => $this->sale->countFiltered(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+    function getDataTableShopee()
+    {
+        $list = $this->sale->getDataTables("shopee");
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $field) {

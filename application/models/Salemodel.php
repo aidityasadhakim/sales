@@ -89,9 +89,14 @@ class Salemodel extends CI_Model
         }
     }
 
-    function getDataTables()
+    function getDataTables($shopee = null)
     {
         $this->_getDatatablesQuery();
+        if ($shopee != null) {
+            $this->db->where('ecommerce is not null');
+        } else {
+            $this->db->where('ecommerce is null');
+        }
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();

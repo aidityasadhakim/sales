@@ -77,6 +77,7 @@
               <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Penjualan</a>
               <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                 <li><a href="<?php echo base_url('sale') ?>" class="dropdown-item">Nota Jual </a></li>
+                <li><a href="<?php echo base_url('sale/shopee') ?>" class="dropdown-item">Nota Jual Shopee </a></li>
                 <li><a href="<?php echo base_url('pending') ?>" class="dropdown-item">Nota Jual Sementara</a></li>
                 <li class="dropdown-divider"></li>
                 <li><a href="<?php echo base_url('service') ?>" class="dropdown-item">Nota Servis</a></li>

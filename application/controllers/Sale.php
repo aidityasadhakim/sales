@@ -262,7 +262,11 @@ class Sale extends CI_Controller
             $result = $this->sale->updateData($id, $dataUpdate);
             if ($result['msg'] == 'success') {
                 $this->session->set_flashdata('msg', 'Data berhasil diubah!');
-                redirect('sale');
+                if ($data['row']['ecommerce'] != null) {
+                    redirect('sale/shopee');
+                } else {
+                    redirect('sale');
+                }
             } else {
                 $this->session->set_flashdata('error', 'Data gagal diubah! Stok tidak cukup.');
                 redirect('sale');
@@ -280,9 +284,14 @@ class Sale extends CI_Controller
     //Delete one item
     public function delete($id = NULL)
     {
+        $data['row'] = $this->sale->getDataById($id);
         $this->sale->deleteData($id);
         $this->session->set_flashdata('msg', 'Data berhasil dihapus!');
-        redirect('sale');
+        if ($data['row']['ecommerce'] != null) {
+            redirect('sale/shopee');
+        } else {
+            redirect('sale');
+        }
     }
 
     public function detail($id = '')
@@ -343,7 +352,11 @@ class Sale extends CI_Controller
             $this->sale->insertDataPay($dataInsert);
 
             $this->session->set_flashdata('msg', 'Pembayaran Berhasil!');
-            redirect('sale');
+            if ($data['row']['ecommerce'] != null) {
+                redirect('sale/shopee');
+            } else {
+                redirect('sale');
+            }
         } else {
             $data['title'] = 'Pembayaran Piutang ' . $data['row']['code'];
             $data['page']  = 'master';

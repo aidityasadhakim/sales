@@ -32,7 +32,9 @@
               <?php endif; ?>
               <p>
                 <a href="<?php echo base_url('item/add') ?>" class="btn btn-primary">Tambah</a>
-                <a href="<?php echo base_url('item/bulkupdate') ?>" class="btn btn-success">Ubah Banyak</a>
+                <?php if ($this->session->userdata('level') == 1) : ?>
+                  <a href="<?php echo base_url('item/bulkupdate') ?>" class="btn btn-success">Ubah Banyak</a>
+                <?php endif; ?>
                 <button type="button" class="btn btn-warning float-right" id="clearState"><span class="fa fa-refresh"></span> Refresh Data</button>
               </p>
               <div class="table-responsive">

@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="<?php echo base_url('assets') ?>/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
   <style type="text/css">
     .select2-selection--single {
       height: 100% !important;
@@ -130,6 +132,9 @@
             </li>
             <li class="nav-item">
               <a href="<?php echo base_url('warehousesupply') ?>" class="nav-link">Stok</a>
+            </li>
+            <li class="nav-item">
+              <a href="<?php echo base_url('barcode') ?>" class="nav-link">Scan Barcode</a>
             </li>
           </ul>
         </div>

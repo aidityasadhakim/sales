@@ -76,10 +76,12 @@ class Itemmodel extends CI_Model
     {
         $this->db->where('deleted_at', null);
         $this->db->where('id', $id);
+        // var_dump("ID ; " . $id);
         $query = $this->db->get($this->table);
         if ($query->num_rows() > 0) {
             return $query->row_array();
         } else {
+            var_dump("Not found");
             return array();
         }
     }
